@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>tc24·control — Design Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-sidebar: #F7F7F6;
+  --bg-main: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-hover: #F2F2F0;
+  --bg-active: #EEEEEC;
+  --fg: #0A0A0A;
+  --fg-muted: #71717A;
+  --fg-subtle: #A1A1AA;
+  --border: #ECECEA;
+  --border-strong: #D4D4D2;
+  --accent: #4F7CFF;
+  --accent-dim: rgba(79, 124, 255, 0.10);
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #DC2626;
+  --dot-grid: rgba(0, 0, 0, 0.035);
+}
+
+[data-theme="dark"] {
+  --bg-sidebar: #0A0A0C;
+  --bg-main: #111114;
+  --bg-card: #18181B;
+  --bg-hover: #1F1F23;
+  --bg-active: #27272A;
+  --fg: #FAFAFA;
+  --fg-muted: #A1A1AA;
+  --fg-subtle: #71717A;
+  --border: #1F1F23;
+  --border-strong: #27272A;
+  --accent: #6B92FF;
+  --accent-dim: rgba(107, 146, 255, 0.12);
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+  --dot-grid: rgba(255, 255, 255, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg-main);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  transition: background 200ms ease, color 200ms ease;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-feature-settings: 'tnum';
+  letter-spacing: 0;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  height: 100vh;
+}
+
+/* ───── Sidebar ───── */
+
+.sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 12px;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 24px 8px;
+}
+
+.brand-mark {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--fg);
+  border-radius: 4px;
+  position: relative;
+}
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+.brand-text {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.brand-text-dim {
+  color: var(--fg-subtle);
+  font-weight: 400;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-subtle);
+  padding: 12px 8px 6px 8px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--fg-muted);
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  transition: background 100ms ease, color 100ms ease;
+}
+.nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+.nav-item.active {
+  color: var(--fg);
+  background: var(--bg-active);
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.nav-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.spacer { flex: 1; }
+
+.user-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+  padding-top: 14px;
+}
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 50%, var(--fg)));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  display: grid;
+  place-items: center;
+}
+.user-name {
+  font-size: 12px;
+  font-weight: 500;
+}
+.user-role {
+  font-size: 10.5px;
+  color: var(--fg-subtle);
+  margin-top: 1px;
+}
+
+/* ───── Main ───── */
+
+.main {
+  background: var(--bg-main);
+  background-image: radial-gradient(circle at center, var(--dot-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow-y: auto;
+  transition: background-color 200ms ease;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--fg-subtle);
+}
+.breadcrumb-sep { opacity: 0.5; }
+.breadcrumb-current { color: var(--fg); }
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg);
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  transition: all 100ms ease;
+}
+.btn:hover {
+  background: var(--bg-hover);
+}
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+.btn-ghost {
+  border-color: transparent;
+  color: var(--fg-muted);
+}
+
+.kbd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--fg-subtle);
+}
+
+.content {
+  padding: 32px 32px 48px 32px;
+  max-width: 1280px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: var(--fg-muted);
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-subtle);
+  margin-bottom: 12px;
+  margin-top: 40px;
+}
+
+/* ───── Cards Grid ───── */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 120ms ease;
+  position: relative;
+}
+.card:hover {
+  border-color: var(--border-strong);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-accent { background: var(--accent); }
+.dot-success { background: var(--success); }
+.dot-warning { background: var(--warning); }
+
+.card-meta {
+  font-size: 11px;
+  color: var(--fg-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.card-stat {
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.card-sub {
+  font-size: 11.5px;
+  color: var(--fg-muted);
+  margin-top: 4px;
+}
+
+/* ───── Table ───── */
+
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg-card);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-subtle);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+}
+tbody tr:last-child td {
+  border-bottom: none;
+}
+tbody tr:hover {
+  background: var(--bg-hover);
+}
+
+.cell-id { color: var(--fg-subtle); }
+.cell-time { color: var(--fg-muted); font-size: 12px; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--border-strong);
+  color: var(--fg-muted);
+}
+.badge .dot { width: 5px; height: 5px; }
+
+/* ───── Theme Toggle ───── */
+
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 24px;
+  z-index: 10;
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.theme-toggle button {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+.theme-toggle button.active {
+  background: var(--bg-active);
+  color: var(--fg);
+}
+
+</style>
+</head>
+<body>
+
+<div class="theme-toggle">
+  <button id="btn-light" class="active" onclick="setTheme('light')">Light</button>
+  <button id="btn-dark" onclick="setTheme('dark')">Dark</button>
+</div>
+
+<div class="app">
+
+  <!-- ───── SIDEBAR ───── -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-text">tc24<span class="brand-text-dim">·control</span></div>
+      </div>
+    </div>
+
+    <div class="nav-section-label">Übersicht</div>
+    <nav class="nav">
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+    </nav>
+
+    <div class="nav-section-label">Werkzeuge</div>
+    <nav class="nav">
+      <a class="nav-item active" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Custom Codes
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        File Katalog
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Organization
+      </a>
+    </nav>
+
+    <div class="nav-section-label">System</div>
+    <nav class="nav">
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Users
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+    </nav>
+
+    <div class="spacer"></div>
+
+    <div class="user-block">
+      <div class="avatar">SC</div>
+      <div>
+        <div class="user-name">Sascha Camin</div>
+        <div class="user-role">Owner</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ───── MAIN ───── -->
+  <main class="main">
+
+    <div class="topbar">
+      <div class="breadcrumb">
+        <span>Werkzeuge</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Custom Codes</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="kbd">⌘K</span>
+        <button class="btn">Filter</button>
+        <button class="btn btn-primary">+ Neues Widget</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="section-head">
+        <h1 class="page-title">Custom Codes</h1>
+      </div>
+      <p class="page-subtitle">LearningSuite Widgets — Übersicht, Preview, Code-Snippets</p>
+
+      <div class="section-title">Status</div>
+      <div class="cards">
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Aktiv</div>
+            <div class="dot dot-success"></div>
+          </div>
+          <div class="card-meta mono">DEPLOYED</div>
+          <div class="card-stat mono">11</div>
+          <div class="card-sub">Live auf LS</div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Draft</div>
+            <div class="dot dot-warning"></div>
+          </div>
+          <div class="card-meta mono">IN PROGRESS</div>
+          <div class="card-stat mono">8</div>
+          <div class="card-sub">Noch nicht aktiviert</div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Archiv</div>
+            <div class="dot" style="background:var(--fg-subtle)"></div>
+          </div>
+          <div class="card-meta mono">ARCHIVED</div>
+          <div class="card-stat mono">3</div>
+          <div class="card-sub">Außer Betrieb</div>
+        </div>
+
+      </div>
+
+      <div class="section-title">Widgets</div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:80px">ID</th>
+              <th>Name</th>
+              <th>Kategorie</th>
+              <th style="width:90px">Version</th>
+              <th style="width:110px">Status</th>
+              <th style="width:120px">Aktualisiert</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-id mono">CC-1</td>
+              <td>Event Manager</td>
+              <td class="cell-time">global</td>
+              <td class="mono">v3.0.0</td>
+              <td><span class="badge"><span class="dot dot-success"></span> Active</span></td>
+              <td class="cell-time mono">2 days ago</td>
+            </tr>
+            <tr>
+              <td class="cell-id mono">CC-4</td>
+              <td>Avatar Hub</td>
+              <td class="cell-time">global</td>
+              <td class="mono">v1.4.2</td>
+              <td><span class="badge"><span class="dot dot-success"></span> Active</span></td>
+              <td class="cell-time mono">5 days ago</td>
+            </tr>
+            <tr>
+              <td class="cell-id mono">CC-15</td>
+              <td>BigMarker Offer</td>
+              <td class="cell-time">in-page</td>
+              <td class="mono">v2.1.0</td>
+              <td><span class="badge"><span class="dot dot-warning"></span> Draft</span></td>
+              <td class="cell-time mono">1 week ago</td>
+            </tr>
+            <tr>
+              <td class="cell-id mono">CC-18</td>
+              <td>Course Progress</td>
+              <td class="cell-time">global</td>
+              <td class="mono">v0.3.1</td>
+              <td><span class="badge"><span class="dot dot-warning"></span> Draft</span></td>
+              <td class="cell-time mono">2 weeks ago</td>
+            </tr>
+            <tr>
+              <td class="cell-id mono">CC-22</td>
+              <td>Lesson Footer Nav</td>
+              <td class="cell-time">global</td>
+              <td class="mono">v1.0.0</td>
+              <td><span class="badge"><span class="dot dot-success"></span> Active</span></td>
+              <td class="cell-time mono">3 weeks ago</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-title">Recent Activity</div>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr>
+              <td class="cell-time mono" style="width:140px">14:23 · today</td>
+              <td>CC-15 BigMarker Offer — version bumped to v2.1.0</td>
+              <td style="width:80px; text-align:right;" class="cell-id mono">+82 −14</td>
+            </tr>
+            <tr>
+              <td class="cell-time mono">11:08 · today</td>
+              <td>CC-1 Event Manager — deployed to LS</td>
+              <td style="text-align:right;" class="cell-id mono">PROD</td>
+            </tr>
+            <tr>
+              <td class="cell-time mono">yesterday</td>
+              <td>CC-22 Lesson Footer Nav — created</td>
+              <td style="text-align:right;" class="cell-id mono">NEW</td>
+            </tr>
+            <tr>
+              <td class="cell-time mono">2 days ago</td>
+              <td>CC-3 Hub Spacer — archived</td>
+              <td style="text-align:right;" class="cell-id mono">−</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+function setTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  document.getElementById('btn-light').classList.toggle('active', theme === 'light');
+  document.getElementById('btn-dark').classList.toggle('active', theme === 'dark');
+  try { localStorage.setItem('tc24-control-preview-theme', theme); } catch(e) {}
+}
+try {
+  const saved = localStorage.getItem('tc24-control-preview-theme');
+  if (saved) setTheme(saved);
+} catch(e) {}
+</script>
+
+</body>
+</html>

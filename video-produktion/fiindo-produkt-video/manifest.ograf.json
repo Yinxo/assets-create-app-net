@@ -1,0 +1,178 @@
+{
+  "$schema": "https://ograf.ebu.io/v1/specification/json-schemas/graphics/schema.json",
+  "id": "fiindo-produkt-video",
+  "name": "Fiindo Produkt Video",
+  "description": "Lower-third sequence for the fiindo product walkthrough — 24 sections, one per app feature.",
+  "version": "0.1.0",
+  "category": "fiindo",
+  "main": "graphic.mjs",
+  "supportsRealTime": true,
+  "supportsNonRealTime": false,
+  "stepCount": 24,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "entries": {
+        "type": "array",
+        "title": "Lower-third entries",
+        "description": "Ordered sequence of lower-third labels — each rendered as one step.",
+        "minItems": 24,
+        "maxItems": 24,
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name",
+              "description": "Headline text (section title)."
+            },
+            "role": {
+              "type": "string",
+              "title": "Role",
+              "description": "Body text (section description)."
+            },
+            "duration": {
+              "type": "number",
+              "title": "Duration (ms)",
+              "description": "On-screen duration in milliseconds.",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "name",
+            "role",
+            "duration"
+          ]
+        },
+        "default": [
+          {
+            "name": "Dashboard",
+            "role": "Entdecke fiindo – die App, die alles fürs Investieren bündelt.",
+            "duration": 10000
+          },
+          {
+            "name": "News",
+            "role": "Tagesaktuelle Märkte, prägnant zusammengefasst.",
+            "duration": 9000
+          },
+          {
+            "name": "Themen",
+            "role": "Investiere in deine Lieblingsthemen – von KI bis Klima.",
+            "duration": 4000
+          },
+          {
+            "name": "Top-Gewinner & -Verlierer",
+            "role": "Markt-Movers auf einen Blick.",
+            "duration": 10000
+          },
+          {
+            "name": "Watchlisten",
+            "role": "Behalte deine Werte im Auge – jederzeit, einen Tap entfernt.",
+            "duration": 10000
+          },
+          {
+            "name": "Watchlisten erstellen",
+            "role": "Lass die KI gemeinsam mit dir Watchlisten und Portfolios bauen.",
+            "duration": 10000
+          },
+          {
+            "name": "Watchlist mit KI analysieren",
+            "role": "KI-Briefing für deine Watchlist – bleib up to date.",
+            "duration": 10000
+          },
+          {
+            "name": "Brainstorming",
+            "role": "Neue Idee? Sag der KI deine These – sie findet passende Aktien.",
+            "duration": 10000
+          },
+          {
+            "name": "Aktienanalyse in einem Klick",
+            "role": "Eine kurze Übersicht zu jeder Aktie – ein Tap reicht.",
+            "duration": 10000
+          },
+          {
+            "name": "Ähnliche Aktien",
+            "role": "In Sekunden vergleichbare Aktien finden.",
+            "duration": 10000
+          },
+          {
+            "name": "Was macht eigentlich …?",
+            "role": "Was macht eigentlich Norwegian Cruise Line Holdings? Erfahre es mit einem Klick.",
+            "duration": 10000
+          },
+          {
+            "name": "Profi-Modus",
+            "role": "Wechsle in den Profi-Modus und analysiere noch tiefer.",
+            "duration": 10000
+          },
+          {
+            "name": "Earnings Flow",
+            "role": "Wie ist eigentlich der Umsatz von Microsoft aufgebaut?",
+            "duration": 4000
+          },
+          {
+            "name": "Kennzahlenanalyse",
+            "role": "Vergleiche Kennzahlen wie ein Profi.",
+            "duration": 10000
+          },
+          {
+            "name": "KI-Begleiter",
+            "role": "Die fiindo-KI begleitet dich überall – jede Frage sofort beantwortet.",
+            "duration": 10000
+          },
+          {
+            "name": "Analystenmeinungen",
+            "role": "Was denken die Profis über meine Aktie? Finde es einfach heraus.",
+            "duration": 10000
+          },
+          {
+            "name": "Fair Value",
+            "role": "Was ist eigentlich der faire Wert von … Nvidia?",
+            "duration": 10000
+          },
+          {
+            "name": "Chat",
+            "role": "Chatte direkt mit der KI und bekomme einfache Antworten auf deine Fragen.",
+            "duration": 10000
+          },
+          {
+            "name": "KI-Chat pro Aktie",
+            "role": "Direkte Frage zu einer Aktie? Nutze den integrierten KI-Chat zu jeder Aktie.",
+            "duration": 10000
+          },
+          {
+            "name": "fiindo Community",
+            "role": "Werde Teil der zukünftigen fiindo Community – jederzeit Austausch über Aktien und ETFs.",
+            "duration": 10000
+          },
+          {
+            "name": "Wissens-Quiz",
+            "role": "Lerne spielerisch und teste dein Wissen im fiindo Wissens-Quiz.",
+            "duration": 10000
+          },
+          {
+            "name": "Tiefenanalyse mit Stock Reports",
+            "role": "Tiefenanalysen mit den fiindo-Stock-Reports – 23 Kapitel pures Wissen, immer up to date.",
+            "duration": 10000
+          },
+          {
+            "name": "Earnings-Kalender",
+            "role": "Wer hatte gerade neue Quartalszahlen? Wie waren sie? Was steht als Nächstes an? Alles im Earnings-Kalender.",
+            "duration": 10000
+          },
+          {
+            "name": "Stock-Screener",
+            "role": "Frag in natürlicher Sprache nach Aktien – der fiindo Stock-Screener findet sie.",
+            "duration": 10000
+          }
+        ]
+      }
+    },
+    "required": [
+      "entries"
+    ]
+  }
+}
