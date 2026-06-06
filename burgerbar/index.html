@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BURGERBAR — Bau dein Burger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Oswald:wght@400;500;600;700&family=Bitter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3E7CF;        /* warmes Creme-Papier */
+    --paper-2:#EADBBE;      /* etwas dunkler */
+    --ink:#37271A;          /* tiefes Espresso-Braun */
+    --ink-soft:#5C4632;
+    --terra:#BB552E;        /* Terracotta */
+    --terra-dark:#8E3C1E;   /* Rost */
+    --mustard:#D89B2C;      /* Senf/Ocker */
+    --olive:#6E7B43;        /* Oliv */
+    --olive-dark:#525C32;
+    --cream:#F8EFD9;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html,body{
+    background:#cdbfa6;
+    font-family:'Bitter', Georgia, serif;
+    color:var(--ink);
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  @page{ size:A4 portrait; margin:0; }
+
+  .page{
+    width:210mm;
+    height:297mm;
+    margin:0 auto;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(216,155,44,.10), transparent 45%),
+      radial-gradient(circle at 84% 88%, rgba(110,123,67,.12), transparent 42%),
+      var(--paper);
+    position:relative;
+    overflow:hidden;
+    padding:11mm 12mm 9mm;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* feiner Papier-Faserlook */
+  .page::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(55,39,26,.022) 0 1px, transparent 1px 3px);
+    pointer-events:none;
+  }
+
+  /* doppelter Retro-Rahmen */
+  .frame{
+    position:absolute; inset:6mm;
+    border:2.5px solid var(--ink);
+    border-radius:3px;
+    pointer-events:none;
+  }
+  .frame::after{
+    content:"";
+    position:absolute; inset:2.6mm;
+    border:1px solid var(--terra-dark);
+    border-radius:2px;
+  }
+
+  .content{ position:relative; z-index:2; display:flex; flex-direction:column; height:100%; }
+
+  /* ---------- HEADER ---------- */
+  header{ text-align:center; padding-top:2mm; }
+  .eyebrow{
+    font-family:'Oswald',sans-serif;
+    font-weight:600;
+    letter-spacing:.42em;
+    text-transform:uppercase;
+    font-size:9.5pt;
+    color:var(--terra-dark);
+    margin-bottom:3mm;
+  }
+  .eyebrow .dot{ color:var(--olive); }
+  .title{
+    font-family:'Alfa Slab One', serif;
+    font-size:50pt;
+    line-height:.92;
+    color:var(--terra);
+    letter-spacing:.01em;
+    text-shadow:2.5px 2.5px 0 var(--ink), 5px 5px 0 rgba(55,39,26,.18);
+  }
+  .subtitle{
+    font-family:'Oswald',sans-serif;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:.34em;
+    font-size:13pt;
+    color:var(--ink);
+    margin-top:4mm;
+  }
+  .rule{
+    display:flex; align-items:center; justify-content:center; gap:9px;
+    margin:5mm 0 1mm;
+    color:var(--olive-dark);
+  }
+  .rule .line{ height:2px; width:46mm; background:linear-gradient(90deg,transparent,var(--ink-soft)); }
+  .rule .line.r{ background:linear-gradient(270deg,transparent,var(--ink-soft)); }
+  .rule .glyph{ font-size:15pt; }
+
+  /* ---------- SECTIONS ---------- */
+  section{ margin-top:6.5mm; }
+  .sec-head{ display:flex; align-items:center; gap:9px; margin-bottom:4mm; }
+  .num{
+    flex:0 0 auto;
+    width:11mm; height:11mm; border-radius:50%;
+    background:var(--ink); color:var(--cream);
+    font-family:'Alfa Slab One',serif; font-size:15pt;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 2.5px var(--paper), 0 0 0 4px var(--mustard);
+  }
+  .sec-title{
+    font-family:'Oswald',sans-serif; font-weight:700; text-transform:uppercase;
+    font-size:16pt; letter-spacing:.06em; color:var(--ink);
+  }
+  .sec-note{
+    font-family:'Bitter',serif; font-style:italic; font-size:9.5pt;
+    color:var(--ink-soft); margin-left:auto;
+  }
+
+  /* Step 1 — Größen */
+  .sizes{ display:grid; grid-template-columns:1fr 1fr; gap:6mm; }
+  .size-card{
+    border:2px solid var(--ink); border-radius:5px;
+    background:var(--cream);
+    padding:5mm 5mm 4.5mm; text-align:center; position:relative;
+  }
+  .size-card.feat{ background:var(--mustard); }
+  .size-tag{
+    position:absolute; top:-3.4mm; left:50%; transform:translateX(-50%);
+    background:var(--terra); color:var(--cream);
+    font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase;
+    letter-spacing:.18em; font-size:7.5pt; padding:1.4mm 4mm; border-radius:20px;
+    border:1.5px solid var(--ink);
+    white-space:nowrap;
+  }
+  .size-card.feat .size-tag{ background:var(--olive); }
+  .size-name{
+    font-family:'Alfa Slab One',serif; font-size:21pt; color:var(--terra-dark);
+    margin-top:2.5mm; line-height:1;
+  }
+  .size-card.feat .size-name{ color:var(--ink); }
+  .size-meat{
+    font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase;
+    letter-spacing:.08em; font-size:11pt; color:var(--ink); margin-top:2mm;
+  }
+  .size-desc{ font-size:9pt; color:var(--ink-soft); margin-top:1.5mm; font-style:italic; }
+
+  /* Step 2 — Toppings */
+  .toppings{ display:grid; grid-template-columns:1fr 1fr; gap:3mm 8mm; }
+  .topping{ display:flex; gap:7px; align-items:flex-start; padding:1mm 0; border-bottom:1px dotted rgba(55,39,26,.28); }
+  .topping .bullet{ flex:0 0 auto; color:var(--terra); font-size:12pt; line-height:1.05; margin-top:.5mm; }
+  .topping .tx .t-name{
+    font-family:'Oswald',sans-serif; font-weight:600; font-size:11pt;
+    text-transform:uppercase; letter-spacing:.03em; color:var(--ink);
+  }
+  .topping .tx .t-desc{ font-size:8.6pt; color:var(--ink-soft); font-style:italic; line-height:1.25; }
+
+  /* Step 3 — Saucen */
+  .sauces{ display:grid; grid-template-columns:1fr 1fr; gap:6mm; }
+  .sauce{
+    border:2px solid var(--ink); border-radius:5px; background:var(--cream);
+    padding:4mm 5mm; position:relative;
+  }
+  .sauce.house{ background:linear-gradient(180deg,#f4e0c3,#efd6b1); }
+  .sauce .s-name{
+    font-family:'Oswald',sans-serif; font-weight:700; text-transform:uppercase;
+    font-size:12pt; letter-spacing:.04em; color:var(--terra-dark);
+  }
+  .sauce .s-desc{ font-size:9pt; color:var(--ink-soft); font-style:italic; margin-top:1.5mm; }
+  .sauce .s-ribbon{
+    position:absolute; top:3mm; right:4mm; font-size:13pt;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{ margin-top:auto; padding-top:6mm; text-align:center; }
+  .foot-rule{
+    display:flex; align-items:center; justify-content:center; gap:9px; color:var(--olive-dark); margin-bottom:3mm;
+  }
+  .foot-rule .line{ height:2px; width:40mm; background:linear-gradient(90deg,transparent,var(--ink-soft)); }
+  .foot-rule .line.r{ background:linear-gradient(270deg,transparent,var(--ink-soft)); }
+  .ps{
+    font-family:'Bitter',serif; font-style:italic; font-size:10pt; color:var(--ink);
+    background:var(--paper-2); display:inline-block; padding:2.5mm 6mm; border-radius:30px;
+    border:1.5px dashed var(--terra-dark);
+  }
+  .ps b{ color:var(--terra-dark); font-style:normal; }
+  .tagline{
+    margin-top:3mm; font-family:'Oswald',sans-serif; font-weight:500;
+    text-transform:uppercase; letter-spacing:.3em; font-size:8pt; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="frame"></div>
+    <div class="content">
+
+      <header>
+        <div class="eyebrow">Frisch &amp; Hausgemacht <span class="dot">●</span> Vom Grill</div>
+        <h1 class="title">BURGERBAR</h1>
+        <div class="subtitle">Bau dein Burger</div>
+        <div class="rule">
+          <span class="line"></span><span class="glyph">🍔</span><span class="line r"></span>
+        </div>
+      </header>
+
+      <!-- STEP 1 -->
+      <section>
+        <div class="sec-head">
+          <div class="num">1</div>
+          <div class="sec-title">Wähle deine Größe</div>
+          <div class="sec-note">100&nbsp;% Rindfleisch</div>
+        </div>
+        <div class="sizes">
+          <div class="size-card">
+            <span class="size-tag">Der Klassiker</span>
+            <div class="size-name">SINGLE</div>
+            <div class="size-meat">125&nbsp;g Patty</div>
+            <div class="size-desc">ein saftiges Patty</div>
+          </div>
+          <div class="size-card feat">
+            <span class="size-tag">Für den Hunger</span>
+            <div class="size-name">DOPPEL</div>
+            <div class="size-meat">250&nbsp;g · Doppel-Patty</div>
+            <div class="size-desc">zwei Patties, doppelt gut</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2 -->
+      <section>
+        <div class="sec-head">
+          <div class="num">2</div>
+          <div class="sec-title">Deine Toppings</div>
+          <div class="sec-note">frei kombinierbar</div>
+        </div>
+        <div class="toppings">
+          <div class="topping">
+            <span class="bullet">◆</span>
+            <div class="tx">
+              <div class="t-name">Pilze &amp; Champignons</div>
+              <div class="t-desc">kräftig gebraten &amp; langsam geschmort</div>
+            </div>
+          </div>
+          <div class="topping">
+            <span class="bullet">◆</span>
+            <div class="tx">
+              <div class="t-name">Glasierte Zwiebeln</div>
+              <div class="t-desc">in Streifen geschmort &amp; sanft lasiert</div>
+            </div>
+          </div>
+          <div class="topping">
+            <span class="bullet">◆</span>
+            <div class="tx">
+              <div class="t-name">Fetakäse</div>
+              <div class="t-desc">würzig &amp; cremig obendrauf</div>
+            </div>
+          </div>
+          <div class="topping">
+            <span class="bullet">◆</span>
+            <div class="tx">
+              <div class="t-name">Tomate &amp; Gurke</div>
+              <div class="t-desc">die frischen Klassiker</div>
+            </div>
+          </div>
+          <div class="topping">
+            <span class="bullet">◆</span>
+            <div class="tx">
+              <div class="t-name">Coleslaw</div>
+              <div class="t-desc">knackig &amp; cremig</div>
+            </div>
+          </div>
+          <div class="topping">
+            <span class="bullet">◆</span>
+            <div class="tx">
+              <div class="t-name">Kalte Antipasti</div>
+              <div class="t-desc">frisch gemacht &amp; kräftig gewürzt</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3 -->
+      <section>
+        <div class="sec-head">
+          <div class="num">3</div>
+          <div class="sec-title">Deine Sauce</div>
+          <div class="sec-note">freie Wahl</div>
+        </div>
+        <div class="sauces">
+          <div class="sauce house">
+            <span class="s-ribbon">⭐</span>
+            <div class="s-name">Christines Burgersauce</div>
+            <div class="s-desc">das hausgemachte Original — direkt von Soßenchefin Christine</div>
+          </div>
+          <div class="sauce">
+            <span class="s-ribbon">🍶</span>
+            <div class="s-name">Sauce aus der Buddel</div>
+            <div class="s-desc">Ketchup, Mayo &amp; Co. — ganz nach deinem Geschmack</div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="foot-rule"><span class="line"></span><span>★</span><span class="line r"></span></div>
+        <div class="ps"><b>PS:</b> Liebe Grüße an den Bürgermeister — heute regiert der Burger. 🍔</div>
+        <div class="tagline">Guten Appetit · BURGERBAR</div>
+      </footer>
+
+    </div>
+  </div>
+</body>
+</html>
