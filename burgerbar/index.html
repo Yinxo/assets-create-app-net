@@ -30,7 +30,7 @@
     width:210mm; height:297mm; margin:0 auto;
     background:var(--paper);
     position:relative; overflow:hidden;
-    padding:12mm 15mm 12mm;
+    padding:11mm 15mm 13mm;
     display:flex; flex-direction:column; align-items:center;
     text-align:center;
   }
@@ -51,7 +51,7 @@
   .hero{ color:var(--ink); width:90px; height:73px; margin-bottom:.5mm; }
   .logo{
     font-family:'Yellowtail', cursive;
-    font-size:47pt; line-height:.9; color:var(--rust);
+    font-size:44pt; line-height:.9; color:var(--rust);
     margin-top:1mm;
   }
   .subtitle{
@@ -73,22 +73,22 @@
     font-family:'Playfair Display', serif; font-weight:600;
     font-size:17pt; letter-spacing:.05em; color:var(--ink); text-transform:uppercase;
   }
-  .sec-note{ font-style:italic; font-size:11pt; color:var(--ink-soft); margin-top:.5mm; margin-bottom:2.5mm; }
+  .sec-note{ font-style:italic; font-size:11pt; color:var(--ink-soft); margin-top:.5mm; margin-bottom:2mm; }
 
-  /* Step 1 — Größen (hervorgehobene Karten) */
-  .sizes{ display:flex; gap:8mm; justify-content:center; width:100%; }
+  /* Step 1 — Größen (hervorgehobene Karten — breit & flach) */
+  .sizes{ display:flex; gap:10mm; justify-content:center; width:100%; }
   .size{
-    display:flex; flex-direction:column; align-items:center; flex:1; max-width:64mm;
+    display:flex; flex-direction:column; align-items:center; flex:1; max-width:74mm;
     border:1px solid var(--rust-soft); border-radius:8px; background:var(--card);
-    padding:4mm 4mm;
+    padding:3mm 5mm;
   }
-  .size .ico{ color:var(--ink); height:62px; margin-bottom:2mm; }
-  .size-name{ font-family:'Playfair Display',serif; font-weight:600; font-size:15.5pt; color:var(--rust); letter-spacing:.04em; }
+  .size .ico{ color:var(--ink); height:50px; margin-bottom:1.5mm; }
+  .size-name{ font-family:'Playfair Display',serif; font-weight:600; font-size:15pt; color:var(--rust); letter-spacing:.04em; }
   .size-meat{ font-size:13pt; color:var(--ink); margin-top:.5mm; }
   .size-desc{ font-style:italic; font-size:10.5pt; color:var(--ink-soft); margin-top:.5mm; }
 
   /* Step 2 — Toppings (zentriert, umbruch 4+3) */
-  .toppings{ display:flex; flex-wrap:wrap; justify-content:center; gap:5mm 5mm; width:100%; }
+  .toppings{ display:flex; flex-wrap:wrap; justify-content:center; gap:4mm 5mm; width:100%; }
   .top{ display:flex; flex-direction:column; align-items:center; width:35mm; padding:0 1mm; }
   .top .ico{ color:var(--rust); height:40px; margin-bottom:1.5mm; }
   .t-name{ font-family:'Playfair Display',serif; font-weight:500; font-size:12pt; color:var(--ink); letter-spacing:.02em; }
@@ -99,9 +99,9 @@
   .sauce{
     display:flex; flex-direction:column; align-items:center; flex:1; max-width:68mm;
     border:1px solid var(--line); border-radius:8px; background:transparent;
-    padding:4mm 5mm;
+    padding:3.5mm 5mm;
   }
-  .sauce .ico{ color:var(--ink); height:46px; margin-bottom:1.5mm; }
+  .sauce .ico{ color:var(--ink); height:42px; margin-bottom:1.5mm; }
   .s-name{ font-family:'Playfair Display',serif; font-weight:600; font-size:12.5pt; color:var(--rust); }
   .s-desc{ font-style:italic; font-size:10.5pt; color:var(--ink-soft); line-height:1.3; margin-top:1mm; }
 
