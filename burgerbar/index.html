@@ -88,11 +88,11 @@
   .size-desc{ font-style:italic; font-size:10.5pt; color:var(--ink-soft); margin-top:.5mm; }
 
   /* Step 2 — Toppings (zentriert, umbruch 4+3) */
-  .toppings{ display:flex; flex-wrap:wrap; justify-content:center; gap:4mm 5mm; width:100%; }
-  .top{ display:flex; flex-direction:column; align-items:center; width:35mm; padding:0 1mm; }
-  .top .ico{ color:var(--rust); height:40px; margin-bottom:1.5mm; }
-  .t-name{ font-family:'Playfair Display',serif; font-weight:500; font-size:12pt; color:var(--ink); letter-spacing:.02em; }
-  .t-desc{ font-style:italic; font-size:10pt; color:var(--ink-soft); line-height:1.25; margin-top:.5mm; }
+  .toppings{ display:flex; flex-wrap:wrap; justify-content:center; gap:4mm 3mm; width:100%; }
+  .top{ display:flex; flex-direction:column; align-items:center; width:28mm; padding:0 .5mm; }
+  .top .ico{ color:var(--rust); height:34px; margin-bottom:1.5mm; }
+  .t-name{ font-family:'Playfair Display',serif; font-weight:500; font-size:11pt; color:var(--ink); letter-spacing:.01em; line-height:1.1; }
+  .t-desc{ font-style:italic; font-size:9pt; color:var(--ink-soft); line-height:1.2; margin-top:.5mm; }
 
   /* Step 3 — Saucen (einzelne Karten, zarte Linien) */
   .sauces{ display:flex; gap:8mm; justify-content:center; width:100%; }
@@ -185,7 +185,7 @@
               <path d="M9 24 C9 12 39 12 39 24"/><path d="M9 24 Q24 30 39 24"/>
               <path d="M19 27 L19 39 C19 42 29 42 29 39 L29 27"/>
               <path d="M17 19 q2 -2 4 0 M25 18 q2 -2 4 0"/></svg></span>
-            <div class="t-name">Pilze &amp; Champignons</div>
+            <div class="t-name">Champignons</div>
             <div class="t-desc">in Kräuterbutter goldbraun geschmort</div>
           </div>
 
@@ -236,7 +236,7 @@
               <path d="M9 26 L39 26"/>
               <path d="M14 26 q-2 -7 4 -9 M21 26 q-1 -8 5 -8 M28 26 q1 -8 6 -6"/></svg></span>
             <div class="t-name">Coleslaw</div>
-            <div class="t-desc">fein gehobelt, samtig abgeschmeckt</div>
+            <div class="t-desc">mit Möhren, fein gehobelt &amp; cremig</div>
           </div>
 
           <div class="top">
@@ -247,6 +247,26 @@
               <path d="M32 16 q5 -3 8 0 q-3 5 -8 2"/></svg></span>
             <div class="t-name">Kalte Antipasti</div>
             <div class="t-desc">in Olivenöl &amp; Kräutern mariniert</div>
+          </div>
+
+          <div class="top">
+            <span class="ico" aria-hidden="true"><svg viewBox="0 0 48 48">
+              <path d="M24 42 L24 13"/>
+              <path d="M24 18 C20 18 17 16 16 13 M24 25 C19 25 16 23 14 20 M24 32 C20 32 18 31 16 29"/>
+              <path d="M24 15 C28 15 30 13 31 10 M24 22 C29 22 32 20 33 17 M24 29 C29 29 31 28 32 26"/>
+              <path d="M24 13 C23 11 24 9 24 8"/></svg></span>
+            <div class="t-name">Rucola</div>
+            <div class="t-desc">pfeffrig-frisch, handverlesen</div>
+          </div>
+
+          <div class="top">
+            <span class="ico" aria-hidden="true"><svg viewBox="0 0 48 48">
+              <path d="M11 31 C9 19 39 19 37 31"/>
+              <path d="M11 31 Q24 37 37 31"/>
+              <path d="M13 24 q3 -3 6 0 q3 3 6 0 q3 -3 6 0 q3 3 5 0"/>
+              <path d="M19 31 C19 26 21 24 23 27 M29 31 C29 26 27 24 25 27 M24 23 L24 31"/></svg></span>
+            <div class="t-name">Eisbergsalat</div>
+            <div class="t-desc">knackig &amp; eiskalt-frisch</div>
           </div>
 
         </div>
