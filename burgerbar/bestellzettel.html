@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>BURGERBAR — Bestellzettel (3×6)</title>
+<title>BURGERBAR — Bestellzettel (3×3)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Yellowtail&display=swap" rel="stylesheet">
@@ -19,42 +19,40 @@
   .sheet{
     width:210mm; height:297mm; background:var(--paper);
     padding:5mm; display:grid;
-    grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(6,1fr);
+    grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr);
   }
 
   .slip{
     border:1px dashed var(--cut);
     margin:-0.5px;                 /* benachbarte Schnittlinien teilen sich */
-    padding:2.6mm 3mm;
+    padding:5mm 5.5mm;
     display:flex; flex-direction:column;
     overflow:hidden;
   }
 
   .sh{ display:flex; align-items:baseline; justify-content:space-between;
-       border-bottom:1px solid var(--line); padding-bottom:.8mm; margin-bottom:1mm; }
-  .brand{ font-family:'Yellowtail',cursive; font-size:11pt; line-height:.8; color:var(--rust); }
-  .st{ font-size:5.6pt; font-style:italic; color:var(--soft); text-transform:uppercase; letter-spacing:.12em; }
+       border-bottom:1.2px solid var(--line); padding-bottom:1.6mm; margin-bottom:2.5mm; }
+  .brand{ font-family:'Yellowtail',cursive; font-size:17pt; line-height:.8; color:var(--rust); }
+  .st{ font-size:7pt; font-style:italic; color:var(--soft); text-transform:uppercase; letter-spacing:.16em; }
 
-  .line{ font-size:7pt; display:flex; align-items:center; gap:1.4mm; margin-bottom:1mm; }
-  .lab{ font-weight:700; font-size:6pt; text-transform:uppercase; letter-spacing:.05em; color:var(--soft); }
-  .opt{ display:flex; align-items:center; gap:1mm; font-size:7pt; }
+  .line{ font-size:9.5pt; display:flex; align-items:center; gap:4mm; margin-bottom:2.5mm; flex-wrap:wrap; }
+  .lab{ font-weight:700; font-size:7.5pt; text-transform:uppercase; letter-spacing:.06em; color:var(--soft); }
+  .opt{ display:flex; align-items:center; gap:1.6mm; font-size:9.5pt; }
 
-  .gh{ font-weight:700; font-size:6pt; text-transform:uppercase; letter-spacing:.06em;
-       color:var(--soft); margin:.4mm 0 .8mm; }
-  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:.5mm 2mm; }
-  .cols label{ font-size:6.6pt; display:flex; align-items:center; gap:1.2mm; line-height:1.2; }
+  .gh{ font-weight:700; font-size:7.5pt; text-transform:uppercase; letter-spacing:.08em;
+       color:var(--soft); margin:1mm 0 1.5mm; }
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:1.6mm 3mm; }
+  .cols label{ font-size:9pt; display:flex; align-items:center; gap:1.8mm; line-height:1.2; }
 
-  .cb{ display:inline-block; width:2.5mm; height:2.5mm; border:0.6pt solid var(--ink);
-       border-radius:.4mm; flex:0 0 auto; }
+  .cb{ display:inline-block; width:3.4mm; height:3.4mm; border:0.8pt solid var(--ink);
+       border-radius:.5mm; flex:0 0 auto; }
 
-  .name{ font-size:6pt; color:var(--soft); margin-top:auto;
-         border-top:1px dotted var(--line); padding-top:1mm; }
+  .name{ font-size:8.5pt; color:var(--soft); margin-top:auto;
+         border-top:1px dotted var(--line); padding-top:2mm; }
 </style>
 </head>
 <body>
-<div class="sheet">
-  <!-- 18× identischer Bestellzettel; template via JS unten geklont -->
-</div>
+<div class="sheet"></div>
 <template id="slip">
   <div class="slip">
     <div class="sh"><span class="brand">Burgerbar</span><span class="st">Bestellzettel</span></div>
@@ -65,26 +63,26 @@
     <div class="gh">Toppings</div>
     <div class="cols">
       <label><span class="cb"></span>Champignons</label>
-      <label><span class="cb"></span>Bacon</label>
-      <label><span class="cb"></span>Zwiebeln</label>
-      <label><span class="cb"></span>Feta</label>
-      <label><span class="cb"></span>Tomate/Gurke</label>
+      <label><span class="cb"></span>Baconstreifen</label>
+      <label><span class="cb"></span>Glasierte Zwiebeln</label>
+      <label><span class="cb"></span>Fetakäse</label>
+      <label><span class="cb"></span>Tomate &amp; Gurke</label>
       <label><span class="cb"></span>Coleslaw</label>
-      <label><span class="cb"></span>Antipasti</label>
+      <label><span class="cb"></span>Kalte Antipasti</label>
       <label><span class="cb"></span>Rucola</label>
-      <label><span class="cb"></span>Eisberg</label>
+      <label><span class="cb"></span>Eisbergsalat</label>
     </div>
-    <div class="line" style="margin-top:1mm"><span class="lab">Sauce</span>
-      <span class="opt"><span class="cb"></span>Kristin</span>
-      <span class="opt"><span class="cb"></span>Buddel</span>
+    <div class="line" style="margin-top:2.5mm"><span class="lab">Sauce</span>
+      <span class="opt"><span class="cb"></span>Kristins Sauce</span>
+      <span class="opt"><span class="cb"></span>aus der Buddel</span>
     </div>
-    <div class="name">Name / Tisch: ______________</div>
+    <div class="name">Name / Tisch: __________________</div>
   </div>
 </template>
 <script>
   const sheet = document.querySelector('.sheet');
   const tpl = document.getElementById('slip');
-  for (let i = 0; i < 18; i++) sheet.appendChild(tpl.content.cloneNode(true));
+  for (let i = 0; i < 9; i++) sheet.appendChild(tpl.content.cloneNode(true));
 </script>
 </body>
 </html>
