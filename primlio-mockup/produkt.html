@@ -479,6 +479,11 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
     bar.classList.toggle('show',!anyVisible);
     bar.setAttribute('aria-hidden',anyVisible?'true':'false');
   }
+  /* A CTA only counts as "in view" when it is meaningfully inside the viewport,
+     not merely touching the very top/bottom edge. The negative vertical rootMargin
+     shrinks the detection band so there is a real CTA-free zone while scrolling past
+     the buy rail / interstitial CTA into FAQ/alternatives — on desktop AND mobile. */
+  var BAND='-25% 0px -25% 0px';
   if('IntersectionObserver' in window){
     var visible=new Set();
     var io=new IntersectionObserver(function(entries){
@@ -487,14 +492,16 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
         else visible.delete(en.target);
       });
       sync(visible.size>0);
-    },{threshold:0});
+    },{root:null,rootMargin:BAND,threshold:0});
     ctas.forEach(function(el){io.observe(el);});
   }else{
-    /* Fallback: scroll check across all CTAs */
+    /* Fallback: scroll check across all CTAs, same shrunken band */
     var check=function(){
+      var vh=window.innerHeight||document.documentElement.clientHeight;
+      var pad=vh*0.25;
       var anyVisible=ctas.some(function(el){
         var r=el.getBoundingClientRect();
-        return r.bottom>0 && r.top<(window.innerHeight||document.documentElement.clientHeight);
+        return r.bottom>pad && r.top<(vh-pad);
       });
       sync(anyVisible);
     };

@@ -225,7 +225,12 @@ section.dark .cat-group-label{color:hsl(36 90% 78%)}
 .rbody{padding:18px;display:flex;flex-direction:column;gap:9px;flex:1}
 .rbody h3{font-size:19px;line-height:1.25}
 .rbody p{font-size:14px;color:var(--muted-fg);line-height:1.5}
-.rbody .date{margin-top:auto;font-size:12.5px;color:var(--muted-fg);padding-top:8px}
+.rbody .date{margin-top:auto;font-size:12.5px;color:var(--muted-fg)}
+.rcard .rfoot{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rcard .r-cta{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:14px;font-weight:700;transition:.15s}
+.rcard .r-cta svg{transition:transform .15s}
+.rcard:hover .r-cta{color:var(--accent)}
+.rcard:hover .r-cta svg{transform:translateX(2px)}
 
 /* HOW WE CHOOSE band */
 .band{text-align:center}
@@ -530,29 +535,44 @@ footer{background:var(--primary-deep);color:var(--on-dark);padding:52px 0 30px;f
   <div class="wrap">
     <div class="sec-head">
       <div><span class="kicker">Kaufberatung</span><h2>Frische Ratgeber</h2><p>Echte Kaufberatung mit Vergleich, Entscheidungshilfe und klarer Empfehlung.</p></div>
-      <a class="more" href="#">Alle Ratgeber →</a>
+      <a class="more" href="ratgeber-liste.html">Alle Ratgeber →</a>
     </div>
     <div class="grid grid-3">
-      <a class="rcard" href="#">
+      <a class="rcard" href="ratgeber-detail.html">
         <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/49f14dac0a1f9e77b934dc24f343c6fa.png" alt="Hochbeet aus Metall und Holz im Vergleich"></div>
         <div class="rbody"><span class="rtag">Vergleich · Hochbeet</span>
           <h3>Hochbeet kaufen: Metall oder Holz – die besten Modelle</h3>
           <p>Metall oder Holz? Sechs gefragte Hochbeete für Garten und Balkon – mit klarer Entscheidungshilfe nach Standort, Höhe und Material.</p>
-          <span class="date">Aktualisiert 17. Juni 2026</span></div>
+          <div class="rfoot">
+            <span class="date">Aktualisiert 17. Juni 2026</span>
+            <span class="r-cta">Ratgeber lesen
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div></div>
       </a>
-      <a class="rcard" href="#">
+      <a class="rcard" href="ratgeber-detail.html">
         <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/e9756f8eb32caf9adede454b304f6d9d.png" alt="Gartenwerkzeug-Set im Test"></div>
         <div class="rbody"><span class="rtag">Test · Gartenwerkzeug</span>
           <h3>Gartenwerkzeug-Set Test: Die besten Sets im Vergleich</h3>
           <p>Welches Set hält wirklich, was es verspricht? Sechs Sets nach Material, Ergonomie, Umfang und Aufbewahrung – damit du direkt das Passende wählst.</p>
-          <span class="date">Aktualisiert 17. Juni 2026</span></div>
+          <div class="rfoot">
+            <span class="date">Aktualisiert 17. Juni 2026</span>
+            <span class="r-cta">Ratgeber lesen
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div></div>
       </a>
-      <a class="rcard" href="#">
+      <a class="rcard" href="ratgeber-detail.html">
         <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/03c7dd5a62bab6d4b7903ea6c5f0eef1.png" alt="Zaunblende als Sichtschutz im Vergleich"></div>
         <div class="rbody"><span class="rtag">Vergleich · Sichtschutz</span>
           <h3>Zaunblende im Vergleich: Der richtige Sichtschutz</h3>
           <p>Welche Zaunblende schützt wirklich vor Blicken – und hält dem Wetter stand? Welcher Typ für welchen Zaun und welches Bedürfnis am besten passt.</p>
-          <span class="date">Aktualisiert 17. Juni 2026</span></div>
+          <div class="rfoot">
+            <span class="date">Aktualisiert 17. Juni 2026</span>
+            <span class="r-cta">Ratgeber lesen
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div></div>
       </a>
     </div>
   </div>
