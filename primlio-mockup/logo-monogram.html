@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>primlio — Monogramm „p“ verfeinert (Designentwurf)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:hsl(285 45% 25%);
+    --primary-deep:hsl(285 48% 18%);
+    --accent:hsl(18 70% 55%);
+    --cream:hsl(36 33% 98%);
+    --cream-2:hsl(36 28% 95%);
+    --ink:hsl(285 30% 16%);
+    --muted:hsl(285 8% 45%);
+    --line:hsl(285 15% 88%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Inter",system-ui,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
+
+  .flag{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    background:var(--primary-deep);color:#fff;padding:12px 22px;font-size:14px;
+  }
+  .flag b{font-weight:600}
+  .flag .links{display:flex;gap:10px;flex-wrap:wrap}
+  .flag a{
+    color:#fff;text-decoration:none;font-weight:600;
+    border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:6px 16px;
+    transition:background .15s;
+  }
+  .flag a:hover{background:rgba(255,255,255,.12)}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 22px 80px}
+
+  .lede{max-width:720px;margin-bottom:8px}
+  .lede h1{font-size:clamp(30px,5vw,46px);color:var(--primary);margin-bottom:14px}
+  .lede p{color:var(--muted);font-size:17px}
+  .lede .form-note{
+    margin-top:18px;padding:16px 18px;border-radius:14px;background:var(--cream-2);
+    border:1px solid var(--line);font-size:14.5px;color:var(--ink);
+  }
+  .lede .form-note b{color:var(--primary)}
+
+  .palette{display:flex;gap:14px;flex-wrap:wrap;margin:26px 0 8px}
+  .sw{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted)}
+  .sw i{width:26px;height:26px;border-radius:7px;display:block;border:1px solid rgba(0,0,0,.08)}
+
+  .concept{margin-top:54px}
+  .concept-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:14px}
+  .concept-head .num{
+    font-family:"Fraunces",serif;font-weight:700;font-size:20px;color:var(--accent);
+    width:42px;height:42px;flex:0 0 42px;display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--accent);border-radius:12px;
+  }
+  .concept-head h2{font-size:24px;color:var(--primary)}
+  .concept-head p{color:var(--muted);font-size:15px;flex-basis:100%;margin-left:56px}
+
+  .lockups{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+
+  .card{
+    border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff;
+    box-shadow:0 1px 2px rgba(40,20,50,.04);
+  }
+  .card .stage{
+    display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;
+    min-height:150px;padding:28px 22px;
+  }
+  .card .stage.light{background:var(--cream-2)}
+  .card .stage.dark{background:var(--primary-deep)}
+  .card .label{
+    font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);
+    padding:8px 16px;border-top:1px solid var(--line);background:#fff;display:flex;justify-content:space-between;
+  }
+  .card .label .lk{color:var(--primary);font-weight:600}
+
+  .fav-row{
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:14px;
+    padding:14px 18px;border:1px dashed var(--line);border-radius:14px;background:var(--cream-2);
+  }
+  .fav-row > span{font-size:13px;color:var(--muted)}
+  .fav-chip{display:flex;align-items:center;gap:8px}
+  .fav-chip small{font-size:11px;color:var(--muted)}
+  .fav-onlight{background:var(--cream);padding:4px;border-radius:6px;border:1px solid var(--line);display:flex}
+  .fav-ondark{background:var(--primary-deep);padding:4px;border-radius:6px;display:flex}
+
+  .wm{font-family:"Fraunces",serif;font-weight:600;letter-spacing:-.04em;line-height:1}
+  svg{display:block}
+
+  .note{margin-top:64px;padding:22px 24px;border-radius:16px;background:var(--cream-2);border:1px solid var(--line);color:var(--muted);font-size:14px}
+  .note b{color:var(--primary)}
+</style>
+</head>
+<body>
+
+<div class="flag">
+  <span>🎨 <b>Designentwurf</b> — primlio Monogramm „p“ verfeinert (Inline-SVG · nicht final)</span>
+  <span class="links">
+    <a href="index.html">← Übersicht</a>
+    <a href="logo.html">← Logo-Konzepte</a>
+  </span>
+</div>
+
+<div class="wrap">
+
+  <div class="lede">
+    <h1>Monogramm „p“ — verfeinert</h1>
+    <p>Sechs geometrisch präzise „p“-Varianten. Jede liest sich unmissverständlich als kleines „p“: klarer vertikaler Stamm links, geschlossener Bauch oben rechts am Stamm.</p>
+    <div class="form-note">
+      <b>p-Form-Regel:</b> Stamm = vertikales Rechteck links · Bauch = geschlossener Kreis, rechts oben am Stamm angesetzt · Stamm reicht unten leicht unter die Bauch-Linie. Kein zentrierter Bogen, keine mehrdeutige Form.
+    </div>
+  </div>
+
+  <div class="palette">
+    <div class="sw"><i style="background:hsl(285 45% 25%)"></i> Aubergine · Primär</div>
+    <div class="sw"><i style="background:hsl(285 48% 18%)"></i> Aubergine · tief</div>
+    <div class="sw"><i style="background:hsl(18 70% 55%)"></i> Terrakotta · Akzent</div>
+    <div class="sw"><i style="background:hsl(36 33% 98%);border-color:hsl(285 15% 80%)"></i> Cream · Grund</div>
+  </div>
+
+  <!--
+    ========================================================================
+    GEOMETRIE-NOTIZ (gilt für alle „p“):
+    viewBox 0 0 100 100. Stamm: x=33..47 (Breite 14), y=24..86.
+    Bauch: Kreis Mittelpunkt cx=58, cy=46, Außenradius 17, Innen-Counter r≈7.
+    Bauch sitzt rechts oben am Stamm; Stamm reicht von y=24 bis 86 (unter Bauch).
+    ========================================================================
+  -->
+
+  <!-- ============ VARIANTE 1 — p im abgerundeten Quadrat ============ -->
+  <section class="concept">
+    <div class="concept-head">
+      <span class="num">1</span>
+      <h2>„p“ im abgerundeten Quadrat</h2>
+      <p>Aubergine-Fläche, „p“ in Cream, Bauch-Innenring (Counter) in Terrakotta. Maximal kompakt — ideal als App-Icon &amp; Avatar.</p>
+    </div>
+    <div class="lockups">
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v1a-t">
+            <title id="v1a-t">primlio Monogramm p — Bildmarke</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <!-- p: stem + bowl als eine cream-Fläche, Counter terrakotta -->
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="54" height="54" viewBox="0 0 100 100" role="img" aria-labelledby="v1b-t">
+            <title id="v1b-t">primlio Bildmarke</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(285 45% 25%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v1c-t">
+            <title id="v1c-t">primlio Monogramm p auf dunklem Grund</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="54" height="54" viewBox="0 0 100 100" role="img" aria-labelledby="v1d-t">
+            <title id="v1d-t">primlio Bildmarke auf dunklem Grund</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(36 33% 98%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+    </div>
+    <div class="fav-row">
+      <span>Favicon 32&nbsp;px:</span>
+      <div class="fav-chip">
+        <div class="fav-onlight">
+          <svg width="32" height="32" viewBox="0 0 100 100" role="img" aria-labelledby="v1f-t">
+            <title id="v1f-t">primlio Favicon</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <small>auf Browser-Tab — Stamm + Bauch bleiben winzig lesbar</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANTE 2 — p im Kreis-Container ============ -->
+  <section class="concept">
+    <div class="concept-head">
+      <span class="num">2</span>
+      <h2>„p“ im Kreis-Container</h2>
+      <p>Aubergine-Kreis, weißes „p“, Bauch-Counter in Terrakotta. Runder Container wirkt weicher &amp; freundlicher — gut für Avatare.</p>
+    </div>
+    <div class="lockups">
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v2a-t">
+            <title id="v2a-t">primlio Monogramm p im Kreis — Bildmarke</title>
+            <circle cx="50" cy="50" r="46" fill="hsl(285 45% 25%)"/>
+            <path d="M35 28 h13 v50 h-13 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="15" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="6.2" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="54" height="54" viewBox="0 0 100 100" role="img" aria-labelledby="v2b-t">
+            <title id="v2b-t">primlio Bildmarke</title>
+            <circle cx="50" cy="50" r="46" fill="hsl(285 45% 25%)"/>
+            <path d="M35 28 h13 v50 h-13 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="15" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="6.2" fill="hsl(18 70% 55%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(285 45% 25%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v2c-t">
+            <title id="v2c-t">primlio Monogramm p im Kreis auf dunklem Grund</title>
+            <circle cx="50" cy="50" r="46" fill="hsl(285 45% 25%)" stroke="hsl(36 33% 98%)" stroke-width="2" stroke-opacity=".35"/>
+            <path d="M35 28 h13 v50 h-13 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="15" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="6.2" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="54" height="54" viewBox="0 0 100 100" role="img" aria-labelledby="v2d-t">
+            <title id="v2d-t">primlio Bildmarke auf dunklem Grund</title>
+            <circle cx="50" cy="50" r="46" fill="hsl(285 45% 25%)" stroke="hsl(36 33% 98%)" stroke-width="2" stroke-opacity=".35"/>
+            <path d="M35 28 h13 v50 h-13 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="15" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="6.2" fill="hsl(18 70% 55%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(36 33% 98%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+    </div>
+    <div class="fav-row">
+      <span>Favicon 32&nbsp;px:</span>
+      <div class="fav-chip">
+        <div class="fav-onlight">
+          <svg width="32" height="32" viewBox="0 0 100 100" role="img" aria-labelledby="v2f-t">
+            <title id="v2f-t">primlio Kreis-Favicon</title>
+            <circle cx="50" cy="50" r="46" fill="hsl(285 45% 25%)"/>
+            <path d="M35 28 h13 v50 h-13 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="15" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="6.2" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <small>runder Container füllt das Tab-Quadrat gut aus</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANTE 3 — freistehendes p, zweifarbig ============ -->
+  <section class="concept">
+    <div class="concept-head">
+      <span class="num">3</span>
+      <h2>Freistehendes „p“ · zweifarbig</h2>
+      <p>Ohne Container: Stamm in Aubergine, Bauch in Terrakotta. Das Zwei-Farb-System steckt direkt im Buchstaben — leicht, modern, sofort als „p“ lesbar.</p>
+    </div>
+    <div class="lockups">
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v3a-t">
+            <title id="v3a-t">primlio freistehendes p — Bildmarke</title>
+            <path d="M33 22 h14 v64 h-14 Z" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="44" r="18" fill="hsl(18 70% 55%)"/>
+            <circle cx="58" cy="44" r="7.5" fill="hsl(36 28% 95%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="50" height="50" viewBox="0 0 100 100" role="img" aria-labelledby="v3b-t">
+            <title id="v3b-t">primlio freistehendes p</title>
+            <path d="M33 22 h14 v64 h-14 Z" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="44" r="18" fill="hsl(18 70% 55%)"/>
+            <circle cx="58" cy="44" r="7.5" fill="hsl(36 28% 95%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(285 45% 25%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v3c-t">
+            <title id="v3c-t">primlio freistehendes p auf dunklem Grund</title>
+            <path d="M33 22 h14 v64 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="44" r="18" fill="hsl(18 70% 55%)"/>
+            <circle cx="58" cy="44" r="7.5" fill="hsl(285 48% 18%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="50" height="50" viewBox="0 0 100 100" role="img" aria-labelledby="v3d-t">
+            <title id="v3d-t">primlio freistehendes p, Wortmarke dunkel</title>
+            <path d="M33 22 h14 v64 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="44" r="18" fill="hsl(18 70% 55%)"/>
+            <circle cx="58" cy="44" r="7.5" fill="hsl(285 48% 18%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(36 33% 98%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+    </div>
+    <div class="fav-row">
+      <span>Favicon 32&nbsp;px:</span>
+      <div class="fav-chip">
+        <div class="fav-onlight">
+          <svg width="32" height="32" viewBox="0 0 100 100" role="img" aria-labelledby="v3f1-t">
+            <title id="v3f1-t">primlio freies p Favicon hell</title>
+            <path d="M33 22 h14 v64 h-14 Z" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="44" r="18" fill="hsl(18 70% 55%)"/>
+            <circle cx="58" cy="44" r="7.5" fill="hsl(36 33% 98%)"/>
+          </svg>
+        </div>
+        <div class="fav-chip">
+          <div class="fav-ondark">
+            <svg width="32" height="32" viewBox="0 0 100 100" role="img" aria-labelledby="v3f2-t">
+              <title id="v3f2-t">primlio freies p Favicon dunkel</title>
+              <path d="M33 22 h14 v64 h-14 Z" fill="hsl(36 33% 98%)"/>
+              <circle cx="58" cy="44" r="18" fill="hsl(18 70% 55%)"/>
+              <circle cx="58" cy="44" r="7.5" fill="hsl(285 48% 18%)"/>
+            </svg>
+          </div>
+        </div>
+        <small>frei stehend braucht etwas Rand — beide Grund-Töne geprüft</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANTE 4 — p mit Siegel-Häkchen im Bauch ============ -->
+  <section class="concept">
+    <div class="concept-head">
+      <span class="num">4</span>
+      <h2>„p“ mit Siegel-Häkchen</h2>
+      <p>Der Bauch wird zum Mini-Siegel: ein Terrakotta-Häkchen sitzt im Counter. Verbindet Monogramm mit der „kuratiert &amp; geprüft“-Idee — bleibt eindeutig p-Bauch.</p>
+    </div>
+    <div class="lockups">
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v4a-t">
+            <title id="v4a-t">primlio p mit Häkchen im Bauch — Bildmarke</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="9.5" fill="hsl(285 45% 25%)"/>
+            <path d="M53 46.5 l3.5 3.5 6 -7" fill="none" stroke="hsl(18 70% 55%)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="54" height="54" viewBox="0 0 100 100" role="img" aria-labelledby="v4b-t">
+            <title id="v4b-t">primlio p mit Häkchen</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="9.5" fill="hsl(285 45% 25%)"/>
+            <path d="M53 46.5 l3.5 3.5 6 -7" fill="none" stroke="hsl(18 70% 55%)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(285 45% 25%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v4c-t">
+            <title id="v4c-t">primlio p mit Häkchen auf dunklem Grund</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="9.5" fill="hsl(285 45% 25%)"/>
+            <path d="M53 46.5 l3.5 3.5 6 -7" fill="none" stroke="hsl(18 70% 55%)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="54" height="54" viewBox="0 0 100 100" role="img" aria-labelledby="v4d-t">
+            <title id="v4d-t">primlio p mit Häkchen, Wortmarke dunkel</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="9.5" fill="hsl(285 45% 25%)"/>
+            <path d="M53 46.5 l3.5 3.5 6 -7" fill="none" stroke="hsl(18 70% 55%)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(36 33% 98%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+    </div>
+    <div class="fav-row">
+      <span>Favicon 32&nbsp;px:</span>
+      <div class="fav-chip">
+        <div class="fav-onlight">
+          <svg width="32" height="32" viewBox="0 0 100 100" role="img" aria-labelledby="v4f-t">
+            <title id="v4f-t">primlio p Häkchen Favicon</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(36 33% 98%)"/>
+            <circle cx="58" cy="46" r="8" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <small>klein wird das Häkchen zum vollen Terrakotta-Punkt vereinfacht</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANTE 5 — Bauhaus, Stamm + perfekter Kreis ============ -->
+  <section class="concept">
+    <div class="concept-head">
+      <span class="num">5</span>
+      <h2>„p“ geometrisch · Bauhaus</h2>
+      <p>Reduziert auf Grundformen: ein Rechteck-Stamm und ein perfekter Kreis-Bauch, beide sichtbar als eigenständige Elemente. Stamm Aubergine, Bauch-Ring Terrakotta — streng konstruiert.</p>
+    </div>
+    <div class="lockups">
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v5a-t">
+            <title id="v5a-t">primlio Bauhaus-p — Bildmarke</title>
+            <rect x="30" y="20" width="13" height="66" rx="2" fill="hsl(285 45% 25%)"/>
+            <circle cx="59" cy="43" r="16" fill="none" stroke="hsl(18 70% 55%)" stroke-width="9"/>
+            <!-- Stamm verbindet sauber mit Kreis -->
+            <rect x="30" y="38" width="13" height="11" fill="hsl(285 45% 25%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="50" height="50" viewBox="0 0 100 100" role="img" aria-labelledby="v5b-t">
+            <title id="v5b-t">primlio Bauhaus-p</title>
+            <rect x="30" y="20" width="13" height="66" rx="2" fill="hsl(285 45% 25%)"/>
+            <circle cx="59" cy="43" r="16" fill="none" stroke="hsl(18 70% 55%)" stroke-width="9"/>
+            <rect x="30" y="38" width="13" height="11" fill="hsl(285 45% 25%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(285 45% 25%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v5c-t">
+            <title id="v5c-t">primlio Bauhaus-p auf dunklem Grund</title>
+            <rect x="30" y="20" width="13" height="66" rx="2" fill="hsl(36 33% 98%)"/>
+            <circle cx="59" cy="43" r="16" fill="none" stroke="hsl(18 70% 55%)" stroke-width="9"/>
+            <rect x="30" y="38" width="13" height="11" fill="hsl(36 33% 98%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="50" height="50" viewBox="0 0 100 100" role="img" aria-labelledby="v5d-t">
+            <title id="v5d-t">primlio Bauhaus-p, Wortmarke dunkel</title>
+            <rect x="30" y="20" width="13" height="66" rx="2" fill="hsl(36 33% 98%)"/>
+            <circle cx="59" cy="43" r="16" fill="none" stroke="hsl(18 70% 55%)" stroke-width="9"/>
+            <rect x="30" y="38" width="13" height="11" fill="hsl(36 33% 98%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(36 33% 98%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+    </div>
+    <div class="fav-row">
+      <span>Favicon 32&nbsp;px:</span>
+      <div class="fav-chip">
+        <div class="fav-onlight">
+          <svg width="32" height="32" viewBox="0 0 100 100" role="img" aria-labelledby="v5f-t">
+            <title id="v5f-t">primlio Bauhaus-p Favicon</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(285 45% 25%)"/>
+            <rect x="34" y="24" width="12" height="56" rx="2" fill="hsl(36 33% 98%)"/>
+            <circle cx="60" cy="44" r="14" fill="none" stroke="hsl(18 70% 55%)" stroke-width="9"/>
+            <rect x="34" y="38" width="12" height="11" fill="hsl(36 33% 98%)"/>
+          </svg>
+        </div>
+        <small>für 32&nbsp;px in Container gelegt — sonst zerfällt der offene Ring</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VARIANTE 6 — invertiert für dunkle Flächen ============ -->
+  <section class="concept">
+    <div class="concept-head">
+      <span class="num">6</span>
+      <h2>„p“ invertiert · für dunklen Grund</h2>
+      <p>Cream-Container, „p“ in Aubergine, Bauch-Counter in Terrakotta — die Negativ-Variante für dunkle Header, Footer &amp; Merch. Gleiche Geometrie, gespiegelte Farbwelt.</p>
+    </div>
+    <div class="lockups">
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v6a-t">
+            <title id="v6a-t">primlio invertiertes p — Bildmarke</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(36 33% 98%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage dark">
+          <svg width="54" height="54" viewBox="0 0 100 100" role="img" aria-labelledby="v6b-t">
+            <title id="v6b-t">primlio invertiertes p, Wortmarke</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(36 33% 98%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(36 33% 98%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Aubergine</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="84" height="84" viewBox="0 0 100 100" role="img" aria-labelledby="v6c-t">
+            <title id="v6c-t">primlio invertiertes p auf hellem Grund</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(36 33% 98%)" stroke="hsl(285 15% 80%)" stroke-width="1.5"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke (heller Container)</span></div>
+      </div>
+
+      <div class="card">
+        <div class="stage light">
+          <svg width="54" height="54" viewBox="0 0 100 100" role="img" aria-labelledby="v6d-t">
+            <title id="v6d-t">primlio invertiertes p, Wortmarke hell</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(36 33% 98%)" stroke="hsl(285 15% 80%)" stroke-width="1.5"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+          <span class="wm" style="font-size:34px;color:hsl(285 45% 25%)">primlio</span>
+        </div>
+        <div class="label"><span>auf Cream</span><span class="lk">Bildmarke + Wortmarke</span></div>
+      </div>
+
+    </div>
+    <div class="fav-row">
+      <span>Favicon 32&nbsp;px:</span>
+      <div class="fav-chip">
+        <div class="fav-ondark">
+          <svg width="32" height="32" viewBox="0 0 100 100" role="img" aria-labelledby="v6f-t">
+            <title id="v6f-t">primlio invertiertes Favicon</title>
+            <rect x="4" y="4" width="92" height="92" rx="24" fill="hsl(36 33% 98%)"/>
+            <path d="M33 24 h14 v62 h-14 Z" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="17" fill="hsl(285 45% 25%)"/>
+            <circle cx="58" cy="46" r="7" fill="hsl(18 70% 55%)"/>
+          </svg>
+        </div>
+        <small>heller Container hebt sich auch auf dunklem Tab klar ab</small>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    <b>Hinweis:</b> Alle Marken sind Inline-SVG (Vektor, beliebig skalierbar) mit gemeinsamer p-Geometrie (Stamm x33–47, Bauch-Kreis cx58/cy46). Wortmarke in Fraunces via Google Fonts. Reines Design-Mockup zur Auswahl; die gewählte Variante wird danach in eine saubere `.svg`-Datei + Favicon-Set überführt.
+  </div>
+
+</div>
+
+</body>
+</html>
