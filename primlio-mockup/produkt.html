@@ -42,7 +42,7 @@ header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bo
 .nav-links{display:flex;gap:22px;align-items:center;font-size:15px;font-weight:500}
 .nav-links a{color:var(--on-dark);padding:6px 0;border-bottom:2px solid transparent;transition:.15s}
 .nav-links a:hover,.nav-links a.active{color:#fff;border-color:var(--accent)}
-.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 16px;height:40px;width:248px;color:var(--on-dark-soft);font-size:14px}
+.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 16px;height:40px;width:300px;color:var(--on-dark-soft);font-size:14px}
 .nav-search svg{flex:0 0 auto}
 .nav-search span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);display:grid;place-items:center;cursor:pointer;color:var(--on-dark);font-size:14px;font-weight:600;flex:0 0 auto}
@@ -200,16 +200,18 @@ header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bo
 .fly-pill{display:none;align-items:center;gap:8px;background:var(--accent);color:var(--accent-fg);border:0;border-radius:999px;padding:12px 18px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 12px 28px -10px hsla(18,70%,40%,.6);transform:translateY(28px);opacity:0;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .25s ease,background .15s}
 .fly-pill:hover{background:var(--accent-deep)}
 .flycta.show.collapsed .fly-pill{display:inline-flex;transform:translateY(0);opacity:1}
-/* DESKTOP (>=860px): mid-left, vertically centered, ~double size, persistent (no auto-hide) */
+/* DESKTOP (>=860px): mid-left, vertically centered, PORTRAIT card, persistent (no auto-hide) */
 @media(min-width:860px){
-  .flycta{left:24px;top:50%;bottom:auto;transform:translateY(-50%);width:clamp(380px,30vw,460px)}
-  .fly-panel{gap:16px;padding:18px 18px 18px 20px;border-left-width:5px;transform:translate(-24px,0);box-shadow:0 22px 56px -18px rgba(40,20,40,.45)}
+  .flycta{left:24px;top:50%;bottom:auto;transform:translateY(-50%);width:clamp(260px,22vw,320px)}
+  /* vertical card: image on top, then name, rating, full-width button */
+  .fly-panel{flex-direction:column;align-items:stretch;gap:14px;padding:14px;border-left-width:0;border-top:5px solid var(--accent);transform:translate(-24px,0);box-shadow:0 22px 56px -18px rgba(40,20,40,.45)}
   .flycta.show .fly-panel{transform:translate(0,0)}
-  .fly-panel .thumb{width:84px;height:84px;border-radius:12px}
+  .fly-panel .thumb{width:100%;height:auto;aspect-ratio:4/3;border-radius:12px}
+  .fly-panel .ftxt{flex:0 0 auto}
   .fly-panel .ftxt .nm{font-size:16px;white-space:normal}
-  .fly-panel .ftxt .rt{font-size:13.5px;margin-top:5px}
-  .fly-panel a.fbtn{padding:14px 20px;font-size:15px}
-  .fly-close{top:-11px;right:-11px;width:30px;height:30px;font-size:17px}
+  .fly-panel .ftxt .rt{font-size:13.5px;margin-top:6px}
+  .fly-panel a.fbtn{justify-content:center;width:100%;padding:14px 20px;font-size:15px}
+  .fly-close{top:8px;right:8px;width:30px;height:30px;font-size:17px;background:rgba(255,255,255,.92);border:1px solid var(--border);z-index:1}
 }
 @media(max-width:860px){
   .flycta{left:50%;transform:translateX(-50%);width:min(86vw,420px);max-width:none}
@@ -238,7 +240,7 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
     </nav>
     <div class="nav-search">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <span>Produkt oder Ratgeber suchen…</span>
+      <span>Suchen …</span>
     </div>
     <button class="icon-btn" title="Sprache">DE</button>
     <button class="icon-btn" title="Design">◐</button>
