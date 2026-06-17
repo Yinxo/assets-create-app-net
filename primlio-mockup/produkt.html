@@ -200,6 +200,17 @@ header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bo
 .fly-pill{display:none;align-items:center;gap:8px;background:var(--accent);color:var(--accent-fg);border:0;border-radius:999px;padding:12px 18px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 12px 28px -10px hsla(18,70%,40%,.6);transform:translateY(28px);opacity:0;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .25s ease,background .15s}
 .fly-pill:hover{background:var(--accent-deep)}
 .flycta.show.collapsed .fly-pill{display:inline-flex;transform:translateY(0);opacity:1}
+/* DESKTOP (>=860px): mid-left, vertically centered, ~double size, persistent (no auto-hide) */
+@media(min-width:860px){
+  .flycta{left:24px;top:50%;bottom:auto;transform:translateY(-50%);width:clamp(380px,30vw,460px)}
+  .fly-panel{gap:16px;padding:18px 18px 18px 20px;border-left-width:5px;transform:translate(-24px,0);box-shadow:0 22px 56px -18px rgba(40,20,40,.45)}
+  .flycta.show .fly-panel{transform:translate(0,0)}
+  .fly-panel .thumb{width:84px;height:84px;border-radius:12px}
+  .fly-panel .ftxt .nm{font-size:16px;white-space:normal}
+  .fly-panel .ftxt .rt{font-size:13.5px;margin-top:5px}
+  .fly-panel a.fbtn{padding:14px 20px;font-size:15px}
+  .fly-close{top:-11px;right:-11px;width:30px;height:30px;font-size:17px}
+}
 @media(max-width:860px){
   .flycta{left:50%;transform:translateX(-50%);width:min(86vw,420px);max-width:none}
   .fly-panel{transform:translateY(28px);opacity:0}
@@ -463,52 +474,87 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
   var ctas=Array.prototype.slice.call(document.querySelectorAll('.js-amzn-cta'));
   if(!bar||!ctas.length)return;
 
-  /* Collapsed state (remembered for the session) */
+  /* Collapsed/closed state (remembered for the session) */
   var KEY='primlio-flycta-collapsed';
+  var CLOSED_KEY='primlio-flycta-closed';
   var collapse=document.getElementById('flyCollapse');
   var expand=document.getElementById('flyExpand');
+  var mqMobile=window.matchMedia('(max-width:859px)');
+
   function applyCollapsed(c){
     bar.classList.toggle('collapsed',c);
     try{sessionStorage.setItem(KEY,c?'1':'0');}catch(e){}
   }
   try{if(sessionStorage.getItem(KEY)==='1')bar.classList.add('collapsed');}catch(e){}
-  if(collapse)collapse.addEventListener('click',function(){applyCollapsed(true);});
-  if(expand)expand.addEventListener('click',function(){applyCollapsed(false);});
+
+  function isClosed(){try{return sessionStorage.getItem(CLOSED_KEY)==='1';}catch(e){return false;}}
 
   function sync(anyVisible){
+    /* On mobile the close (×) collapses; on desktop it permanently dismisses the panel. */
+    if(!mqMobile.matches){
+      bar.classList.toggle('show',!isClosed());
+      bar.setAttribute('aria-hidden',isClosed()?'true':'false');
+      return;
+    }
     bar.classList.toggle('show',!anyVisible);
     bar.setAttribute('aria-hidden',anyVisible?'true':'false');
   }
+
+  /* The × button: collapse to pill on mobile, dismiss permanently on desktop. */
+  if(collapse)collapse.addEventListener('click',function(){
+    if(mqMobile.matches){applyCollapsed(true);return;}
+    try{sessionStorage.setItem(CLOSED_KEY,'1');}catch(e){}
+    bar.classList.remove('show');
+    bar.setAttribute('aria-hidden','true');
+  });
+  if(expand)expand.addEventListener('click',function(){applyCollapsed(false);});
+
   /* A CTA only counts as "in view" when it is meaningfully inside the viewport,
      not merely touching the very top/bottom edge. The negative vertical rootMargin
      shrinks the detection band so there is a real CTA-free zone while scrolling past
-     the buy rail / interstitial CTA into FAQ/alternatives — on desktop AND mobile. */
+     the buy rail / interstitial CTA into FAQ/alternatives. Mobile-only. */
   var BAND='-25% 0px -25% 0px';
-  if('IntersectionObserver' in window){
-    var visible=new Set();
-    var io=new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if(en.isIntersecting)visible.add(en.target);
-        else visible.delete(en.target);
-      });
-      sync(visible.size>0);
-    },{root:null,rootMargin:BAND,threshold:0});
-    ctas.forEach(function(el){io.observe(el);});
-  }else{
-    /* Fallback: scroll check across all CTAs, same shrunken band */
-    var check=function(){
-      var vh=window.innerHeight||document.documentElement.clientHeight;
-      var pad=vh*0.25;
-      var anyVisible=ctas.some(function(el){
-        var r=el.getBoundingClientRect();
-        return r.bottom>pad && r.top<(vh-pad);
-      });
-      sync(anyVisible);
-    };
-    window.addEventListener('scroll',check,{passive:true});
-    window.addEventListener('resize',check,{passive:true});
-    check();
+  var io=null;
+  function startObserver(){
+    if(io)return;
+    if('IntersectionObserver' in window){
+      var visible=new Set();
+      io=new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting)visible.add(en.target);
+          else visible.delete(en.target);
+        });
+        if(mqMobile.matches)sync(visible.size>0);
+      },{root:null,rootMargin:BAND,threshold:0});
+      ctas.forEach(function(el){io.observe(el);});
+    }else{
+      io=function(){
+        var vh=window.innerHeight||document.documentElement.clientHeight;
+        var pad=vh*0.25;
+        var anyVisible=ctas.some(function(el){
+          var r=el.getBoundingClientRect();
+          return r.bottom>pad && r.top<(vh-pad);
+        });
+        if(mqMobile.matches)sync(anyVisible);
+      };
+      window.addEventListener('scroll',io,{passive:true});
+      window.addEventListener('resize',io,{passive:true});
+    }
   }
+
+  /* Apply the right behavior for the current breakpoint; re-evaluate on resize/breakpoint flip. */
+  function applyMode(){
+    if(mqMobile.matches){
+      startObserver();
+      if(typeof io==='function')io();
+    }else{
+      /* Desktop: visible from the start, persistent until the user closes it. */
+      sync(false);
+    }
+  }
+  if(mqMobile.addEventListener)mqMobile.addEventListener('change',applyMode);
+  else if(mqMobile.addListener)mqMobile.addListener(applyMode);
+  applyMode();
 })();
 </script>
 </body>
