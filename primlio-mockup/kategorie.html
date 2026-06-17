@@ -108,52 +108,52 @@ header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bo
 .deal-slot .ds s{color:rgba(250,248,245,.5)}
 @media(max-width:560px){.deals-bar .soon{position:static;margin-bottom:6px}}
 
-/* SORT / FILTER TOOLBAR — DESKTOP (single tidy row) */
+/* SORT / FILTER TOOLBAR — unified single-button + roll-down panel (all viewports) */
 .toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:38px 0 4px;padding-bottom:18px;border-bottom:1px solid var(--border)}
-.toolbar .count-txt{font-size:14px;color:var(--muted-fg);flex:0 0 auto}
+.toolbar .count-txt{font-size:14px;color:var(--muted-fg);flex:1 1 auto;min-width:0}
 .toolbar .count-txt b{color:var(--fg);font-weight:600}
-.tb-right{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.chips{display:flex;gap:8px;flex-wrap:nowrap}
-.chip{font-size:13.5px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--muted-fg);border-radius:999px;padding:7px 14px;cursor:pointer;transition:.15s;white-space:nowrap}
+
+/* filter button + popover share one positioning context */
+.filterbox{position:relative;flex:0 0 auto}
+.filter-btn{display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--primary);background:var(--primary);color:var(--primary-fg);font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:.15s;box-shadow:var(--shadow);white-space:nowrap}
+.filter-btn:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
+.filter-btn svg{flex:0 0 auto;transition:transform .2s}
+.filter-btn[aria-expanded="true"] .fb-caret{transform:rotate(180deg)}
+.filter-btn .fb-count{background:var(--accent);color:var(--accent-fg);font-size:12px;font-weight:700;border-radius:999px;min-width:20px;height:20px;padding:0 6px;display:grid;place-items:center}
+
+/* roll-down / popover panel */
+.fpanel{position:absolute;top:calc(100% + 10px);right:0;z-index:70;width:min(420px,calc(100vw - 32px));background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s,transform .2s,visibility .2s;display:flex;flex-direction:column;max-height:min(70vh,560px)}
+.fpanel.open{opacity:1;visibility:visible;transform:translateY(0)}
+.fpanel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border)}
+.fpanel-head h3{font-size:18px}
+.fpanel-head .fp-close{width:34px;height:34px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:20px;line-height:1;cursor:pointer;color:var(--muted-fg)}
+.fpanel-head .fp-close:hover{color:var(--fg);border-color:var(--muted-fg)}
+.fpanel-body{overflow-y:auto;padding:16px 18px 6px}
+.fp-group{margin-bottom:20px}
+.fp-group h4{font-family:"Inter",sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:11px}
+.fp-radio{display:flex;flex-direction:column;gap:2px}
+.fp-radio label{display:flex;align-items:center;gap:11px;padding:10px 4px;font-size:15px;border-bottom:1px solid var(--border);cursor:pointer}
+.fp-radio label:last-child{border-bottom:0}
+.fp-radio input{accent-color:var(--primary);width:18px;height:18px}
+.fp-options{display:flex;flex-wrap:wrap;gap:9px}
+.chip{font-size:13.5px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--muted-fg);border-radius:999px;padding:9px 15px;cursor:pointer;transition:.15s;white-space:nowrap}
 .chip:hover{border-color:var(--primary);color:var(--primary)}
 .chip.active{background:var(--primary);color:var(--primary-fg);border-color:var(--primary)}
-.sortsel{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted-fg);flex:0 0 auto}
-.sortsel select{font-family:inherit;font-size:13.5px;border:1px solid var(--border);background:var(--card);border-radius:999px;padding:8px 14px;color:var(--fg);cursor:pointer}
-.tb-divider{width:1px;height:24px;background:var(--border);flex:0 0 auto}
-/* hide desktop toolbar on mobile */
-@media(max-width:640px){.toolbar{display:none}}
+.fpanel-foot{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--border)}
+.fpanel-foot .btn{flex:1;height:44px;border-radius:999px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border:1px solid var(--border)}
+.fpanel-foot .btn.ghost{background:var(--bg);color:var(--muted-fg)}
+.fpanel-foot .btn.ghost:hover{color:var(--fg)}
+.fpanel-foot .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.fpanel-foot .btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
 
-/* MOBILE FILTER BUTTON (sticky single tap) */
-.mfilter-wrap{display:none}
+/* on small screens: button full-width, panel anchors left/right edges */
 @media(max-width:640px){
-  .mfilter-wrap{display:block;position:sticky;top:70px;z-index:40;margin:24px 0 0;padding:10px 0;background:linear-gradient(var(--bg) 70%,rgba(250,248,245,0))}
-  .mfilter-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;height:50px;border-radius:999px;border:0;background:var(--primary);color:var(--primary-fg);font-family:inherit;font-size:15.5px;font-weight:600;cursor:pointer;box-shadow:var(--shadow-lg)}
-  .mfilter-btn .mf-count{background:var(--accent);color:var(--accent-fg);font-size:12px;font-weight:700;border-radius:999px;min-width:20px;height:20px;padding:0 6px;display:grid;place-items:center}
-  .mfilter-btn svg{flex:0 0 auto}
+  .toolbar{flex-wrap:wrap;gap:12px}
+  .toolbar .count-txt{flex:1 1 100%;order:2}
+  .filterbox{flex:1 1 100%;order:1}
+  .filter-btn{width:100%;justify-content:center;height:50px;font-size:15.5px}
+  .fpanel{left:0;right:0;width:auto}
 }
-
-/* MOBILE FILTER SHEET (bottom sheet) */
-.sheet-backdrop{display:none;position:fixed;inset:0;background:rgba(20,10,20,.5);z-index:95}
-.sheet-backdrop.open{display:block}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:100;background:var(--bg);border-radius:20px 20px 0 0;box-shadow:0 -16px 50px -10px rgba(0,0,0,.4);transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);max-height:86vh;display:flex;flex-direction:column;padding:8px 20px env(safe-area-inset-bottom,20px)}
-.sheet.open{transform:translateY(0)}
-.sheet-handle{width:42px;height:5px;border-radius:999px;background:var(--border);margin:8px auto 6px}
-.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:6px 0 14px;border-bottom:1px solid var(--border)}
-.sheet-head h3{font-size:20px}
-.sheet-head .sh-close{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:var(--card);font-size:22px;line-height:1;cursor:pointer;color:var(--muted-fg)}
-.sheet-body{overflow-y:auto;padding:18px 0 10px}
-.sheet-group{margin-bottom:22px}
-.sheet-group h4{font-family:"Inter",sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:12px}
-.sheet-options{display:flex;flex-wrap:wrap;gap:9px}
-.sheet-options .chip{font-size:14px;padding:9px 16px}
-.sheet-radio{display:flex;flex-direction:column;gap:2px}
-.sheet-radio label{display:flex;align-items:center;gap:11px;padding:11px 4px;font-size:15px;border-bottom:1px solid var(--border);cursor:pointer}
-.sheet-radio label:last-child{border-bottom:0}
-.sheet-radio input{accent-color:var(--primary);width:18px;height:18px}
-.sheet-foot{display:flex;gap:12px;padding:14px 0;border-top:1px solid var(--border)}
-.sheet-foot .btn{flex:1;height:48px;border-radius:999px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;border:1px solid var(--border)}
-.sheet-foot .btn.ghost{background:var(--card);color:var(--muted-fg)}
-.sheet-foot .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
 
 /* SECTION */
 section.block{padding:46px 0}
@@ -326,75 +326,53 @@ footer{background:var(--primary-deep);color:var(--on-dark);margin-top:0;padding:
     </div>
   </div>
 
-  <!-- SORT / FILTER TOOLBAR — DESKTOP -->
+  <!-- SORT / FILTER TOOLBAR — unified single button + roll-down panel -->
   <div class="toolbar">
-    <div class="count-txt"><b>10</b> kuratierte Produkte</div>
-    <div class="tb-right">
-      <div class="sortsel">
-        <label for="sortby">Sortieren:</label>
-        <select id="sortby" aria-label="Sortieren nach">
-          <option>Beste Bewertung</option>
-          <option>Meiste Bewertungen</option>
-          <option>Preis-Leistung</option>
-          <option>Neu hinzugekommen</option>
-        </select>
-      </div>
-      <div class="tb-divider" aria-hidden="true"></div>
-      <div class="chips" role="group" aria-label="Filter">
-        <button class="chip">Solarbetrieben</button>
-        <button class="chip">Aus Metall</button>
-        <button class="chip">Wetterfest</button>
-        <button class="chip">Beleuchtung</button>
-        <button class="chip">Unter 50 €</button>
+    <div class="count-txt"><b>10</b> kuratierte Produkte · sortiert nach Beste Bewertung</div>
+    <div class="filterbox">
+      <button class="filter-btn" id="filterBtn" aria-haspopup="true" aria-expanded="false" aria-controls="filterPanel">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        Filter &amp; Sortieren
+        <span class="fb-count" id="fbCount" hidden>0</span>
+        <svg class="fb-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+
+      <!-- ROLL-DOWN PANEL -->
+      <div class="fpanel" id="filterPanel" role="dialog" aria-label="Filter und Sortierung" aria-hidden="true">
+        <div class="fpanel-head">
+          <h3>Filter &amp; Sortieren</h3>
+          <button class="fp-close" id="fpClose" aria-label="Schließen">×</button>
+        </div>
+        <div class="fpanel-body">
+          <div class="fp-group">
+            <h4>Sortieren nach</h4>
+            <div class="fp-radio">
+              <label><input type="radio" name="fsort" checked> Beste Bewertung</label>
+              <label><input type="radio" name="fsort"> Meiste Bewertungen</label>
+              <label><input type="radio" name="fsort"> Preis-Leistung</label>
+              <label><input type="radio" name="fsort"> Neu hinzugekommen</label>
+            </div>
+          </div>
+          <div class="fp-group">
+            <h4>Filter</h4>
+            <div class="fp-options" role="group" aria-label="Filter">
+              <button class="chip">Solarbetrieben</button>
+              <button class="chip">Aus Metall</button>
+              <button class="chip">Wetterfest</button>
+              <button class="chip">Statuen &amp; Figuren</button>
+              <button class="chip">Beleuchtung</button>
+              <button class="chip">Unter 50 €</button>
+            </div>
+          </div>
+        </div>
+        <div class="fpanel-foot">
+          <button class="btn ghost" id="fpReset">Zurücksetzen</button>
+          <button class="btn primary" id="fpApply">10 Produkte anzeigen</button>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- MOBILE FILTER BUTTON -->
-  <div class="mfilter-wrap">
-    <button class="mfilter-btn" id="mfilterBtn" aria-haspopup="dialog" aria-controls="filterSheet">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
-      Filter &amp; Sortieren
-      <span class="mf-count" id="mfCount" hidden>0</span>
-    </button>
   </div>
 </div>
-
-<!-- MOBILE FILTER SHEET -->
-<div class="sheet-backdrop" id="sheetBackdrop"></div>
-<section class="sheet" id="filterSheet" role="dialog" aria-modal="true" aria-label="Filter und Sortierung">
-  <div class="sheet-handle" aria-hidden="true"></div>
-  <div class="sheet-head">
-    <h3>Filter &amp; Sortieren</h3>
-    <button class="sh-close" id="sheetClose" aria-label="Schließen">×</button>
-  </div>
-  <div class="sheet-body">
-    <div class="sheet-group">
-      <h4>Sortieren nach</h4>
-      <div class="sheet-radio">
-        <label><input type="radio" name="msort" checked> Beste Bewertung</label>
-        <label><input type="radio" name="msort"> Meiste Bewertungen</label>
-        <label><input type="radio" name="msort"> Preis-Leistung</label>
-        <label><input type="radio" name="msort"> Neu hinzugekommen</label>
-      </div>
-    </div>
-    <div class="sheet-group">
-      <h4>Filter</h4>
-      <div class="sheet-options">
-        <button class="chip">Solarbetrieben</button>
-        <button class="chip">Aus Metall</button>
-        <button class="chip">Wetterfest</button>
-        <button class="chip">Statuen &amp; Figuren</button>
-        <button class="chip">Beleuchtung</button>
-        <button class="chip">Unter 50 €</button>
-      </div>
-    </div>
-  </div>
-  <div class="sheet-foot">
-    <button class="btn ghost" id="sheetReset">Zurücksetzen</button>
-    <button class="btn primary" id="sheetApply">10 Produkte anzeigen</button>
-  </div>
-</section>
 
 <!-- TOP 10 -->
 <section class="block">
@@ -599,41 +577,37 @@ footer{background:var(--primary-deep);color:var(--on-dark);margin-top:0;padding:
   document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
 })();
 
-// Mobile filter bottom-sheet
+// Unified filter & sort roll-down panel (all viewports)
 (function(){
-  var sheet=document.getElementById('filterSheet');
-  var backdrop=document.getElementById('sheetBackdrop');
-  var openBtn=document.getElementById('mfilterBtn');
-  var closeBtn=document.getElementById('sheetClose');
-  var applyBtn=document.getElementById('sheetApply');
-  var resetBtn=document.getElementById('sheetReset');
-  function open(){sheet.classList.add('open');backdrop.classList.add('open');document.body.style.overflow='hidden';}
-  function shut(){sheet.classList.remove('open');backdrop.classList.remove('open');document.body.style.overflow='';}
-  openBtn.addEventListener('click',open);
-  closeBtn.addEventListener('click',shut);
-  backdrop.addEventListener('click',shut);
-  applyBtn.addEventListener('click',shut);
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sheet.classList.contains('open'))shut();});
-  resetBtn.addEventListener('click',function(){
-    sheet.querySelectorAll('.chip.active').forEach(function(c){c.classList.remove('active');});
-    var first=sheet.querySelector('.sheet-radio input');if(first)first.checked=true;
-    updateCount();
-  });
-  // active count badge on the mobile filter button
+  var box=document.querySelector('.filterbox');
+  var panel=document.getElementById('filterPanel');
+  var btn=document.getElementById('filterBtn');
+  var closeBtn=document.getElementById('fpClose');
+  var applyBtn=document.getElementById('fpApply');
+  var resetBtn=document.getElementById('fpReset');
+  var badge=document.getElementById('fbCount');
+  function open(){panel.classList.add('open');btn.setAttribute('aria-expanded','true');panel.setAttribute('aria-hidden','false');}
+  function shut(){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');panel.setAttribute('aria-hidden','true');}
+  function toggle(){panel.classList.contains('open')?shut():open();}
   function updateCount(){
-    var n=sheet.querySelectorAll('.chip.active').length;
-    var badge=document.getElementById('mfCount');
+    var n=panel.querySelectorAll('.chip.active').length;
     if(n>0){badge.textContent=n;badge.hidden=false;}else{badge.hidden=true;}
   }
-  sheet.querySelectorAll('.chip').forEach(function(c){
+  btn.addEventListener('click',function(e){e.stopPropagation();toggle();});
+  closeBtn.addEventListener('click',shut);
+  applyBtn.addEventListener('click',shut);
+  resetBtn.addEventListener('click',function(){
+    panel.querySelectorAll('.chip.active').forEach(function(c){c.classList.remove('active');});
+    var first=panel.querySelector('.fp-radio input');if(first)first.checked=true;
+    updateCount();
+  });
+  panel.querySelectorAll('.chip').forEach(function(c){
     c.addEventListener('click',function(){this.classList.toggle('active');updateCount();});
   });
+  // close on outside click + Esc
+  document.addEventListener('click',function(e){if(panel.classList.contains('open')&&!box.contains(e.target))shut();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&panel.classList.contains('open'))shut();});
 })();
-
-// Desktop filter chips (cosmetic toggle)
-document.querySelectorAll('.toolbar .chips .chip').forEach(function(c){
-  c.addEventListener('click',function(){this.classList.toggle('active');});
-});
 </script>
 </body>
 </html>

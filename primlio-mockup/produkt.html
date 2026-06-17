@@ -125,16 +125,26 @@ header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bo
 .pro li::before{content:"＋";color:hsl(160 55% 38%);font-weight:700}
 .con li::before{content:"－";color:var(--accent);font-weight:700}
 
-/* IN-FLOW CTA STRIP */
-.ctastrip{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;background:linear-gradient(160deg,var(--primary) 0%,var(--primary-deep) 100%);color:var(--primary-fg);border-radius:calc(var(--radius)*1.3);padding:30px 34px;margin:8px 0;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+/* IN-FLOW CTA STRIP — mobile = punchy block (default), desktop = compact horizontal bar */
+.ctastrip{display:flex;flex-direction:column;align-items:stretch;gap:18px;background:linear-gradient(160deg,var(--primary) 0%,var(--primary-deep) 100%);color:var(--primary-fg);border-radius:calc(var(--radius)*1.3);padding:24px 20px;margin:8px 0;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
 .ctastrip::before{content:"";position:absolute;top:-90px;right:-70px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,hsla(18,70%,55%,.3),transparent 70%)}
-.ctastrip .ct-txt{position:relative;z-index:1;max-width:560px}
-.ctastrip .ct-txt h3{color:#fff;font-size:clamp(20px,2.6vw,26px);margin-bottom:6px}
+.ctastrip .ct-txt{position:relative;z-index:1}
+.ctastrip .ct-txt h3{color:#fff;font-size:clamp(20px,2.6vw,24px);margin-bottom:6px}
 .ctastrip .ct-txt p{color:var(--on-dark);font-size:14px}
-.ctastrip .ct-side{position:relative;z-index:1;display:flex;flex-direction:column;align-items:stretch;gap:8px;min-width:230px}
+.ctastrip .ct-side{position:relative;z-index:1;display:flex;flex-direction:column;align-items:stretch;gap:8px;width:100%}
 .ctastrip .cta{box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
 .ctastrip .disc{color:var(--on-dark-soft);margin-top:2px}
-@media(max-width:560px){.ctastrip{padding:24px 20px}.ctastrip .ct-side{width:100%}}
+/* Desktop: compact, centered, single horizontal line — quieter surface, no empty space */
+@media(min-width:768px){
+  .ctastrip{flex-direction:row;align-items:center;justify-content:space-between;gap:24px;max-width:760px;margin:8px auto;padding:16px 24px;background:linear-gradient(150deg,var(--primary-mid) 0%,var(--primary-deep) 100%)}
+  .ctastrip::before{width:170px;height:170px;top:-60px;right:-50px;background:radial-gradient(circle,hsla(18,70%,55%,.22),transparent 70%)}
+  .ctastrip .ct-txt{flex:1;min-width:0}
+  .ctastrip .ct-txt h3{font-size:18px;margin-bottom:2px}
+  .ctastrip .ct-txt p{font-size:13px}
+  .ctastrip .ct-side{flex:0 0 auto;width:auto;align-items:flex-end;gap:4px}
+  .ctastrip .cta{padding:12px 22px;font-size:15px;white-space:nowrap}
+  .ctastrip .disc{font-size:11.5px}
+}
 
 /* FAQ */
 .faq details{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);margin-bottom:10px;overflow:hidden}
@@ -263,7 +273,7 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
     <aside class="rail">
       <div class="rating"><span class="stars">★★★★★</span><b>4,8</b><span class="rev">(578 Bewertungen)</span></div>
       <div class="fresh"><span class="dot"></span>Von Hand geprüft · Stand Juni 2026</div>
-      <a class="cta" id="primaryCta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon ansehen
+      <a class="cta js-amzn-cta" id="primaryCta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon ansehen
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
       </a>
       <p class="disc">Affiliate-Link · Als Amazon-Partner verdienen wir an qualifizierten Verkäufen — für dich ohne Aufpreis.</p>
@@ -303,22 +313,6 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
     </div>
   </div>
 
-  <!-- IN-FLOW CTA STRIP after Pro/Kontra -->
-  <div class="section">
-    <div class="ctastrip">
-      <div class="ct-txt">
-        <h3>Überzeugt? Sieh's dir direkt bei Amazon an.</h3>
-        <p>Aktueller Preis, Verfügbarkeit und alle Kundenbewertungen findest du auf Amazon.</p>
-      </div>
-      <div class="ct-side">
-        <a class="cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon ansehen
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
-        </a>
-        <p class="disc">Als Amazon-Partner verdienen wir an qualifizierten Verkäufen — ohne Aufpreis für dich.</p>
-      </div>
-    </div>
-  </div>
-
   <!-- FAQ -->
   <div class="section faq">
     <h2>Häufige Fragen</h2>
@@ -336,7 +330,7 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
         <p>Dann prüfe Preis und Verfügbarkeit der Rostikal Edelrost Säule jetzt direkt bei Amazon.</p>
       </div>
       <div class="ct-side">
-        <a class="cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon ansehen
+        <a class="cta js-amzn-cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon ansehen
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
         </a>
         <p class="disc">Als Amazon-Partner verdienen wir an qualifizierten Verkäufen — ohne Aufpreis für dich.</p>
@@ -410,27 +404,37 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
   document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
 })();
 
-/* Sticky mobile CTA bar — show when the primary CTA scrolls out of view */
+/* Sticky mobile CTA bar — hide whenever ANY on-page Amazon CTA is in view */
 (function(){
-  var primary=document.getElementById('primaryCta');
   var bar=document.getElementById('mcta');
-  if(!primary||!bar)return;
+  var ctas=Array.prototype.slice.call(document.querySelectorAll('.js-amzn-cta'));
+  if(!bar||!ctas.length)return;
+  function sync(anyVisible){
+    bar.classList.toggle('show',!anyVisible);
+    bar.setAttribute('aria-hidden',anyVisible?'true':'false');
+  }
   if('IntersectionObserver' in window){
+    var visible=new Set();
     var io=new IntersectionObserver(function(entries){
       entries.forEach(function(en){
-        if(en.isIntersecting){bar.classList.remove('show');bar.setAttribute('aria-hidden','true');}
-        else{bar.classList.add('show');bar.setAttribute('aria-hidden','false');}
+        if(en.isIntersecting)visible.add(en.target);
+        else visible.delete(en.target);
       });
+      sync(visible.size>0);
     },{threshold:0});
-    io.observe(primary);
+    ctas.forEach(function(el){io.observe(el);});
   }else{
-    /* Fallback: simple scroll check */
-    window.addEventListener('scroll',function(){
-      var r=primary.getBoundingClientRect();
-      var out=r.bottom<0;
-      bar.classList.toggle('show',out);
-      bar.setAttribute('aria-hidden',out?'false':'true');
-    },{passive:true});
+    /* Fallback: scroll check across all CTAs */
+    var check=function(){
+      var anyVisible=ctas.some(function(el){
+        var r=el.getBoundingClientRect();
+        return r.bottom>0 && r.top<(window.innerHeight||document.documentElement.clientHeight);
+      });
+      sync(anyVisible);
+    };
+    window.addEventListener('scroll',check,{passive:true});
+    window.addEventListener('resize',check,{passive:true});
+    check();
   }
 })();
 </script>
