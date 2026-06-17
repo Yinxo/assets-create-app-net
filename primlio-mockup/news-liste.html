@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>News &amp; Trends — primlio (Designentwurf · Konzept)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:hsl(36 33% 98%); --fg:hsl(280 15% 12%); --card:#fff;
+  --primary:hsl(285 45% 25%); --primary-fg:hsl(36 33% 98%);
+  --primary-deep:hsl(285 48% 18%); --primary-mid:hsl(285 42% 30%);
+  --accent:hsl(18 70% 55%); --accent-fg:hsl(36 33% 98%);
+  --accent-deep:hsl(18 72% 47%);
+  --muted:hsl(36 15% 94%); --muted-fg:hsl(280 8% 40%);
+  --border:hsl(36 15% 88%); --radius:0.75rem;
+  --gold:hsl(43 74% 50%);
+  --shadow:0 1px 2px rgba(40,20,40,.04),0 8px 24px -12px rgba(40,20,40,.12);
+  --shadow-lg:0 12px 40px -16px rgba(40,20,40,.22);
+  --on-dark:rgba(250,248,245,.9); --on-dark-soft:rgba(250,248,245,.72);
+  /* Type badge colours */
+  --t-trend-bg:hsl(160 38% 90%); --t-trend-fg:hsl(160 50% 26%);
+  --t-prob-bg:hsl(18 70% 92%); --t-prob-fg:hsl(18 72% 40%);
+  --t-new-bg:hsl(285 40% 92%); --t-new-fg:hsl(285 48% 30%);
+  --t-upd-bg:hsl(210 45% 91%); --t-upd-fg:hsl(210 55% 34%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* DESIGN-FLAG */
+.mockup-flag{background:var(--accent);color:var(--accent-fg);text-align:center;font-size:13px;padding:8px 16px;letter-spacing:.01em}
+.mockup-flag b{font-weight:700}
+.mockup-flag a{text-decoration:underline;font-weight:600}
+
+/* HEADER — bold aubergine bar */
+header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bottom:3px solid var(--accent)}
+.nav{display:flex;align-items:center;gap:28px;height:70px}
+.brand{font-family:"Fraunces",serif;font-weight:700;font-size:27px;color:var(--primary-fg);letter-spacing:-.03em}
+.brand span{color:var(--accent)}
+.nav-links{display:flex;gap:22px;align-items:center;font-size:15px;font-weight:500}
+.nav-links a{color:var(--on-dark);padding:6px 0;border-bottom:2px solid transparent;transition:.15s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-color:var(--accent)}
+.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 8px 0 16px;height:40px;width:300px;color:var(--on-dark-soft);font-size:14px}
+.nav-search svg{flex:0 0 auto}
+.nav-search input{flex:1;border:0;background:transparent;font-family:inherit;font-size:14px;outline:none;color:#fff;min-width:0}
+.nav-search input::placeholder{color:var(--on-dark-soft)}
+.nav-search .go-btn{flex:0 0 auto;border:0;background:var(--accent);color:var(--accent-fg);width:30px;height:30px;border-radius:999px;display:grid;place-items:center;cursor:pointer}
+.icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);display:grid;place-items:center;cursor:pointer;color:var(--on-dark);font-size:14px;font-weight:600;flex:0 0 auto}
+.icon-btn:hover{background:rgba(255,255,255,.18)}
+.hamburger{display:none;width:42px;height:40px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);border-radius:10px;cursor:pointer;color:#fff;margin-left:auto}
+.hamburger svg{margin:auto}
+
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0 0 0 auto;width:min(320px,86vw);background:var(--primary-deep);z-index:90;transform:translateX(100%);transition:transform .25s ease;flex-direction:column;padding:20px;box-shadow:-12px 0 40px -10px rgba(0,0,0,.5)}
+.mobile-menu.open{display:flex;transform:translateX(0)}
+.mobile-backdrop{display:none;position:fixed;inset:0;background:rgba(20,10,20,.5);z-index:85}
+.mobile-backdrop.open{display:block}
+.mm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.mm-top .brand{font-size:24px}
+.mm-close{background:none;border:0;color:#fff;font-size:30px;line-height:1;cursor:pointer;padding:0 6px}
+.mm-search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 16px;height:44px;margin-bottom:18px}
+.mm-search input{flex:1;border:0;background:transparent;color:#fff;font-size:15px;font-family:inherit;outline:none}
+.mm-search input::placeholder{color:var(--on-dark-soft)}
+.mobile-menu nav a{color:var(--on-dark);font-size:18px;font-weight:500;padding:14px 4px;border-bottom:1px solid rgba(255,255,255,.12)}
+.mobile-menu nav a:hover{color:#fff}
+.mm-foot{margin-top:auto;display:flex;gap:10px}
+.mm-foot button{flex:1;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-weight:600;font-family:inherit;cursor:pointer}
+
+@media(max-width:860px){
+  .nav-links{display:none}
+  .nav-search{display:none}
+  .icon-btn{display:none}
+  .hamburger{display:grid}
+}
+
+/* HERO — image side + bold aubergine wash */
+.nhero{position:relative;overflow:hidden;background:var(--primary-deep);color:#fff}
+.nhero .bg{position:absolute;inset:0;background-image:url('https://assets.create-app.net/primlio-mockup/img/news-hero.png');background-size:cover;background-position:center;transform:scale(1.04)}
+.nhero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,hsla(285,55%,16%,.94) 0%,hsla(285,50%,20%,.82) 46%,hsla(285,55%,15%,.55) 100%)}
+.nhero::before{content:"";position:absolute;bottom:-140px;left:-90px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,hsla(18,70%,55%,.32),transparent 70%);z-index:1}
+.nhero .wrap{position:relative;z-index:2;padding:60px 24px 58px;max-width:1180px}
+.nhero-inner{max-width:680px}
+.nhero .badges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.nhero .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--accent);padding:6px 16px;border-radius:999px}
+.nhero .concept-pill{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:hsl(43 90% 72%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.24);padding:6px 14px;border-radius:999px}
+.nhero .concept-pill .pulse{width:7px;height:7px;border-radius:50%;background:hsl(43 90% 65%);animation:pulse 1.8s infinite}
+.nhero h1{font-size:clamp(36px,5.6vw,60px);margin-bottom:16px;color:#fff;text-shadow:0 2px 28px rgba(0,0,0,.4)}
+.nhero h1 em{font-style:italic;color:hsl(36 90% 78%)}
+.nhero p.intro{font-size:clamp(16px,1.9vw,20px);color:var(--on-dark);max-width:600px;text-shadow:0 1px 12px rgba(0,0,0,.3)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* TOOLBAR + FILTER POPOVER (shared pattern w/ ratgeber-liste.html) */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:34px 0 4px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.toolbar .count-txt{font-size:14px;color:var(--muted-fg);flex:1 1 auto;min-width:0}
+.toolbar .count-txt b{color:var(--fg);font-weight:600}
+.filterbox{position:relative;flex:0 0 auto}
+.filter-btn{display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--primary);background:var(--primary);color:var(--primary-fg);font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:.15s;box-shadow:var(--shadow);white-space:nowrap}
+.filter-btn:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
+.filter-btn svg{flex:0 0 auto;transition:transform .2s}
+.filter-btn[aria-expanded="true"] .fb-caret{transform:rotate(180deg)}
+.filter-btn .fb-count{background:var(--accent);color:var(--accent-fg);font-size:12px;font-weight:700;border-radius:999px;min-width:20px;height:20px;padding:0 6px;display:grid;place-items:center}
+.fpanel{position:absolute;top:calc(100% + 10px);right:0;z-index:70;width:min(440px,calc(100vw - 32px));background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s,transform .2s,visibility .2s;display:flex;flex-direction:column;max-height:min(72vh,580px)}
+.fpanel.open{opacity:1;visibility:visible;transform:translateY(0)}
+.fpanel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border)}
+.fpanel-head h3{font-size:18px}
+.fpanel-head .fp-close{width:34px;height:34px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:20px;line-height:1;cursor:pointer;color:var(--muted-fg)}
+.fpanel-head .fp-close:hover{color:var(--fg);border-color:var(--muted-fg)}
+.fpanel-body{overflow-y:auto;padding:16px 18px 6px}
+.fp-group{margin-bottom:20px}
+.fp-group h4{font-family:"Inter",sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:11px}
+.fp-options{display:flex;flex-wrap:wrap;gap:9px}
+.chip{font-size:13.5px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--muted-fg);border-radius:999px;padding:9px 15px;cursor:pointer;transition:.15s;white-space:nowrap}
+.chip:hover{border-color:var(--primary);color:var(--primary)}
+.chip.active{background:var(--primary);color:var(--primary-fg);border-color:var(--primary)}
+.fpanel-foot{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--border)}
+.fpanel-foot .btn{flex:1;height:44px;border-radius:999px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border:1px solid var(--border)}
+.fpanel-foot .btn.ghost{background:var(--bg);color:var(--muted-fg)}
+.fpanel-foot .btn.ghost:hover{color:var(--fg)}
+.fpanel-foot .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.fpanel-foot .btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+@media(max-width:640px){
+  .toolbar{flex-wrap:wrap;gap:12px}
+  .toolbar .count-txt{flex:1 1 100%;order:2}
+  .filterbox{flex:1 1 100%;order:1}
+  .filter-btn{width:100%;justify-content:center;height:50px;font-size:15.5px}
+  .fpanel{left:0;right:0;width:auto}
+}
+
+/* SECTION rhythm */
+section.block{padding:46px 0}
+section.cream{background:var(--bg)}
+section.tint{background:var(--muted)}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px;gap:16px;flex-wrap:wrap}
+.sec-head .kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:block}
+.sec-head h2{font-size:clamp(25px,3.2vw,34px)}
+.sec-head p{color:var(--muted-fg);font-size:15px;margin-top:6px;max-width:62ch}
+
+/* NEWS GRID */
+.grid{display:grid;gap:24px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid-3{grid-template-columns:1fr}}
+.ncard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
+.ncard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.ncard .imgwrap{aspect-ratio:16/10;background:var(--muted);overflow:hidden;position:relative;display:block}
+.ncard .imgwrap img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.ncard:hover .imgwrap img{transform:scale(1.04)}
+.cat-badge{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;box-shadow:0 4px 12px -4px rgba(40,20,40,.4)}
+.nbody{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
+/* type badge */
+.tbadge{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 11px;border-radius:999px}
+.tbadge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.7}
+.tbadge.trend{background:var(--t-trend-bg);color:var(--t-trend-fg)}
+.tbadge.problem{background:var(--t-prob-bg);color:var(--t-prob-fg)}
+.tbadge.neuheit{background:var(--t-new-bg);color:var(--t-new-fg)}
+.tbadge.update{background:var(--t-upd-bg);color:var(--t-upd-fg)}
+.nbody h3{font-size:18.5px;line-height:1.25}
+.nbody p{font-size:14px;color:var(--muted-fg);line-height:1.5}
+.nmeta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border)}
+.nmeta .date{font-size:12.5px;color:var(--muted-fg);display:flex;align-items:center;gap:5px}
+.nmeta .date .dot{width:7px;height:7px;border-radius:50%;background:hsl(160 55% 42%)}
+.nmeta .go{font-size:14px;font-weight:700;color:var(--primary);transition:.15s}
+.ncard:hover .nmeta .go{color:var(--accent)}
+
+/* empty state (no results) */
+.no-results{display:none;text-align:center;padding:50px 20px;color:var(--muted-fg)}
+.no-results.show{display:block}
+.no-results b{font-family:"Fraunces",serif;font-size:22px;color:var(--primary);display:block;margin-bottom:6px}
+
+/* HOW NEWS ARE MADE band */
+.how-band{background:linear-gradient(160deg,var(--primary) 0%,var(--primary-deep) 100%);border-radius:calc(var(--radius)*1.5);padding:42px 40px;color:var(--primary-fg);position:relative;overflow:hidden}
+.how-band::before{content:"";position:absolute;top:-100px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,hsla(18,70%,55%,.25),transparent 70%)}
+.how-head{position:relative;z-index:1;margin-bottom:26px;max-width:680px}
+.preview-pill{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:hsl(43 90% 70%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:5px 12px;border-radius:999px;margin-bottom:14px}
+.preview-pill .pulse{width:7px;height:7px;border-radius:50%;background:hsl(43 90% 65%);animation:pulse 1.8s infinite}
+.how-head h2{color:#fff;font-size:clamp(26px,3vw,36px);margin-bottom:8px}
+.how-head p{color:rgba(250,248,245,.82);font-size:15px}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1}
+@media(max-width:760px){.how-steps{grid-template-columns:1fr}}
+.how-step{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:22px}
+.how-step .num{font-family:"Fraunces",serif;font-size:14px;font-weight:700;color:hsl(43 90% 72%);display:block;margin-bottom:8px;letter-spacing:.04em}
+.how-step b{display:block;font-family:"Fraunces",serif;font-size:19px;margin-bottom:6px;color:#fff}
+.how-step span{font-size:14px;color:var(--on-dark-soft)}
+
+/* FOOTER */
+footer{background:var(--primary-deep);color:var(--on-dark);margin-top:0;padding:52px 0 30px;font-size:14px}
+.fgrid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:30px}
+.fgrid .brand{font-size:23px;margin-bottom:8px;display:block;color:#fff}
+.fgrid .brand span{color:var(--accent)}
+.fgrid>div>p{color:var(--on-dark-soft)}
+.fcol h4{font-family:"Inter",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#fff;margin-bottom:12px;font-weight:600}
+.fcol a{display:block;margin-bottom:7px;color:var(--on-dark-soft)}
+.fcol a:hover{color:#fff}
+.disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;font-size:13px;color:var(--on-dark-soft)}
+</style>
+</head>
+<body>
+<div class="mockup-flag">🎨 <b>Designentwurf</b> — primlio News &amp; Trends · <b>In Vorbereitung – Konzeptentwurf</b> (statisches Mockup, nicht live)
+  &nbsp;·&nbsp; <a href="index.html">→ Übersicht</a>
+  &nbsp;·&nbsp; <a href="start-final.html">→ Startseite (final)</a>
+  &nbsp;·&nbsp; <a href="news-artikel.html">→ News-Artikel</a>
+  &nbsp;·&nbsp; <a href="diy-liste.html">→ DIY-Übersicht</a>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">prim<span>lio</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Startseite</a>
+      <a href="index.html#kategorien">Kategorien ▾</a>
+      <a href="ratgeber-liste.html">Ratgeber</a>
+      <a href="news-liste.html" class="active">News &amp; Trends</a>
+      <a href="#">Über uns</a>
+    </nav>
+    <form class="nav-search" onsubmit="return false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="Suchen …" aria-label="Suchen">
+      <button class="go-btn" title="Suchen" aria-label="Suchen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+    <button class="icon-btn" title="Sprache">DE</button>
+    <button class="icon-btn" title="Design">◐</button>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-backdrop" id="mobileBackdrop"></div>
+<aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mm-top">
+    <span class="brand">prim<span>lio</span></span>
+    <button class="mm-close" id="mmClose" aria-label="Menü schließen">×</button>
+  </div>
+  <form class="mm-search" onsubmit="return false">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,.72)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input placeholder="Produkt oder News suchen…" aria-label="Suchen">
+  </form>
+  <nav>
+    <a href="index.html">Startseite</a>
+    <a href="index.html#kategorien">Kategorien</a>
+    <a href="ratgeber-liste.html">Ratgeber</a>
+    <a href="news-liste.html">News &amp; Trends</a>
+    <a href="#">Über uns</a>
+    <a href="news-artikel.html">Beispiel-News-Artikel</a>
+  </nav>
+  <div class="mm-foot">
+    <button>DE / EN</button>
+    <button>◐ Design</button>
+  </div>
+</aside>
+
+<!-- HERO -->
+<div class="nhero">
+  <div class="bg" role="img" aria-label="Gartenarbeit und saisonale Garten-Trends als Stimmungsbild"></div>
+  <div class="wrap">
+    <div class="nhero-inner">
+      <div class="badges">
+        <span class="eyebrow">Redaktion · Aktuell</span>
+        <span class="concept-pill"><span class="pulse"></span>Konzept · Bald</span>
+      </div>
+      <h1>News &amp; <em>Trends</em></h1>
+      <p class="intro">Was im Garten gerade wichtig ist – recherchierte Trends, akute Probleme, neue Produkte und Updates, kuratiert pro Bereich.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER TOOLBAR -->
+<div class="wrap">
+  <div class="toolbar">
+    <div class="count-txt"><b id="visCount">6</b> Beiträge · sortiert nach Aktualität</div>
+    <div class="filterbox">
+      <button class="filter-btn" id="filterBtn" aria-haspopup="true" aria-expanded="false" aria-controls="filterPanel">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        Filter &amp; Sortieren
+        <span class="fb-count" id="fbCount" hidden>0</span>
+        <svg class="fb-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <!-- ROLL-DOWN PANEL -->
+      <div class="fpanel" id="filterPanel" role="dialog" aria-label="Filter und Sortierung" aria-hidden="true">
+        <div class="fpanel-head">
+          <h3>Filter &amp; Sortieren</h3>
+          <button class="fp-close" id="fpClose" aria-label="Schließen">×</button>
+        </div>
+        <div class="fpanel-body">
+          <div class="fp-group">
+            <h4>Typ</h4>
+            <div class="fp-options" role="group" aria-label="Nach Typ filtern">
+              <button class="chip" data-filter="type" data-value="trend">Trend</button>
+              <button class="chip" data-filter="type" data-value="problem">Problem &amp; Lösung</button>
+              <button class="chip" data-filter="type" data-value="neuheit">Neuheit</button>
+              <button class="chip" data-filter="type" data-value="update">Update</button>
+            </div>
+          </div>
+          <div class="fp-group">
+            <h4>Kategorie</h4>
+            <div class="fp-options" role="group" aria-label="Nach Kategorie filtern">
+              <button class="chip" data-filter="cat" data-value="Pflanzenschutz">Pflanzenschutz</button>
+              <button class="chip" data-filter="cat" data-value="Rasenpflege">Rasenpflege</button>
+              <button class="chip" data-filter="cat" data-value="Hochbeet &amp; Anzucht">Hochbeet &amp; Anzucht</button>
+              <button class="chip" data-filter="cat" data-value="Garten-Deko &amp; Zubehör">Garten-Deko</button>
+              <button class="chip" data-filter="cat" data-value="Poolpflege">Poolpflege</button>
+            </div>
+          </div>
+          <div class="fp-group">
+            <h4>Sortieren nach</h4>
+            <div class="fp-options" role="group" aria-label="Sortierung">
+              <button class="chip active" data-sort="recent">Aktualität</button>
+              <button class="chip" data-sort="az">A–Z</button>
+            </div>
+          </div>
+        </div>
+        <div class="fpanel-foot">
+          <button class="btn ghost" id="fpReset">Zurücksetzen</button>
+          <button class="btn primary" id="fpApply">6 Beiträge anzeigen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEWS GRID -->
+<section class="block cream">
+  <div class="wrap">
+    <div class="grid grid-3" id="newsGrid">
+
+      <a class="ncard" href="news-artikel.html" data-type="trend" data-cat="Pflanzenschutz">
+        <div class="imgwrap"><span class="cat-badge">Pflanzenschutz</span><img src="https://assets.create-app.net/primlio-mockup/img/news-wasser.png" alt="Trockenheitsresistente Pflanzen im trockenen Garten 2026"></div>
+        <div class="nbody">
+          <span class="tbadge trend">Trend</span>
+          <h3>Trockenheit 2026: Diese 5 trockenheitsresistenten Pflanzen liegen jetzt im Trend</h3>
+          <p>Heiße, regenarme Sommer verändern die Pflanzenwahl. Wir zeigen fünf robuste Arten, die wenig Wasser brauchen – mit passenden Produkten für die Pflege.</p>
+          <div class="nmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Weiterlesen →</span></div>
+        </div>
+      </a>
+
+      <a class="ncard" href="news-artikel.html" data-type="neuheit" data-cat="Rasenpflege">
+        <div class="imgwrap"><span class="cat-badge">Rasenpflege</span><img src="https://assets.create-app.net/primlio-mockup/img/news-maehroboter.png" alt="Mähroboter ohne Begrenzungskabel der neuen Generation"></div>
+        <div class="nbody">
+          <span class="tbadge neuheit">Neuheit</span>
+          <h3>Mähroboter ohne Begrenzungskabel: Was die neue Generation 2026 wirklich kann</h3>
+          <p>Kabellose Navigation per GPS und Kamera ist da. Wir ordnen ein, für welche Gärten sich die neuen Modelle lohnen – und wo Kabel noch die sichere Wahl bleiben.</p>
+          <div class="nmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Weiterlesen →</span></div>
+        </div>
+      </a>
+
+      <a class="ncard" href="news-artikel.html" data-type="problem" data-cat="Pflanzenschutz">
+        <div class="imgwrap"><span class="cat-badge">Pflanzenschutz</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8993652741e016b65975456ae3ef9b07.png" alt="Schneckenplage nach Dauerregen im Beet"></div>
+        <div class="nbody">
+          <span class="tbadge problem">Problem &amp; Lösung</span>
+          <h3>Schneckenplage nach dem Dauerregen: Soforthilfe und Vorbeugung</h3>
+          <p>Nach wochenlangem Regen explodieren die Schneckenzahlen. Was jetzt schnell hilft und wie du den nächsten Befall vermeidest – mit erprobten Mitteln.</p>
+          <div class="nmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Weiterlesen →</span></div>
+        </div>
+      </a>
+
+      <a class="ncard" href="news-artikel.html" data-type="trend" data-cat="Hochbeet &amp; Anzucht">
+        <div class="imgwrap"><span class="cat-badge">Hochbeet &amp; Anzucht</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/cbdda78b21df29b7ed73e5564ca30a78.png" alt="Metall-Hochbeet im Garten"></div>
+        <div class="nbody">
+          <span class="tbadge trend">Trend</span>
+          <h3>Hochbeet-Trend: Warum Metallbeete 2026 das Holz verdrängen</h3>
+          <p>Langlebig, schnell aufgebaut und in vielen Farben: Metall-Hochbeete sind das Trendprodukt der Saison. Wir zeigen, worauf es bei Material und Höhe ankommt.</p>
+          <div class="nmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Weiterlesen →</span></div>
+        </div>
+      </a>
+
+      <a class="ncard" href="news-artikel.html" data-type="neuheit" data-cat="Garten-Deko &amp; Zubehör">
+        <div class="imgwrap"><span class="cat-badge">Garten-Deko &amp; Zubehör</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/2661d8071b45a9c5fb113bb18040158c.png" alt="Solar-Deko-Neuheiten für laue Abende"></div>
+        <div class="nbody">
+          <span class="tbadge neuheit">Neuheit</span>
+          <h3>Neu im Sortiment: Die schönsten Solar-Deko-Neuheiten für laue Abende</h3>
+          <p>Von filigranen Lichterketten bis zu stimmungsvollen Solar-Laternen – wir haben die frischesten Deko-Neuheiten für den Sommerabend zusammengetragen.</p>
+          <div class="nmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Weiterlesen →</span></div>
+        </div>
+      </a>
+
+      <a class="ncard" href="news-artikel.html" data-type="problem" data-cat="Poolpflege">
+        <div class="imgwrap"><span class="cat-badge">Poolpflege</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b4754be4bfc3d587a8075943262cc65a.png" alt="Trübes Poolwasser nach dem Winter"></div>
+        <div class="nbody">
+          <span class="tbadge problem">Problem &amp; Lösung</span>
+          <h3>Poolsaison-Start: Trübes Wasser nach dem Winter – das hilft jetzt</h3>
+          <p>Grün, trüb oder milchig? Zum Saisonstart bringst du das Wasser mit der richtigen Reihenfolge aus Stoßchlorung, Flockung und Filterlauf wieder ins Reine.</p>
+          <div class="nmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Weiterlesen →</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="no-results" id="noResults">
+      <b>Keine Beiträge gefunden</b>
+      <span>Für diese Kombination gibt es aktuell keinen Beitrag. Filter zurücksetzen und erneut stöbern.</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW NEWS ARE MADE -->
+<section class="block tint">
+  <div class="wrap">
+    <div class="how-band">
+      <div class="how-head">
+        <span class="preview-pill"><span class="pulse"></span>Konzept · So ist es geplant</span>
+        <h2>So entstehen unsere News</h2>
+        <p>News &amp; Trends ist ein geplanter Inhalts-Typ. So soll die Redaktion künftig arbeiten – jeder Beitrag bleibt nah am Produkt und konkret nutzbar.</p>
+      </div>
+      <div class="how-steps">
+        <div class="how-step">
+          <span class="num">01</span>
+          <b>Recherchiert</b>
+          <span>Wir beobachten Saison, Wetter und Sortiment und greifen auf, was im Garten gerade wirklich Thema ist – nicht, was am lautesten beworben wird.</span>
+        </div>
+        <div class="how-step">
+          <span class="num">02</span>
+          <b>Redaktionell &amp; aktuell</b>
+          <span>Jeder Beitrag wird redaktionell aufbereitet, später teils KI-gestützt – und laufend aktuell gehalten, damit Empfehlungen nicht veralten.</span>
+        </div>
+        <div class="how-step">
+          <span class="num">03</span>
+          <b>Mit Produktempfehlung</b>
+          <span>Vom Problem zur Lösung: Zu jedem Beitrag gehören konkrete, von Hand geprüfte Produktempfehlungen – kuratiert, nicht zufällig.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div style="max-width:260px">
+        <span class="brand">prim<span>lio</span></span>
+        <p>Die besten Amazon-Produkte, persönlich kuratiert.</p>
+      </div>
+      <div class="fcol"><h4>Bereiche</h4><a href="kategorie.html">Garten-Deko</a><a href="index.html#kategorien">Rasenpflege</a><a href="index.html#kategorien">Hochbeet &amp; Anzucht</a><a href="index.html#kategorien">Poolpflege</a></div>
+      <div class="fcol"><h4>Entdecken</h4><a href="index.html">Top-Empfehlungen</a><a href="ratgeber-liste.html">Ratgeber</a><a href="news-liste.html">News &amp; Trends</a><a href="#">Über uns</a></div>
+      <div class="fcol"><h4>Rechtliches</h4><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Cookie-Einstellungen</a></div>
+    </div>
+    <div class="disc">Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. &nbsp;·&nbsp; © 2026 primlio. Alle Rechte vorbehalten.</div>
+  </div>
+</footer>
+
+<script>
+// Mobile hamburger menu
+(function(){
+  var menu=document.getElementById('mobileMenu');
+  var burger=document.getElementById('hamburger');
+  var backdrop=document.getElementById('mobileBackdrop');
+  var close=document.getElementById('mmClose');
+  function open(){menu.classList.add('open');backdrop.classList.add('open');burger.setAttribute('aria-expanded','true');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function shut(){menu.classList.remove('open');backdrop.classList.remove('open');burger.setAttribute('aria-expanded','false');menu.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  burger.addEventListener('click',open);
+  close.addEventListener('click',shut);
+  backdrop.addEventListener('click',shut);
+  menu.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',shut);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
+})();
+
+// Filter & sort roll-down panel (shared pattern)
+(function(){
+  var box=document.querySelector('.filterbox');
+  var panel=document.getElementById('filterPanel');
+  var btn=document.getElementById('filterBtn');
+  var closeBtn=document.getElementById('fpClose');
+  var applyBtn=document.getElementById('fpApply');
+  var resetBtn=document.getElementById('fpReset');
+  var badge=document.getElementById('fbCount');
+  var grid=document.getElementById('newsGrid');
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.ncard'));
+  var noResults=document.getElementById('noResults');
+  var visCount=document.getElementById('visCount');
+
+  function open(){panel.classList.add('open');btn.setAttribute('aria-expanded','true');panel.setAttribute('aria-hidden','false');}
+  function shut(){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');panel.setAttribute('aria-hidden','true');}
+  function toggle(){panel.classList.contains('open')?shut():open();}
+
+  function activeValues(filter){
+    return panel.querySelectorAll('.chip.active[data-filter="'+filter+'"]');
+  }
+  function apply(){
+    var typ=[].map.call(activeValues('type'),function(c){return c.dataset.value;});
+    var cat=[].map.call(activeValues('cat'),function(c){return c.dataset.value;});
+    var sortChip=panel.querySelector('.chip.active[data-sort]');
+    var sort=sortChip?sortChip.dataset.sort:'recent';
+
+    var visible=cards.filter(function(card){
+      var okT=!typ.length||typ.indexOf(card.dataset.type)>-1;
+      var okC=!cat.length||cat.indexOf(card.dataset.cat)>-1;
+      var ok=okT&&okC;
+      card.style.display=ok?'':'none';
+      return ok;
+    });
+
+    var sorted=visible.slice();
+    if(sort==='az'){
+      sorted.sort(function(a,b){
+        return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent,'de');
+      });
+    }
+    sorted.forEach(function(c){grid.appendChild(c);});
+
+    visCount.textContent=visible.length;
+    applyBtn.textContent=visible.length+' Beiträge anzeigen';
+    noResults.classList.toggle('show',visible.length===0);
+
+    var n=typ.length+cat.length;
+    if(n>0){badge.textContent=n;badge.hidden=false;}else{badge.hidden=true;}
+  }
+
+  btn.addEventListener('click',function(e){e.stopPropagation();toggle();});
+  closeBtn.addEventListener('click',shut);
+  applyBtn.addEventListener('click',shut);
+  resetBtn.addEventListener('click',function(){
+    panel.querySelectorAll('.chip.active').forEach(function(c){c.classList.remove('active');});
+    var def=panel.querySelector('.chip[data-sort="recent"]');if(def)def.classList.add('active');
+    apply();
+  });
+  panel.querySelectorAll('.chip[data-filter]').forEach(function(c){
+    c.addEventListener('click',function(){this.classList.toggle('active');apply();});
+  });
+  panel.querySelectorAll('.chip[data-sort]').forEach(function(c){
+    c.addEventListener('click',function(){
+      panel.querySelectorAll('.chip[data-sort]').forEach(function(x){x.classList.remove('active');});
+      this.classList.add('active');apply();
+    });
+  });
+  document.addEventListener('click',function(e){if(panel.classList.contains('open')&&!box.contains(e.target))shut();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&panel.classList.contains('open'))shut();});
+})();
+</script>
+</body>
+</html>

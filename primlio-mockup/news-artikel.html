@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trockenheit 2026: 5 trockenheitsresistente Pflanzen im Trend — primlio News (Designentwurf)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:hsl(36 33% 98%); --fg:hsl(280 15% 12%); --card:#fff;
+  --primary:hsl(285 45% 25%); --primary-fg:hsl(36 33% 98%);
+  --primary-deep:hsl(285 48% 18%); --primary-mid:hsl(285 42% 30%);
+  --accent:hsl(18 70% 55%); --accent-fg:hsl(36 33% 98%); --accent-deep:hsl(18 72% 47%);
+  --muted:hsl(36 15% 94%); --muted-fg:hsl(280 8% 40%);
+  --border:hsl(36 15% 88%); --radius:0.75rem;
+  --gold:hsl(43 74% 50%);
+  --shadow:0 1px 2px rgba(40,20,40,.04),0 8px 24px -12px rgba(40,20,40,.12);
+  --shadow-lg:0 12px 40px -16px rgba(40,20,40,.22);
+  --on-dark:rgba(250,248,245,.9); --on-dark-soft:rgba(250,248,245,.72);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+.wrap-wide{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* DESIGN-FLAG */
+.mockup-flag{background:var(--accent);color:var(--accent-fg);text-align:center;font-size:13px;padding:8px 16px;letter-spacing:.01em}
+.mockup-flag b{font-weight:700}
+.mockup-flag a{text-decoration:underline;font-weight:600}
+
+/* HEADER — bold aubergine bar */
+header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bottom:3px solid var(--accent)}
+.nav{display:flex;align-items:center;gap:28px;height:70px;max-width:1200px;margin:0 auto;padding:0 24px}
+.brand{font-family:"Fraunces",serif;font-weight:700;font-size:27px;color:var(--primary-fg);letter-spacing:-.03em}
+.brand span{color:var(--accent)}
+.nav-links{display:flex;gap:22px;align-items:center;font-size:15px;font-weight:500}
+.nav-links a{color:var(--on-dark);padding:6px 0;border-bottom:2px solid transparent;transition:.15s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-color:var(--accent)}
+.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 16px;height:40px;width:300px;color:var(--on-dark-soft);font-size:14px}
+.nav-search svg{flex:0 0 auto}
+.nav-search span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);display:grid;place-items:center;cursor:pointer;color:var(--on-dark);font-size:14px;font-weight:600;flex:0 0 auto}
+.icon-btn:hover{background:rgba(255,255,255,.18)}
+.hamburger{display:none;width:42px;height:40px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);border-radius:10px;cursor:pointer;color:#fff;margin-left:auto}
+.hamburger svg{margin:auto}
+
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0 0 0 auto;width:min(320px,86vw);background:var(--primary-deep);z-index:90;transform:translateX(100%);transition:transform .25s ease;flex-direction:column;padding:20px;box-shadow:-12px 0 40px -10px rgba(0,0,0,.5)}
+.mobile-menu.open{display:flex;transform:translateX(0)}
+.mobile-backdrop{display:none;position:fixed;inset:0;background:rgba(20,10,20,.5);z-index:80}
+.mobile-backdrop.open{display:block}
+.mm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.mm-top .brand{font-size:24px}
+.mm-close{background:none;border:0;color:#fff;font-size:30px;line-height:1;cursor:pointer;padding:0 6px}
+.mm-search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 16px;height:44px;margin-bottom:18px}
+.mm-search input{flex:1;border:0;background:transparent;color:#fff;font-size:15px;font-family:inherit;outline:none;min-width:0}
+.mm-search input::placeholder{color:var(--on-dark-soft)}
+.mobile-menu nav a{color:var(--on-dark);font-size:18px;font-weight:500;padding:14px 4px;border-bottom:1px solid rgba(255,255,255,.12)}
+.mobile-menu nav a:hover{color:#fff}
+.mm-foot{margin-top:auto;display:flex;gap:10px}
+.mm-foot button{flex:1;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-weight:600;font-family:inherit;cursor:pointer}
+
+@media(max-width:860px){
+  .nav-links{display:none}
+  .nav-search{display:none}
+  .icon-btn{display:none}
+  .hamburger{display:grid}
+}
+
+/* BREADCRUMB */
+.crumb{font-size:13.5px;color:var(--muted-fg);padding:22px 0 6px}
+.crumb a:hover{color:var(--primary)}
+.crumb span{color:var(--fg)}
+
+/* ARTICLE HERO */
+.ahead{padding:8px 0 4px}
+.badge-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.format-badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--accent);padding:6px 14px;border-radius:999px}
+.cat-pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--primary);background:var(--muted);border:1px solid var(--border);padding:6px 13px;border-radius:999px}
+.ahead h1{font-size:clamp(30px,4.6vw,48px);margin:0 0 14px;color:var(--primary-deep);max-width:22ch}
+.ameta{font-size:14px;color:var(--muted-fg);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ameta .dot{width:5px;height:5px;border-radius:50%;background:var(--muted-fg);display:inline-block}
+.hero-img{margin:22px 0 0;border-radius:calc(var(--radius)*1.3);overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:21/9;background:var(--muted)}
+.hero-img img{width:100%;height:100%;object-fit:cover}
+
+/* INTRO */
+.intro{font-size:16.5px;color:hsl(280 12% 22%);max-width:760px;margin:26px 0 6px;line-height:1.7}
+.intro strong{color:var(--primary-deep);font-weight:600}
+
+/* SECTION */
+.section{padding:34px 0;border-top:1px solid var(--border);margin-top:14px}
+.section h2{font-size:clamp(24px,3vw,32px);margin-bottom:8px;color:var(--primary-deep)}
+.section .lead{color:var(--muted-fg);font-size:15px;max-width:64ch;margin-bottom:22px}
+.section p.body{margin-bottom:14px;max-width:760px;color:hsl(280 12% 22%);line-height:1.7}
+
+/* EDITORIAL */
+.editorial h2{margin-bottom:14px}
+.editorial p{max-width:760px;color:hsl(280 12% 22%);margin-bottom:14px;line-height:1.7}
+
+/* PLANT LIST */
+.plant-list{list-style:none;display:grid;gap:14px;margin-top:6px;max-width:780px}
+.plant-list li{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow)}
+.plant-list li b{font-family:"Fraunces",serif;color:var(--primary-deep);font-size:18px;display:block;margin-bottom:3px}
+.plant-list li span{font-size:14.5px;color:hsl(280 12% 28%)}
+
+/* PRODUCT CARDS — dual-action (matched from start-final) */
+.grid{display:grid;gap:24px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid-3{grid-template-columns:1fr}}
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
+.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.pcard .imgwrap{aspect-ratio:4/3;background:var(--muted);position:relative;overflow:hidden;display:block}
+.pcard .imgwrap img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.pcard:hover .imgwrap img{transform:scale(1.05)}
+.cat-badge{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px}
+.pbody{padding:16px 17px 16px;display:flex;flex-direction:column;flex:1}
+.pbody h3{font-size:18px;font-weight:600;margin-bottom:9px;line-height:1.25}
+.pbody h3 a:hover{color:var(--primary)}
+.stars{display:flex;align-items:center;gap:7px;font-size:14px;margin-bottom:6px}
+.stars .st{color:var(--gold);letter-spacing:1px}
+.stars b{font-weight:700}
+.stars .rev{color:var(--muted-fg)}
+.fresh{font-size:12.5px;color:var(--muted-fg);display:flex;align-items:center;gap:5px;margin-bottom:auto}
+.fresh .dot{width:7px;height:7px;border-radius:50%;background:hsl(160 55% 42%)}
+.pfoot{margin-top:15px;padding-top:14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+.btn-amazon{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:11px 16px;font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s}
+.btn-amazon:hover{background:var(--accent-deep)}
+.btn-details{display:inline-flex;align-items:center;justify-content:center;gap:6px;color:var(--primary);font-size:13.5px;font-weight:600;transition:.15s}
+.btn-details:hover{color:var(--accent)}
+.btn-details svg{transition:transform .15s}
+.btn-details:hover svg{transform:translateX(2px)}
+
+/* NEWEST PRODUCTS — compact mini list */
+.mini-list{display:grid;gap:12px;max-width:780px}
+.mini-item{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;box-shadow:var(--shadow);transition:.15s}
+.mini-item:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateX(2px)}
+.mini-thumb{width:56px;height:56px;flex:0 0 auto;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--muted)}
+.mini-thumb img{width:100%;height:100%;object-fit:cover}
+.mini-main{flex:1;min-width:0}
+.mini-main h3{font-size:16px;color:var(--primary-deep);line-height:1.25;margin-bottom:3px}
+.mini-main .mini-cat{font-size:12.5px;color:var(--muted-fg)}
+.new-badge{flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:hsl(160 55% 38%);padding:4px 10px;border-radius:999px}
+.mini-arrow{flex:0 0 auto;color:var(--muted-fg);transition:.15s}
+.mini-item:hover .mini-arrow{color:var(--accent);transform:translateX(3px)}
+
+/* RATGEBER TEASER */
+.rcard{display:flex;gap:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;max-width:780px}
+.rcard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.rcard .imgwrap{width:200px;flex:0 0 auto;background:var(--muted);overflow:hidden;position:relative}
+.rcard .imgwrap img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.rcard:hover .imgwrap img{transform:scale(1.05)}
+.rcard .rbody{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+.rtag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.rcard .rbody h3{font-size:20px;line-height:1.25;color:var(--primary-deep)}
+.rcard .rbody p{font-size:14px;color:var(--muted-fg);line-height:1.5}
+.rcard .r-cta{margin-top:auto;display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:14px;font-weight:700;transition:.15s}
+.rcard .r-cta svg{transition:transform .15s}
+.rcard:hover .r-cta{color:var(--accent)}
+.rcard:hover .r-cta svg{transform:translateX(2px)}
+@media(max-width:560px){
+  .rcard{flex-direction:column}
+  .rcard .imgwrap{width:100%;aspect-ratio:16/9}
+}
+
+/* FAQ */
+.faq details{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);margin-bottom:10px;overflow:hidden;max-width:780px}
+.faq summary{padding:16px 20px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;color:var(--accent);font-weight:400}
+.faq details[open] summary::after{content:"−"}
+.faq .ans{padding:0 20px 18px;color:var(--muted-fg);font-size:14.5px;line-height:1.6;max-width:760px}
+
+/* AFFILIATE NOTE */
+.affnote{font-size:13px;color:var(--muted-fg);text-align:center;background:var(--muted);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:18px 0 0;max-width:780px;line-height:1.5}
+
+/* FOOTER */
+footer{background:var(--primary-deep);color:var(--on-dark);padding:52px 0 30px;font-size:14px;margin-top:50px}
+.fgrid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:30px}
+.fgrid .brand{font-size:23px;margin-bottom:8px;display:block;color:#fff}
+.fgrid .brand span{color:var(--accent)}
+.fgrid>div>p{color:var(--on-dark-soft)}
+.fcol h4{font-family:"Inter",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#fff;margin-bottom:12px;font-weight:600}
+.fcol a{display:block;margin-bottom:7px;color:var(--on-dark-soft)}
+.fcol a:hover{color:#fff}
+.disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;font-size:13px;color:var(--on-dark-soft)}
+</style>
+</head>
+<body>
+<div class="mockup-flag">🎨 <b>Designentwurf</b> — News/Trend-Artikel · <b>In Vorbereitung – Konzeptentwurf</b> (statisches Mockup, nicht live)
+  &nbsp;·&nbsp; <a href="index.html">→ Übersicht (index.html)</a>
+  &nbsp;·&nbsp; <a href="news-liste.html">→ News-Liste</a>
+  &nbsp;·&nbsp; <a href="start-final.html">→ Startseite</a>
+</div>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="brand">prim<span>lio</span></a>
+    <nav class="nav-links">
+      <a href="start-final.html">Startseite</a>
+      <a href="kategorie.html">Kategorien ▾</a>
+      <a href="news-liste.html" class="active">News &amp; Trends</a>
+      <a href="start-final.html#ratgeber">Ratgeber</a>
+      <a href="#">Über uns</a>
+    </nav>
+    <div class="nav-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <span>Suchen …</span>
+    </div>
+    <button class="icon-btn" title="Sprache" aria-label="Sprache wechseln">DE</button>
+    <button class="icon-btn" title="Design" aria-label="Hell/Dunkel umschalten">◐</button>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-backdrop" id="mobileBackdrop"></div>
+<aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mm-top">
+    <span class="brand">prim<span>lio</span></span>
+    <button class="mm-close" id="mmClose" aria-label="Menü schließen">×</button>
+  </div>
+  <form class="mm-search" role="search" onsubmit="return false">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,.72)" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="search" placeholder="Produkt oder Ratgeber suchen…" aria-label="Suchen">
+  </form>
+  <nav>
+    <a href="start-final.html">Startseite</a>
+    <a href="kategorie.html">Kategorien</a>
+    <a href="news-liste.html">News &amp; Trends</a>
+    <a href="start-final.html#ratgeber">Ratgeber</a>
+    <a href="#">Über uns</a>
+  </nav>
+  <div class="mm-foot">
+    <button>DE / EN</button>
+    <button>◐ Design</button>
+  </div>
+</aside>
+
+<div class="wrap">
+  <!-- BREADCRUMB -->
+  <div class="crumb"><a href="start-final.html">Startseite</a> › <a href="news-liste.html">News &amp; Trends</a> › <span>Trockenheit 2026</span></div>
+
+  <!-- ARTICLE HERO -->
+  <div class="ahead">
+    <div class="badge-row">
+      <span class="format-badge">Trend</span>
+      <span class="cat-pill">Pflanzenschutz / Garten</span>
+    </div>
+    <h1>Trockenheit 2026: Diese 5 trockenheitsresistenten Pflanzen liegen jetzt im Trend</h1>
+    <div class="ameta">
+      <span>Veröffentlicht 17. Juni 2026</span>
+      <span class="dot"></span>
+      <span>von der primlio-Redaktion</span>
+    </div>
+    <div class="hero-img">
+      <img src="https://assets.create-app.net/primlio-mockup/img/news-wasser.png" alt="Vertrockneter Garten in der Sommerhitze 2026 – Symbolbild für Wasserknappheit">
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <p class="intro">Heiße, trockene Sommer setzen den Gärten zunehmend zu – und 2026 ist da keine Ausnahme. Wer seinen Garten nicht ständig wässern will (oder darf), denkt um: <strong>Wassersparendes Gärtnern</strong> ist in dieser Saison der dominierende Trend. Konkret heißt das, auf Pflanzen zu setzen, die mit wenig Wasser auskommen, und den Boden so vorzubereiten, dass jeder Tropfen länger bleibt, wo er hingehört. Wir zeigen, warum das Thema bleibt – und welche fünf Pflanzen gerade besonders gefragt sind.</p>
+
+  <!-- WHY -->
+  <div class="section editorial">
+    <h2>Warum Trockenheit zum Dauerthema wird</h2>
+    <p>Die letzten Sommer haben ein Muster etabliert, das immer schwerer zu ignorieren ist: längere Hitzeperioden, weniger gleichmäßiger Niederschlag und vielerorts regionale Bewässerungsverbote in den heißesten Wochen. Was früher ein Ausnahmejahr war, fühlt sich inzwischen wie der Normalfall an.</p>
+    <p>Für Hobbygärtnerinnen und -gärtner bedeutet das doppelten Druck. Klassische, durstige Beete kosten Zeit, Geld und Wasser – und sehen trotzdem oft mitgenommen aus. Wer den Garten zukunftsfähig halten will, plant deshalb nicht mehr gegen die Trockenheit an, sondern mit ihr.</p>
+  </div>
+
+  <!-- TREND -->
+  <div class="section editorial">
+    <h2>Der Trend: wassersparend statt durstig</h2>
+    <p>Im Kern geht es um drei Hebel. Erstens die Pflanzenauswahl: trockenheitsresistente, oft mediterrane oder steppentypische Arten kommen mit deutlich weniger Gießen aus. Zweitens der Boden – eine Schicht <strong>Mulch</strong> aus Rindenstücken oder Häcksel hält die Feuchtigkeit im Boden, dämpft die Verdunstung und unterdrückt nebenbei Unkraut.</p>
+    <p>Drittens die Bewässerung selbst: Statt mit der Gießkanne über die Blätter zu schütten, setzen immer mehr Gärten auf gezielte <strong>Tröpfchenbewässerung</strong> direkt an der Wurzel – das spart Wasser und macht Pflanzen widerstandsfähiger. Flächige <strong>Bodendecker</strong> beschatten zusätzlich die Erde und verhindern, dass sie in der Mittagssonne austrocknet. Zusammen ergibt das einen Garten, der auch im August noch lebendig aussieht.</p>
+  </div>
+
+  <!-- 5 PLANTS -->
+  <div class="section editorial">
+    <h2>5 Pflanzen, die jetzt angesagt sind</h2>
+    <p class="lead">Robust, genügsam und trotzdem schön – diese fünf Arten stehen 2026 besonders hoch im Kurs.</p>
+    <ul class="plant-list">
+      <li><b>1 · Lavendel</b><span>Der Klassiker unter den Trockenkünstlern: liebt volle Sonne, kommt mit wenig Wasser aus und duftet die ganze Saison.</span></li>
+      <li><b>2 · Fetthenne (Sedum)</b><span>Speichert Wasser in ihren dickfleischigen Blättern und blüht selbst dann noch, wenn andere längst schlappmachen.</span></li>
+      <li><b>3 · Ziergräser</b><span>Steppen- und Präriegräser brauchen kaum Pflege, bewegen sich elegant im Wind und bringen Struktur ins trockene Beet.</span></li>
+      <li><b>4 · Salbei</b><span>Aromatisch, bienenfreundlich und ausgesprochen genügsam – ein Doppelnutzen aus Küche und pflegeleichtem Beet.</span></li>
+      <li><b>5 · Steppensalbei</b><span>Die robuste Ziervariante mit intensiv violetten Blütenkerzen, die Hitze und magere Böden mühelos wegsteckt.</span></li>
+    </ul>
+  </div>
+
+  <!-- PASSENDE PRODUKTE -->
+  <div class="section">
+    <h2>Passende Produkte dazu</h2>
+    <p class="lead">Werkzeug und Helfer, die in einen trockenheitsfesten Garten gut passen – aus unserem geprüften Katalog.</p>
+    <div class="grid grid-3">
+
+      <div class="pcard">
+        <a class="imgwrap" href="produkt.html" aria-label="Gardena Unkrautstecher ansehen"><span class="cat-badge">Gartenwerkzeug</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/a9b4bd02dabe27e5d99e48fd48514e3f.png" alt="Gardena Unkrautstecher"></a>
+        <div class="pbody">
+          <h3><a href="produkt.html">Gardena Unkrautstecher</a></h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(6.494)</span></div>
+          <div class="fresh"><span class="dot"></span>Geprüft 9. Juni 2026</div>
+          <div class="pfoot">
+            <a class="btn-amazon js-amzn-cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn-details" href="produkt.html">Details
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard">
+        <a class="imgwrap" href="produkt.html" aria-label="BITPOTT Solar-Gartenleuchten ansehen"><span class="cat-badge">Garten-Deko</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/f6875584e772530ef8acf34712108c82.png" alt="BITPOTT Solar-Gartenleuchten"></a>
+        <div class="pbody">
+          <h3><a href="produkt.html">BITPOTT Solar-Gartenleuchten</a></h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,6</b><span class="rev">(2.310)</span></div>
+          <div class="fresh"><span class="dot"></span>Geprüft 10. Juni 2026</div>
+          <div class="pfoot">
+            <a class="btn-amazon js-amzn-cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn-details" href="produkt.html">Details
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard">
+        <a class="imgwrap" href="produkt.html" aria-label="Grenebo Gartenwerkzeug-Set ansehen"><span class="cat-badge">Gartenwerkzeug</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/7e57fc908833f4dfdb8826af81684aad.png" alt="Grenebo Gartenwerkzeug-Set"></a>
+        <div class="pbody">
+          <h3><a href="produkt.html">Grenebo Gartenwerkzeug-Set</a></h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(3.962)</span></div>
+          <div class="fresh"><span class="dot"></span>Geprüft 6. Juni 2026</div>
+          <div class="pfoot">
+            <a class="btn-amazon js-amzn-cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn-details" href="produkt.html">Details
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="affnote">Als Amazon-Partner verdienen wir an qualifizierten Verkäufen — für dich ohne Aufpreis. Alle „Auf Amazon"-Links sind Affiliate-Links.</p>
+  </div>
+
+  <!-- NEUESTE PRODUKTE -->
+  <div class="section">
+    <h2>Neueste Produkte in diesem Bereich</h2>
+    <p class="lead">Frisch in den Katalog aufgenommen und geprüft – ein Blick auf die jüngsten Empfehlungen.</p>
+    <div class="mini-list">
+
+      <a class="mini-item" href="produkt.html">
+        <div class="mini-thumb"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8993652741e016b65975456ae3ef9b07.png" alt="Pflanzenschutz-Produkt"></div>
+        <div class="mini-main"><h3>Pflanzenschutz-Granulat für trockene Beete</h3><span class="mini-cat">Pflanzenschutz</span></div>
+        <span class="new-badge">Neu</span>
+        <svg class="mini-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+
+      <a class="mini-item" href="produkt.html">
+        <div class="mini-thumb"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/484d3cd706bbf47a68a4976a80a9fa05.png" alt="Mulch-Produkt"></div>
+        <div class="mini-main"><h3>Rindenmulch zur Feuchtigkeitsspeicherung</h3><span class="mini-cat">Pflanzenschutz</span></div>
+        <span class="new-badge">Neu</span>
+        <svg class="mini-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+
+      <a class="mini-item" href="produkt.html">
+        <div class="mini-thumb"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/18839927c58318455d78e670bd391e61.png" alt="Bewässerungs-Produkt"></div>
+        <div class="mini-main"><h3>Tröpfchenbewässerungs-Set für Beete</h3><span class="mini-cat">Gartenwerkzeug</span></div>
+        <span class="new-badge">Neu</span>
+        <svg class="mini-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- RATGEBER TEASER -->
+  <div class="section">
+    <h2>Passender Ratgeber</h2>
+    <p class="lead">Tiefer ins Thema einsteigen – unsere ausführliche Kaufberatung dazu.</p>
+    <a class="rcard" href="ratgeber-detail.html">
+      <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8993652741e016b65975456ae3ef9b07.png" alt="Schädlingsbekämpfung im Garten – Ratgeber"></div>
+      <div class="rbody">
+        <span class="rtag">Ratgeber · Pflanzenschutz</span>
+        <h3>Schädlingsbekämpfung im Garten: Was wirklich hilft</h3>
+        <p>Von Mulch bis Nützlingen – welche Methoden den trockenheitsgestressten Garten gesund halten, ganz ohne Chemiekeule.</p>
+        <span class="r-cta">Ratgeber lesen
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </a>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section faq" id="faq">
+    <h2>Häufige Fragen</h2>
+    <details open><summary>Welche Pflanze ist am pflegeleichtesten bei Trockenheit?</summary><div class="ans">Die Fetthenne (Sedum) gilt als besonders genügsam: Sie speichert Wasser in ihren dicken Blättern und übersteht selbst längere Trockenphasen, ohne dass man eingreifen muss. Lavendel und Steppensalbei sind ebenfalls extrem robust.</div></details>
+    <details><summary>Hilft Mulch wirklich gegen das Austrocknen?</summary><div class="ans">Ja. Eine Mulchschicht aus Rinde oder Häcksel reduziert die Verdunstung deutlich, hält den Boden länger feucht und schützt zusätzlich vor Unkraut. In Kombination mit gezielter Tröpfchenbewässerung lässt sich der Wasserverbrauch spürbar senken.</div></details>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap-wide">
+    <div class="fgrid">
+      <div style="max-width:260px">
+        <span class="brand">prim<span>lio</span></span>
+        <p>Die besten Amazon-Produkte, persönlich kuratiert.</p>
+      </div>
+      <div class="fcol"><h4>Bereiche</h4><a href="kategorie.html">Garten-Deko</a><a href="kategorie.html">Rasenpflege</a><a href="kategorie.html">Pflanzenschutz</a><a href="kategorie.html">Poolpflege</a></div>
+      <div class="fcol"><h4>Entdecken</h4><a href="news-liste.html">News &amp; Trends</a><a href="start-final.html#deals">Deals</a><a href="start-final.html#ratgeber">Ratgeber</a><a href="#">Über uns</a></div>
+      <div class="fcol"><h4>Rechtliches</h4><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Cookie-Einstellungen</a></div>
+    </div>
+    <div class="disc">Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. &nbsp;·&nbsp; © 2026 primlio. Alle Rechte vorbehalten.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var ham=document.getElementById('hamburger');
+  var menu=document.getElementById('mobileMenu');
+  var backdrop=document.getElementById('mobileBackdrop');
+  var close=document.getElementById('mmClose');
+  if(!ham||!menu)return;
+  function open(){menu.classList.add('open');backdrop.classList.add('open');ham.setAttribute('aria-expanded','true');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function shut(){menu.classList.remove('open');backdrop.classList.remove('open');ham.setAttribute('aria-expanded','false');menu.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  ham.addEventListener('click',open);
+  close.addEventListener('click',shut);
+  backdrop.addEventListener('click',shut);
+  menu.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',shut);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
+})();
+</script>
+</body>
+</html>

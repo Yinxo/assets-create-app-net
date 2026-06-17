@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIY-Projekte &amp; Hacks — primlio (Konzeptentwurf)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:hsl(36 33% 98%); --fg:hsl(280 15% 12%); --card:#fff;
+  --primary:hsl(285 45% 25%); --primary-fg:hsl(36 33% 98%);
+  --primary-deep:hsl(285 48% 18%); --primary-mid:hsl(285 42% 30%);
+  --accent:hsl(18 70% 55%); --accent-fg:hsl(36 33% 98%);
+  --accent-deep:hsl(18 72% 47%);
+  --muted:hsl(36 15% 94%); --muted-fg:hsl(280 8% 40%);
+  --border:hsl(36 15% 88%); --radius:0.75rem;
+  --gold:hsl(43 74% 50%);
+  --shadow:0 1px 2px rgba(40,20,40,.04),0 8px 24px -12px rgba(40,20,40,.12);
+  --shadow-lg:0 12px 40px -16px rgba(40,20,40,.22);
+  --on-dark:rgba(250,248,245,.9); --on-dark-soft:rgba(250,248,245,.72);
+  /* Difficulty badge colours */
+  --diff-easy-bg:hsl(150 45% 90%); --diff-easy-fg:hsl(150 55% 26%);
+  --diff-mid-bg:hsl(38 80% 90%); --diff-mid-fg:hsl(30 75% 36%);
+  --diff-adv-bg:hsl(0 65% 92%); --diff-adv-fg:hsl(0 62% 42%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* DESIGN-FLAG */
+.mockup-flag{background:var(--accent);color:var(--accent-fg);text-align:center;font-size:13px;padding:8px 16px;letter-spacing:.01em}
+.mockup-flag b{font-weight:700}
+.mockup-flag a{text-decoration:underline;font-weight:600}
+
+/* HEADER — bold aubergine bar */
+header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bottom:3px solid var(--accent)}
+.nav{display:flex;align-items:center;gap:28px;height:70px}
+.brand{font-family:"Fraunces",serif;font-weight:700;font-size:27px;color:var(--primary-fg);letter-spacing:-.03em}
+.brand span{color:var(--accent)}
+.nav-links{display:flex;gap:22px;align-items:center;font-size:15px;font-weight:500}
+.nav-links a{color:var(--on-dark);padding:6px 0;border-bottom:2px solid transparent;transition:.15s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-color:var(--accent)}
+.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 8px 0 16px;height:40px;width:300px;color:var(--on-dark-soft);font-size:14px}
+.nav-search svg{flex:0 0 auto}
+.nav-search input{flex:1;border:0;background:transparent;font-family:inherit;font-size:14px;outline:none;color:#fff;min-width:0}
+.nav-search input::placeholder{color:var(--on-dark-soft)}
+.nav-search .go-btn{flex:0 0 auto;border:0;background:var(--accent);color:var(--accent-fg);width:30px;height:30px;border-radius:999px;display:grid;place-items:center;cursor:pointer}
+.icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);display:grid;place-items:center;cursor:pointer;color:var(--on-dark);font-size:14px;font-weight:600;flex:0 0 auto}
+.icon-btn:hover{background:rgba(255,255,255,.18)}
+.hamburger{display:none;width:42px;height:40px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);border-radius:10px;cursor:pointer;color:#fff;margin-left:auto}
+.hamburger svg{margin:auto}
+
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0 0 0 auto;width:min(320px,86vw);background:var(--primary-deep);z-index:90;transform:translateX(100%);transition:transform .25s ease;flex-direction:column;padding:20px;box-shadow:-12px 0 40px -10px rgba(0,0,0,.5)}
+.mobile-menu.open{display:flex;transform:translateX(0)}
+.mobile-backdrop{display:none;position:fixed;inset:0;background:rgba(20,10,20,.5);z-index:85}
+.mobile-backdrop.open{display:block}
+.mm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.mm-top .brand{font-size:24px}
+.mm-close{background:none;border:0;color:#fff;font-size:30px;line-height:1;cursor:pointer;padding:0 6px}
+.mm-search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 16px;height:44px;margin-bottom:18px}
+.mm-search input{flex:1;border:0;background:transparent;color:#fff;font-size:15px;font-family:inherit;outline:none}
+.mm-search input::placeholder{color:var(--on-dark-soft)}
+.mobile-menu nav a{color:var(--on-dark);font-size:18px;font-weight:500;padding:14px 4px;border-bottom:1px solid rgba(255,255,255,.12)}
+.mobile-menu nav a:hover{color:#fff}
+.mm-foot{margin-top:auto;display:flex;gap:10px}
+.mm-foot button{flex:1;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-weight:600;font-family:inherit;cursor:pointer}
+
+@media(max-width:860px){
+  .nav-links{display:none}
+  .nav-search{display:none}
+  .icon-btn{display:none}
+  .hamburger{display:grid}
+}
+
+/* HERO — image background (matches start-final treatment) */
+.hero{position:relative;min-height:clamp(420px,56vh,540px);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;color:#fff}
+.hero .bg{position:absolute;inset:0;background-image:url('https://assets.create-app.net/primlio-mockup/img/diy-hero.png');background-size:cover;background-position:center;transform:scale(1.04)}
+.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(165deg,hsla(285,55%,18%,.82) 0%,hsla(285,50%,22%,.6) 42%,hsla(285,58%,14%,.9) 100%)}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:760px;padding:64px 24px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:hsl(43 90% 78%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);padding:6px 14px;border-radius:999px;margin-bottom:20px}
+.hero-badge .pulse{width:7px;height:7px;border-radius:50%;background:hsl(43 90% 68%);animation:pulse 1.8s infinite}
+.hero h1{font-size:clamp(34px,5.6vw,58px);margin:0 auto 16px;text-shadow:0 2px 30px rgba(0,0,0,.4);max-width:16ch;color:#fff}
+.hero p.lede{font-size:clamp(16px,1.9vw,20px);color:var(--on-dark);max-width:600px;margin:0 auto;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+
+/* TOOLBAR + FILTER POPOVER (shared pattern w/ ratgeber-liste.html) */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:34px 0 4px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.toolbar .count-txt{font-size:14px;color:var(--muted-fg);flex:1 1 auto;min-width:0}
+.toolbar .count-txt b{color:var(--fg);font-weight:600}
+.filterbox{position:relative;flex:0 0 auto}
+.filter-btn{display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--primary);background:var(--primary);color:var(--primary-fg);font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:.15s;box-shadow:var(--shadow);white-space:nowrap}
+.filter-btn:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
+.filter-btn svg{flex:0 0 auto;transition:transform .2s}
+.filter-btn[aria-expanded="true"] .fb-caret{transform:rotate(180deg)}
+.filter-btn .fb-count{background:var(--accent);color:var(--accent-fg);font-size:12px;font-weight:700;border-radius:999px;min-width:20px;height:20px;padding:0 6px;display:grid;place-items:center}
+.fpanel{position:absolute;top:calc(100% + 10px);right:0;z-index:70;width:min(440px,calc(100vw - 32px));background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s,transform .2s,visibility .2s;display:flex;flex-direction:column;max-height:min(72vh,580px)}
+.fpanel.open{opacity:1;visibility:visible;transform:translateY(0)}
+.fpanel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border)}
+.fpanel-head h3{font-size:18px}
+.fpanel-head .fp-close{width:34px;height:34px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:20px;line-height:1;cursor:pointer;color:var(--muted-fg)}
+.fpanel-head .fp-close:hover{color:var(--fg);border-color:var(--muted-fg)}
+.fpanel-body{overflow-y:auto;padding:16px 18px 6px}
+.fp-group{margin-bottom:20px}
+.fp-group h4{font-family:"Inter",sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:11px}
+.fp-options{display:flex;flex-wrap:wrap;gap:9px}
+.chip{font-size:13.5px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--muted-fg);border-radius:999px;padding:9px 15px;cursor:pointer;transition:.15s;white-space:nowrap}
+.chip:hover{border-color:var(--primary);color:var(--primary)}
+.chip.active{background:var(--primary);color:var(--primary-fg);border-color:var(--primary)}
+/* difficulty chips carry their semantic colour when active */
+.chip.diff{display:inline-flex;align-items:center;gap:7px}
+.chip.diff::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.chip.diff[data-value="easy"]{color:var(--diff-easy-fg)}
+.chip.diff[data-value="mid"]{color:var(--diff-mid-fg)}
+.chip.diff[data-value="adv"]{color:var(--diff-adv-fg)}
+.chip.diff.active[data-value="easy"]{background:var(--diff-easy-fg);border-color:var(--diff-easy-fg);color:#fff}
+.chip.diff.active[data-value="mid"]{background:var(--diff-mid-fg);border-color:var(--diff-mid-fg);color:#fff}
+.chip.diff.active[data-value="adv"]{background:var(--diff-adv-fg);border-color:var(--diff-adv-fg);color:#fff}
+.chip.diff.active::before{background:#fff}
+.fpanel-foot{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--border)}
+.fpanel-foot .btn{flex:1;height:44px;border-radius:999px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border:1px solid var(--border)}
+.fpanel-foot .btn.ghost{background:var(--bg);color:var(--muted-fg)}
+.fpanel-foot .btn.ghost:hover{color:var(--fg)}
+.fpanel-foot .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.fpanel-foot .btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+@media(max-width:640px){
+  .toolbar{flex-wrap:wrap;gap:12px}
+  .toolbar .count-txt{flex:1 1 100%;order:2}
+  .filterbox{flex:1 1 100%;order:1}
+  .filter-btn{width:100%;justify-content:center;height:50px;font-size:15.5px}
+  .fpanel{left:0;right:0;width:auto}
+}
+
+/* SECTION rhythm */
+section.block{padding:46px 0}
+section.cream{background:var(--bg)}
+section.tint{background:var(--muted)}
+
+/* DIY GRID */
+.grid{display:grid;gap:24px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid-3{grid-template-columns:1fr}}
+.dcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
+.dcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.dcard .imgwrap{aspect-ratio:16/10;background:var(--muted);overflow:hidden;position:relative;display:block}
+.dcard .imgwrap img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.dcard:hover .imgwrap img{transform:scale(1.04)}
+/* image overlay badges */
+.img-badges{position:absolute;top:12px;left:12px;right:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;pointer-events:none}
+.diff-badge{font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:5px 11px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px -4px rgba(40,20,40,.4)}
+.diff-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.65}
+.diff-badge.easy{background:var(--diff-easy-bg);color:var(--diff-easy-fg)}
+.diff-badge.mid{background:var(--diff-mid-bg);color:var(--diff-mid-fg)}
+.diff-badge.adv{background:var(--diff-adv-bg);color:var(--diff-adv-fg)}
+.time-badge{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(30,15,30,.72);color:#fff;backdrop-filter:blur(4px);white-space:nowrap;box-shadow:0 4px 12px -4px rgba(40,20,40,.4)}
+.dbody{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.dbody h3{font-size:18.5px;line-height:1.25}
+.dbody p{font-size:14px;color:var(--muted-fg);line-height:1.5}
+.dmeta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border)}
+.dmeta .cat{font-size:12.5px;color:var(--muted-fg);display:flex;align-items:center;gap:5px}
+.dmeta .cat .dot{width:7px;height:7px;border-radius:50%;background:hsl(150 50% 42%)}
+.dmeta .go{font-size:14px;font-weight:700;color:var(--primary);transition:.15s}
+.dcard:hover .dmeta .go{color:var(--accent)}
+
+/* empty state */
+.no-results{display:none;text-align:center;padding:50px 20px;color:var(--muted-fg)}
+.no-results.show{display:block}
+.no-results b{font-family:"Fraunces",serif;font-size:22px;color:var(--primary);display:block;margin-bottom:6px}
+
+/* MATERIALLISTE info block */
+.matlist-band{background:linear-gradient(160deg,var(--primary) 0%,var(--primary-deep) 100%);border-radius:calc(var(--radius)*1.5);padding:42px 40px;color:var(--primary-fg);position:relative;overflow:hidden}
+.matlist-band::before{content:"";position:absolute;top:-100px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,hsla(18,70%,55%,.25),transparent 70%)}
+.matlist-band::after{content:"";position:absolute;bottom:-120px;left:-70px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,hsla(285,60%,45%,.4),transparent 70%)}
+.matlist-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr 1fr;gap:38px;align-items:center}
+@media(max-width:820px){.matlist-inner{grid-template-columns:1fr;gap:28px}}
+.matlist-copy .preview-pill{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:hsl(43 90% 70%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:5px 12px;border-radius:999px;margin-bottom:14px}
+.matlist-copy .preview-pill .pulse{width:7px;height:7px;border-radius:50%;background:hsl(43 90% 65%);animation:pulse 1.8s infinite}
+.matlist-copy h2{color:#fff;font-size:clamp(25px,3vw,34px);margin-bottom:10px}
+.matlist-copy p{color:rgba(250,248,245,.84);font-size:15px;max-width:46ch}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* mock materiallist card */
+.mat-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius);padding:20px;backdrop-filter:blur(4px)}
+.mat-card h4{font-family:"Fraunces",serif;font-size:17px;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+.mat-card h4 .ic{width:30px;height:30px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font-size:15px}
+.mat-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid rgba(255,255,255,.12)}
+.mat-row:first-of-type{border-top:0}
+.mat-thumb{width:42px;height:42px;border-radius:8px;background:rgba(255,255,255,.16);flex:0 0 auto;display:grid;place-items:center;font-size:18px}
+.mat-text{flex:1;min-width:0}
+.mat-text .mt-name{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mat-text .mt-sub{font-size:12px;color:rgba(250,248,245,.66)}
+.mat-link{flex:0 0 auto;font-size:12.5px;font-weight:700;color:hsl(43 90% 74%);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 12px;white-space:nowrap}
+
+/* FOOTER */
+footer{background:var(--primary-deep);color:var(--on-dark);margin-top:0;padding:52px 0 30px;font-size:14px}
+.fgrid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:30px}
+.fgrid .brand{font-size:23px;margin-bottom:8px;display:block;color:#fff}
+.fgrid .brand span{color:var(--accent)}
+.fgrid>div>p{color:var(--on-dark-soft)}
+.fcol h4{font-family:"Inter",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#fff;margin-bottom:12px;font-weight:600}
+.fcol a{display:block;margin-bottom:7px;color:var(--on-dark-soft)}
+.fcol a:hover{color:#fff}
+.disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;font-size:13px;color:var(--on-dark-soft)}
+</style>
+</head>
+<body>
+<div class="mockup-flag">🎨 <b>Designentwurf</b> — DIY-Projekte &amp; Hacks (statisches Mockup) &nbsp;·&nbsp; <b>In Vorbereitung – Konzeptentwurf</b>
+  &nbsp;·&nbsp; <a href="index.html">→ Übersicht</a>
+  &nbsp;·&nbsp; <a href="start-final.html">→ Startseite (final)</a>
+  &nbsp;·&nbsp; <a href="diy-projekt.html">→ DIY-Anleitung (Detail)</a>
+  &nbsp;·&nbsp; <a href="news-liste.html">→ News &amp; Trends</a>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">prim<span>lio</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Startseite</a>
+      <a href="index.html#kategorien">Kategorien ▾</a>
+      <a href="ratgeber-liste.html">Ratgeber</a>
+      <a href="diy-liste.html" class="active">DIY &amp; Hacks</a>
+      <a href="#">Über uns</a>
+    </nav>
+    <form class="nav-search" onsubmit="return false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="Suchen …" aria-label="Suchen">
+      <button class="go-btn" title="Suchen" aria-label="Suchen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+    <button class="icon-btn" title="Sprache">DE</button>
+    <button class="icon-btn" title="Design">◐</button>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-backdrop" id="mobileBackdrop"></div>
+<aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mm-top">
+    <span class="brand">prim<span>lio</span></span>
+    <button class="mm-close" id="mmClose" aria-label="Menü schließen">×</button>
+  </div>
+  <form class="mm-search" onsubmit="return false">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,.72)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input placeholder="Suchen …" aria-label="Suchen">
+  </form>
+  <nav>
+    <a href="index.html">Startseite</a>
+    <a href="index.html#kategorien">Kategorien</a>
+    <a href="ratgeber-liste.html">Ratgeber</a>
+    <a href="diy-liste.html">DIY &amp; Hacks</a>
+    <a href="#">Über uns</a>
+  </nav>
+  <div class="mm-foot">
+    <button>DE / EN</button>
+    <button>◐ Design</button>
+  </div>
+</aside>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="bg" role="img" aria-label="DIY-Gartenprojekt – Selbermachen mit Holz und Werkzeug"></div>
+  <div class="hero-inner">
+    <span class="hero-badge"><span class="pulse"></span>Konzept · In Vorbereitung</span>
+    <h1>DIY-Projekte &amp; Hacks</h1>
+    <p class="lede">Selbermachen für den Garten: Schritt-für-Schritt-Anleitungen, clevere Hacks und die passenden Produkte gleich dazu.</p>
+  </div>
+</div>
+
+<!-- FILTER / SORT TOOLBAR -->
+<div class="wrap">
+  <div class="toolbar">
+    <div class="count-txt"><b id="visCount">6</b> Projekte · Konzept-Vorschau (Beispieldaten)</div>
+    <div class="filterbox">
+      <button class="filter-btn" id="filterBtn" aria-haspopup="true" aria-expanded="false" aria-controls="filterPanel">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        Filter &amp; Sortieren
+        <span class="fb-count" id="fbCount" hidden>0</span>
+        <svg class="fb-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <!-- ROLL-DOWN PANEL -->
+      <div class="fpanel" id="filterPanel" role="dialog" aria-label="Filter und Sortierung" aria-hidden="true">
+        <div class="fpanel-head">
+          <h3>Filter &amp; Sortieren</h3>
+          <button class="fp-close" id="fpClose" aria-label="Schließen">×</button>
+        </div>
+        <div class="fpanel-body">
+          <div class="fp-group">
+            <h4>Kategorie</h4>
+            <div class="fp-options" role="group" aria-label="Nach Kategorie filtern">
+              <button class="chip" data-filter="cat" data-value="Hochbeet &amp; Anzucht">Hochbeet &amp; Anzucht</button>
+              <button class="chip" data-filter="cat" data-value="Garten-Deko &amp; Zubehör">Garten-Deko</button>
+              <button class="chip" data-filter="cat" data-value="Sichtschutz &amp; Gartenzaun">Sichtschutz</button>
+              <button class="chip" data-filter="cat" data-value="Rasenpflege">Rasenpflege</button>
+              <button class="chip" data-filter="cat" data-value="Tiere &amp; Nützlinge">Tiere &amp; Nützlinge</button>
+            </div>
+          </div>
+          <div class="fp-group">
+            <h4>Schwierigkeit</h4>
+            <div class="fp-options" role="group" aria-label="Nach Schwierigkeit filtern">
+              <button class="chip diff" data-filter="diff" data-value="easy">Einfach</button>
+              <button class="chip diff" data-filter="diff" data-value="mid">Mittel</button>
+              <button class="chip diff" data-filter="diff" data-value="adv">Fortgeschritten</button>
+            </div>
+          </div>
+          <div class="fp-group">
+            <h4>Dauer</h4>
+            <div class="fp-options" role="group" aria-label="Nach Dauer filtern">
+              <button class="chip" data-filter="dur" data-value="short">Bis 1 Std</button>
+              <button class="chip" data-filter="dur" data-value="medium">1–2 Std</button>
+              <button class="chip" data-filter="dur" data-value="long">Über 2 Std</button>
+            </div>
+          </div>
+          <div class="fp-group">
+            <h4>Sortieren nach</h4>
+            <div class="fp-options" role="group" aria-label="Sortierung">
+              <button class="chip active" data-sort="recent">Empfohlen</button>
+              <button class="chip" data-sort="az">A–Z</button>
+            </div>
+          </div>
+        </div>
+        <div class="fpanel-foot">
+          <button class="btn ghost" id="fpReset">Zurücksetzen</button>
+          <button class="btn primary" id="fpApply">6 Projekte anzeigen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIY GRID -->
+<section class="block cream">
+  <div class="wrap">
+    <div class="grid grid-3" id="diyGrid">
+
+      <a class="dcard" href="diy-projekt.html" data-cat="Hochbeet &amp; Anzucht" data-diff="easy" data-dur="long">
+        <div class="imgwrap">
+          <div class="img-badges"><span class="diff-badge easy">Einfach</span><span class="time-badge">⏱ 2 Std</span></div>
+          <img src="https://assets.create-app.net/primlio-mockup/img/diy-palette.png" alt="Vertikales Kräuterbeet aus einer Holzpalette">
+        </div>
+        <div class="dbody">
+          <h3>Vertikales Kräuterbeet aus einer Palette bauen</h3>
+          <p>Aus einer alten Europalette wird platzsparend ein bepflanzbares Kräuterregal für Balkon und Terrasse.</p>
+          <div class="dmeta"><span class="cat"><span class="dot"></span>Hochbeet &amp; Anzucht</span><span class="go">Anleitung ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="dcard" href="diy-projekt.html" data-cat="Tiere &amp; Nützlinge" data-diff="mid" data-dur="long">
+        <div class="imgwrap">
+          <div class="img-badges"><span class="diff-badge mid">Mittel</span><span class="time-badge">⏱ 3 Std</span></div>
+          <img src="https://assets.create-app.net/primlio-mockup/img/diy-insektenhotel.png" alt="Selbstgebautes Insektenhotel im Garten">
+        </div>
+        <div class="dbody">
+          <h3>Insektenhotel selber bauen</h3>
+          <p>Ein Zuhause für Wildbienen und Nützlinge – mit Bambus, Hartholz und Tannenzapfen Schicht für Schicht gefüllt.</p>
+          <div class="dmeta"><span class="cat"><span class="dot"></span>Tiere &amp; Nützlinge</span><span class="go">Anleitung ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="dcard" href="diy-projekt.html" data-cat="Hochbeet &amp; Anzucht" data-diff="easy" data-dur="medium">
+        <div class="imgwrap">
+          <div class="img-badges"><span class="diff-badge easy">Einfach</span><span class="time-badge">⏱ 1,5 Std</span></div>
+          <img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/cbdda78b21df29b7ed73e5564ca30a78.png" alt="Metall-Hochbeet aufbauen und befüllen">
+        </div>
+        <div class="dbody">
+          <h3>Hochbeet aus Metall richtig aufbauen und befüllen</h3>
+          <p>Vom Aufbau bis zur richtigen Schichtung – so wird das Metall-Hochbeet von Anfang an ertragreich.</p>
+          <div class="dmeta"><span class="cat"><span class="dot"></span>Hochbeet &amp; Anzucht</span><span class="go">Anleitung ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="dcard" href="diy-projekt.html" data-cat="Sichtschutz &amp; Gartenzaun" data-diff="mid" data-dur="long">
+        <div class="imgwrap">
+          <div class="img-badges"><span class="diff-badge mid">Mittel</span><span class="time-badge">⏱ 2 Std</span></div>
+          <img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/289568963134c1ec8d92182a84bfdf5e.png" alt="Sichtschutz-Zaun mit Kletterpflanzen begrünen">
+        </div>
+        <div class="dbody">
+          <h3>Sichtschutz-Zaun mit Kletterpflanzen begrünen</h3>
+          <p>Rankhilfe montieren, passende Kletterpflanzen wählen und den Zaun in eine grüne Wand verwandeln.</p>
+          <div class="dmeta"><span class="cat"><span class="dot"></span>Sichtschutz &amp; Gartenzaun</span><span class="go">Anleitung ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="dcard" href="diy-projekt.html" data-cat="Garten-Deko &amp; Zubehör" data-diff="easy" data-dur="short">
+        <div class="imgwrap">
+          <div class="img-badges"><span class="diff-badge easy">Einfach</span><span class="time-badge">⏱ 45 Min</span></div>
+          <img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/2661d8071b45a9c5fb113bb18040158c.png" alt="Solar-Lichterkette stimmungsvoll im Garten">
+        </div>
+        <div class="dbody">
+          <h3>Solar-Lichterkette stimmungsvoll im Garten inszenieren</h3>
+          <p>Mit cleverer Wegführung und Befestigung wird aus einer Solar-Lichterkette stimmungsvolle Abendbeleuchtung.</p>
+          <div class="dmeta"><span class="cat"><span class="dot"></span>Garten-Deko &amp; Zubehör</span><span class="go">Anleitung ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="dcard" href="diy-projekt.html" data-cat="Rasenpflege" data-diff="easy" data-dur="short">
+        <div class="imgwrap">
+          <div class="img-badges"><span class="diff-badge easy">Einfach</span><span class="time-badge">⏱ 1 Std</span></div>
+          <img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/484d3cd706bbf47a68a4976a80a9fa05.png" alt="Kahle Rasenstellen reparieren und nachsäen">
+        </div>
+        <div class="dbody">
+          <h3>Kahle Rasenstellen reparieren und nachsäen</h3>
+          <p>Boden vorbereiten, richtig nachsäen und feucht halten – so schließt sich die Lücke im Rasen zuverlässig.</p>
+          <div class="dmeta"><span class="cat"><span class="dot"></span>Rasenpflege</span><span class="go">Anleitung ansehen →</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="no-results" id="noResults">
+      <b>Keine Projekte gefunden</b>
+      <span>Für diese Kombination gibt es aktuell kein Projekt. Filter zurücksetzen und erneut stöbern.</span>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALLISTE info block -->
+<section class="block tint">
+  <div class="wrap">
+    <div class="matlist-band">
+      <div class="matlist-inner">
+        <div class="matlist-copy">
+          <span class="preview-pill"><span class="pulse"></span>Konzept</span>
+          <h2>Jede Anleitung mit Materialliste</h2>
+          <p>Zu jedem Projekt verlinken wir die passenden Produkte direkt – Werkzeug, Material und Pflanzen auf einen Blick. Das ist der praktische Mehrwert beim Nachmachen und gleichzeitig unser Affiliate-Hebel.</p>
+        </div>
+        <div class="mat-card" aria-label="Beispiel-Materialliste (Konzept)">
+          <h4><span class="ic">🛒</span> Materialliste · Palette bauen</h4>
+          <div class="mat-row">
+            <div class="mat-thumb">🪵</div>
+            <div class="mat-text"><div class="mt-name">Europalette, naturbelassen</div><div class="mt-sub">Grundgerüst</div></div>
+            <span class="mat-link">Ansehen →</span>
+          </div>
+          <div class="mat-row">
+            <div class="mat-thumb">🧤</div>
+            <div class="mat-text"><div class="mt-name">Pflanzvlies &amp; Tacker</div><div class="mt-sub">Erd-Taschen</div></div>
+            <span class="mat-link">Ansehen →</span>
+          </div>
+          <div class="mat-row">
+            <div class="mat-thumb">🌿</div>
+            <div class="mat-text"><div class="mt-name">Kräuter-Jungpflanzen-Set</div><div class="mt-sub">Bepflanzung</div></div>
+            <span class="mat-link">Ansehen →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div style="max-width:260px">
+        <span class="brand">prim<span>lio</span></span>
+        <p>Die besten Amazon-Produkte, persönlich kuratiert.</p>
+      </div>
+      <div class="fcol"><h4>Bereiche</h4><a href="kategorie.html">Garten-Deko</a><a href="index.html#kategorien">Rasenpflege</a><a href="index.html#kategorien">Hochbeet &amp; Anzucht</a><a href="index.html#kategorien">Poolpflege</a></div>
+      <div class="fcol"><h4>Entdecken</h4><a href="index.html">Top-Empfehlungen</a><a href="ratgeber-liste.html">Ratgeber</a><a href="diy-liste.html">DIY &amp; Hacks</a><a href="#">Über uns</a></div>
+      <div class="fcol"><h4>Rechtliches</h4><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Cookie-Einstellungen</a></div>
+    </div>
+    <div class="disc">Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. &nbsp;·&nbsp; © 2026 primlio. Alle Rechte vorbehalten.</div>
+  </div>
+</footer>
+
+<script>
+// Mobile hamburger menu
+(function(){
+  var menu=document.getElementById('mobileMenu');
+  var burger=document.getElementById('hamburger');
+  var backdrop=document.getElementById('mobileBackdrop');
+  var close=document.getElementById('mmClose');
+  function open(){menu.classList.add('open');backdrop.classList.add('open');burger.setAttribute('aria-expanded','true');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function shut(){menu.classList.remove('open');backdrop.classList.remove('open');burger.setAttribute('aria-expanded','false');menu.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  burger.addEventListener('click',open);
+  close.addEventListener('click',shut);
+  backdrop.addEventListener('click',shut);
+  menu.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',shut);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
+})();
+
+// Filter & sort roll-down panel (shared pattern)
+(function(){
+  var box=document.querySelector('.filterbox');
+  var panel=document.getElementById('filterPanel');
+  var btn=document.getElementById('filterBtn');
+  var closeBtn=document.getElementById('fpClose');
+  var applyBtn=document.getElementById('fpApply');
+  var resetBtn=document.getElementById('fpReset');
+  var badge=document.getElementById('fbCount');
+  var grid=document.getElementById('diyGrid');
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.dcard'));
+  var noResults=document.getElementById('noResults');
+  var visCount=document.getElementById('visCount');
+
+  function open(){panel.classList.add('open');btn.setAttribute('aria-expanded','true');panel.setAttribute('aria-hidden','false');}
+  function shut(){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');panel.setAttribute('aria-hidden','true');}
+  function toggle(){panel.classList.contains('open')?shut():open();}
+
+  function activeValues(filter){
+    return panel.querySelectorAll('.chip.active[data-filter="'+filter+'"]');
+  }
+  function apply(){
+    var cat=[].map.call(activeValues('cat'),function(c){return c.dataset.value;});
+    var diff=[].map.call(activeValues('diff'),function(c){return c.dataset.value;});
+    var dur=[].map.call(activeValues('dur'),function(c){return c.dataset.value;});
+    var sortChip=panel.querySelector('.chip.active[data-sort]');
+    var sort=sortChip?sortChip.dataset.sort:'recent';
+
+    var visible=cards.filter(function(card){
+      var okC=!cat.length||cat.indexOf(card.dataset.cat)>-1;
+      var okD=!diff.length||diff.indexOf(card.dataset.diff)>-1;
+      var okT=!dur.length||dur.indexOf(card.dataset.dur)>-1;
+      var ok=okC&&okD&&okT;
+      card.style.display=ok?'':'none';
+      return ok;
+    });
+
+    var sorted=visible.slice();
+    if(sort==='az'){
+      sorted.sort(function(a,b){
+        return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent,'de');
+      });
+    }
+    sorted.forEach(function(c){grid.appendChild(c);});
+
+    visCount.textContent=visible.length;
+    applyBtn.textContent=visible.length+' Projekte anzeigen';
+    noResults.classList.toggle('show',visible.length===0);
+
+    var n=cat.length+diff.length+dur.length;
+    if(n>0){badge.textContent=n;badge.hidden=false;}else{badge.hidden=true;}
+  }
+
+  btn.addEventListener('click',function(e){e.stopPropagation();toggle();});
+  closeBtn.addEventListener('click',shut);
+  applyBtn.addEventListener('click',shut);
+  resetBtn.addEventListener('click',function(){
+    panel.querySelectorAll('.chip.active').forEach(function(c){c.classList.remove('active');});
+    var def=panel.querySelector('.chip[data-sort="recent"]');if(def)def.classList.add('active');
+    apply();
+  });
+  panel.querySelectorAll('.chip[data-filter]').forEach(function(c){
+    c.addEventListener('click',function(){this.classList.toggle('active');apply();});
+  });
+  panel.querySelectorAll('.chip[data-sort]').forEach(function(c){
+    c.addEventListener('click',function(){
+      panel.querySelectorAll('.chip[data-sort]').forEach(function(x){x.classList.remove('active');});
+      this.classList.add('active');apply();
+    });
+  });
+  document.addEventListener('click',function(e){if(panel.classList.contains('open')&&!box.contains(e.target))shut();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&panel.classList.contains('open'))shut();});
+})();
+</script>
+</body>
+</html>
