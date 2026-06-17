@@ -157,14 +157,20 @@ header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bo
 /* ALT */
 .altgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:640px){.altgrid{grid-template-columns:1fr}}
-.acard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s}
+.acard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
 .acard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-.acard .iw{aspect-ratio:4/3;background:var(--muted);overflow:hidden}
+.acard .iw{aspect-ratio:4/3;background:var(--muted);overflow:hidden;display:block}
 .acard .iw img{width:100%;height:100%;object-fit:cover;transition:.4s}
 .acard:hover .iw img{transform:scale(1.04)}
-.acard .b{padding:14px}
+.acard .b{padding:14px;display:flex;flex-direction:column;flex:1}
 .acard h4{font-size:15.5px;font-family:Fraunces,serif;margin-bottom:6px}
+.acard h4 a:hover{color:var(--primary)}
 .acard .s{font-size:13px;color:var(--gold)}.acard .s span{color:var(--muted-fg)}
+.acard .act{display:flex;align-items:center;gap:10px;margin-top:14px}
+.acard .amzn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:var(--accent-fg);border-radius:999px;padding:9px 14px;font-size:13.5px;font-weight:700;box-shadow:0 6px 16px -8px hsla(18,70%,40%,.5);transition:.15s}
+.acard .amzn:hover{background:var(--accent-deep)}
+.acard .det{font-size:13.5px;font-weight:600;color:var(--muted-fg);transition:.15s}
+.acard .det:hover{color:var(--primary)}
 .rg-teaser{display:flex;gap:18px;background:var(--muted);border-radius:var(--radius);overflow:hidden;align-items:center}
 .rg-teaser img{width:200px;height:140px;object-fit:cover;flex:0 0 auto}
 .rg-teaser .t{padding:18px}
@@ -174,23 +180,37 @@ header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bo
 .rg-teaser a.go:hover{color:var(--accent)}
 @media(max-width:640px){.rg-teaser img{display:none}}
 
-/* STICKY MOBILE CTA BAR */
-.mcta{position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;align-items:center;gap:12px;background:var(--card);border-top:1px solid var(--border);box-shadow:0 -8px 30px -12px rgba(40,20,40,.35);padding:10px 14px calc(10px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .28s ease}
-.mcta.show{transform:translateY(0)}
-.mcta .info{min-width:0;flex:1}
-.mcta .info .nm{font-size:13.5px;font-weight:600;color:var(--fg);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mcta .info .rt{font-size:12px;color:var(--muted-fg);display:flex;align-items:center;gap:5px;margin-top:2px}
-.mcta .info .rt .st{color:var(--gold);letter-spacing:.5px}
-.mcta a.mbtn{flex:0 0 auto;display:flex;align-items:center;gap:7px;background:var(--accent);color:var(--accent-fg);border-radius:999px;padding:13px 18px;font-size:14.5px;font-weight:700;box-shadow:0 8px 18px -8px hsla(18,70%,40%,.55)}
-.mcta a.mbtn:active{background:var(--accent-deep)}
-@media(max-width:860px){.mcta{display:flex}}
+/* FLY-IN CTA — bottom-left, ~1/3 width, collapsible */
+.flycta{position:fixed;left:20px;bottom:20px;z-index:70;width:clamp(300px,33vw,380px);max-width:calc(100vw - 40px);pointer-events:none}
+.flycta.show .fly-panel,.flycta.show .fly-pill{pointer-events:auto}
+/* Expanded panel */
+.fly-panel{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius);box-shadow:0 18px 44px -16px rgba(40,20,40,.4);padding:12px 12px 12px 14px;transform:translate(-24px,28px);opacity:0;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .3s ease}
+.flycta.show .fly-panel{transform:translate(0,0);opacity:1}
+.flycta.collapsed .fly-panel{display:none}
+.fly-panel .thumb{width:54px;height:54px;flex:0 0 auto;border-radius:9px;object-fit:cover;background:var(--muted);border:1px solid var(--border)}
+.fly-panel .ftxt{min-width:0;flex:1}
+.fly-panel .ftxt .nm{font-size:13.5px;font-weight:600;color:var(--fg);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fly-panel .ftxt .rt{font-size:12px;color:var(--muted-fg);display:flex;align-items:center;gap:5px;margin-top:2px}
+.fly-panel .ftxt .rt .st{color:var(--gold);letter-spacing:.5px}
+.fly-panel a.fbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:var(--accent-fg);border-radius:999px;padding:11px 15px;font-size:13.5px;font-weight:700;box-shadow:0 8px 18px -8px hsla(18,70%,40%,.55);transition:.15s}
+.fly-panel a.fbtn:hover{background:var(--accent-deep)}
+.fly-close{position:absolute;top:-9px;right:-9px;width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--muted-fg);font-size:15px;line-height:1;cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);transition:.15s}
+.fly-close:hover{color:var(--fg);background:var(--muted)}
+/* Collapsed pill */
+.fly-pill{display:none;align-items:center;gap:8px;background:var(--accent);color:var(--accent-fg);border:0;border-radius:999px;padding:12px 18px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 12px 28px -10px hsla(18,70%,40%,.6);transform:translateY(28px);opacity:0;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .25s ease,background .15s}
+.fly-pill:hover{background:var(--accent-deep)}
+.flycta.show.collapsed .fly-pill{display:inline-flex;transform:translateY(0);opacity:1}
+@media(max-width:860px){
+  .flycta{left:50%;transform:translateX(-50%);width:min(86vw,420px);max-width:none}
+  .fly-panel{transform:translateY(28px);opacity:0}
+  .flycta.show .fly-panel{transform:translateY(0);opacity:1}
+}
 
 /* FOOTER */
 footer{background:var(--primary-deep);color:var(--on-dark);padding:46px 0 30px;font-size:14px;margin-top:44px}
 footer .brand{font-size:23px;margin-bottom:8px;display:block;color:#fff}
 footer .brand span{color:var(--accent)}
 footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-top:20px;font-size:13px;color:var(--on-dark-soft);text-align:center}
-@media(max-width:860px){footer{padding-bottom:96px}}
 </style>
 </head>
 <body>
@@ -342,9 +362,39 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
   <div class="section">
     <h2>Alternativen aus dieser Kategorie</h2>
     <div class="altgrid">
-      <a class="acard" href="#"><div class="iw"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/d7433618526c8f32391a0cdcbb1249fa.png" alt="TERESA'S COLLECTIONS Pfau-Gartenstatue"></div><div class="b"><h4>TERESA'S COLLECTIONS Pfau-Gartenstatue</h4><div class="s">★ 4,7 <span>(851)</span></div></div></a>
-      <a class="acard" href="#"><div class="iw"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8ae116077cc99410d43a7c55b19e9261.png" alt="TERESA'S COLLECTIONS Pfau Metallfigur"></div><div class="b"><h4>TERESA'S COLLECTIONS Pfau Metallfigur</h4><div class="s">★ 4,6 <span>(861)</span></div></div></a>
-      <a class="acard" href="#"><div class="iw"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/faf9be50e179adf6844d82487789dde2.png" alt="Cepewa Schiefertafel Wetterstation"></div><div class="b"><h4>Cepewa Schiefertafel Wetterstation</h4><div class="s">★ 4,6 <span>(837)</span></div></div></a>
+      <div class="acard">
+        <a class="iw" href="produkt.html" aria-label="TERESA'S COLLECTIONS Pfau-Gartenstatue – Details ansehen"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/d7433618526c8f32391a0cdcbb1249fa.png" alt="TERESA'S COLLECTIONS Pfau-Gartenstatue"></a>
+        <div class="b">
+          <h4><a href="produkt.html">TERESA'S COLLECTIONS Pfau-Gartenstatue</a></h4>
+          <div class="s">★ 4,7 <span>(851)</span></div>
+          <div class="act">
+            <a class="amzn js-amzn-cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon →</a>
+            <a class="det" href="produkt.html">Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="acard">
+        <a class="iw" href="produkt.html" aria-label="TERESA'S COLLECTIONS Pfau Metallfigur – Details ansehen"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8ae116077cc99410d43a7c55b19e9261.png" alt="TERESA'S COLLECTIONS Pfau Metallfigur"></a>
+        <div class="b">
+          <h4><a href="produkt.html">TERESA'S COLLECTIONS Pfau Metallfigur</a></h4>
+          <div class="s">★ 4,6 <span>(861)</span></div>
+          <div class="act">
+            <a class="amzn js-amzn-cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon →</a>
+            <a class="det" href="produkt.html">Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="acard">
+        <a class="iw" href="produkt.html" aria-label="Cepewa Schiefertafel Wetterstation – Details ansehen"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/faf9be50e179adf6844d82487789dde2.png" alt="Cepewa Schiefertafel Wetterstation"></a>
+        <div class="b">
+          <h4><a href="produkt.html">Cepewa Schiefertafel Wetterstation</a></h4>
+          <div class="s">★ 4,6 <span>(837)</span></div>
+          <div class="act">
+            <a class="amzn js-amzn-cta" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon →</a>
+            <a class="det" href="produkt.html">Details</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -365,15 +415,18 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
   </div>
 </footer>
 
-<!-- STICKY MOBILE CTA BAR -->
-<div class="mcta" id="mcta" aria-hidden="true">
-  <div class="info">
-    <div class="nm">Rostikal Edelrost Säule Familie</div>
-    <div class="rt"><span class="st">★★★★★</span> 4,8 · 578 Bewertungen</div>
+<!-- FLY-IN CTA — bottom-left, collapsible -->
+<div class="flycta" id="flycta" aria-hidden="true">
+  <div class="fly-panel" role="region" aria-label="Produkt-Schnellzugriff">
+    <button class="fly-close" id="flyCollapse" aria-label="Banner einklappen" title="Einklappen">×</button>
+    <img class="thumb" src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b7b496787779e42c455bafdd975ecef3.png" alt="Rostikal Edelrost Säule Familie">
+    <div class="ftxt">
+      <div class="nm">Rostikal Edelrost Säule Familie</div>
+      <div class="rt"><span class="st">★★★★★</span> 4,8 · 578</div>
+    </div>
+    <a class="fbtn" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon →</a>
   </div>
-  <a class="mbtn" href="#" target="_blank" rel="nofollow sponsored noopener">Auf Amazon ansehen
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg>
-  </a>
+  <button class="fly-pill" id="flyExpand" aria-label="Produkt-Schnellzugriff öffnen">🛒 Zum Produkt</button>
 </div>
 
 <script>
@@ -404,11 +457,24 @@ footer .disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;margin-
   document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
 })();
 
-/* Sticky mobile CTA bar — hide whenever ANY on-page Amazon CTA is in view */
+/* Fly-in CTA — hide whenever ANY on-page Amazon CTA is in view; collapsible */
 (function(){
-  var bar=document.getElementById('mcta');
+  var bar=document.getElementById('flycta');
   var ctas=Array.prototype.slice.call(document.querySelectorAll('.js-amzn-cta'));
   if(!bar||!ctas.length)return;
+
+  /* Collapsed state (remembered for the session) */
+  var KEY='primlio-flycta-collapsed';
+  var collapse=document.getElementById('flyCollapse');
+  var expand=document.getElementById('flyExpand');
+  function applyCollapsed(c){
+    bar.classList.toggle('collapsed',c);
+    try{sessionStorage.setItem(KEY,c?'1':'0');}catch(e){}
+  }
+  try{if(sessionStorage.getItem(KEY)==='1')bar.classList.add('collapsed');}catch(e){}
+  if(collapse)collapse.addEventListener('click',function(){applyCollapsed(true);});
+  if(expand)expand.addEventListener('click',function(){applyCollapsed(false);});
+
   function sync(anyVisible){
     bar.classList.toggle('show',!anyVisible);
     bar.setAttribute('aria-hidden',anyVisible?'true':'false');

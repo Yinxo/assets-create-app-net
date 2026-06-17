@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ratgeber — primlio (Designentwurf)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:hsl(36 33% 98%); --fg:hsl(280 15% 12%); --card:#fff;
+  --primary:hsl(285 45% 25%); --primary-fg:hsl(36 33% 98%);
+  --primary-deep:hsl(285 48% 18%); --primary-mid:hsl(285 42% 30%);
+  --accent:hsl(18 70% 55%); --accent-fg:hsl(36 33% 98%);
+  --accent-deep:hsl(18 72% 47%);
+  --muted:hsl(36 15% 94%); --muted-fg:hsl(280 8% 40%);
+  --border:hsl(36 15% 88%); --radius:0.75rem;
+  --gold:hsl(43 74% 50%);
+  --shadow:0 1px 2px rgba(40,20,40,.04),0 8px 24px -12px rgba(40,20,40,.12);
+  --shadow-lg:0 12px 40px -16px rgba(40,20,40,.22);
+  --on-dark:rgba(250,248,245,.9); --on-dark-soft:rgba(250,248,245,.72);
+  /* Format badge colours */
+  --fmt-comp-bg:hsl(285 40% 92%); --fmt-comp-fg:hsl(285 48% 30%);
+  --fmt-use-bg:hsl(160 38% 90%); --fmt-use-fg:hsl(160 50% 26%);
+  --fmt-dec-bg:hsl(18 70% 92%); --fmt-dec-fg:hsl(18 72% 40%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* DESIGN-FLAG */
+.mockup-flag{background:var(--accent);color:var(--accent-fg);text-align:center;font-size:13px;padding:8px 16px;letter-spacing:.01em}
+.mockup-flag b{font-weight:700}
+.mockup-flag a{text-decoration:underline;font-weight:600}
+
+/* HEADER — bold aubergine bar */
+header{position:sticky;top:0;z-index:60;background:var(--primary-deep);border-bottom:3px solid var(--accent)}
+.nav{display:flex;align-items:center;gap:28px;height:70px}
+.brand{font-family:"Fraunces",serif;font-weight:700;font-size:27px;color:var(--primary-fg);letter-spacing:-.03em}
+.brand span{color:var(--accent)}
+.nav-links{display:flex;gap:22px;align-items:center;font-size:15px;font-weight:500}
+.nav-links a{color:var(--on-dark);padding:6px 0;border-bottom:2px solid transparent;transition:.15s}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-color:var(--accent)}
+.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 8px 0 16px;height:40px;width:250px;color:var(--on-dark-soft);font-size:14px}
+.nav-search svg{flex:0 0 auto}
+.nav-search input{flex:1;border:0;background:transparent;font-family:inherit;font-size:14px;outline:none;color:#fff;min-width:0}
+.nav-search input::placeholder{color:var(--on-dark-soft)}
+.nav-search .go-btn{flex:0 0 auto;border:0;background:var(--accent);color:var(--accent-fg);width:30px;height:30px;border-radius:999px;display:grid;place-items:center;cursor:pointer}
+.icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);display:grid;place-items:center;cursor:pointer;color:var(--on-dark);font-size:14px;font-weight:600;flex:0 0 auto}
+.icon-btn:hover{background:rgba(255,255,255,.18)}
+.hamburger{display:none;width:42px;height:40px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);border-radius:10px;cursor:pointer;color:#fff;margin-left:auto}
+.hamburger svg{margin:auto}
+
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0 0 0 auto;width:min(320px,86vw);background:var(--primary-deep);z-index:90;transform:translateX(100%);transition:transform .25s ease;flex-direction:column;padding:20px;box-shadow:-12px 0 40px -10px rgba(0,0,0,.5)}
+.mobile-menu.open{display:flex;transform:translateX(0)}
+.mobile-backdrop{display:none;position:fixed;inset:0;background:rgba(20,10,20,.5);z-index:85}
+.mobile-backdrop.open{display:block}
+.mm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.mm-top .brand{font-size:24px}
+.mm-close{background:none;border:0;color:#fff;font-size:30px;line-height:1;cursor:pointer;padding:0 6px}
+.mm-search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:0 16px;height:44px;margin-bottom:18px}
+.mm-search input{flex:1;border:0;background:transparent;color:#fff;font-size:15px;font-family:inherit;outline:none}
+.mm-search input::placeholder{color:var(--on-dark-soft)}
+.mobile-menu nav a{color:var(--on-dark);font-size:18px;font-weight:500;padding:14px 4px;border-bottom:1px solid rgba(255,255,255,.12)}
+.mobile-menu nav a:hover{color:#fff}
+.mm-foot{margin-top:auto;display:flex;gap:10px}
+.mm-foot button{flex:1;height:44px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-weight:600;font-family:inherit;cursor:pointer}
+
+@media(max-width:860px){
+  .nav-links{display:none}
+  .nav-search{display:none}
+  .icon-btn{display:none}
+  .hamburger{display:grid}
+}
+
+/* HERO — aubergine band */
+.rhero{background:linear-gradient(160deg,var(--primary) 0%,var(--primary-deep) 100%);color:var(--primary-fg);position:relative;overflow:hidden}
+.rhero::before{content:"";position:absolute;top:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,hsla(18,70%,55%,.3),transparent 70%)}
+.rhero::after{content:"";position:absolute;bottom:-140px;left:-90px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,hsla(285,60%,45%,.4),transparent 70%)}
+.rhero .wrap{position:relative;z-index:1;padding:54px 24px 50px;text-align:center}
+.rhero .eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--accent);padding:6px 16px;border-radius:999px;margin-bottom:20px}
+.rhero h1{font-size:clamp(34px,5.4vw,56px);margin-bottom:16px;color:#fff}
+.rhero p.intro{font-size:clamp(16px,1.9vw,20px);color:var(--on-dark);max-width:620px;margin:0 auto}
+
+/* TOOLBAR + FILTER POPOVER (shared pattern w/ kategorie.html) */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:34px 0 4px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.toolbar .count-txt{font-size:14px;color:var(--muted-fg);flex:1 1 auto;min-width:0}
+.toolbar .count-txt b{color:var(--fg);font-weight:600}
+.filterbox{position:relative;flex:0 0 auto}
+.filter-btn{display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--primary);background:var(--primary);color:var(--primary-fg);font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:.15s;box-shadow:var(--shadow);white-space:nowrap}
+.filter-btn:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
+.filter-btn svg{flex:0 0 auto;transition:transform .2s}
+.filter-btn[aria-expanded="true"] .fb-caret{transform:rotate(180deg)}
+.filter-btn .fb-count{background:var(--accent);color:var(--accent-fg);font-size:12px;font-weight:700;border-radius:999px;min-width:20px;height:20px;padding:0 6px;display:grid;place-items:center}
+.fpanel{position:absolute;top:calc(100% + 10px);right:0;z-index:70;width:min(440px,calc(100vw - 32px));background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s,transform .2s,visibility .2s;display:flex;flex-direction:column;max-height:min(72vh,580px)}
+.fpanel.open{opacity:1;visibility:visible;transform:translateY(0)}
+.fpanel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border)}
+.fpanel-head h3{font-size:18px}
+.fpanel-head .fp-close{width:34px;height:34px;border-radius:999px;border:1px solid var(--border);background:var(--bg);font-size:20px;line-height:1;cursor:pointer;color:var(--muted-fg)}
+.fpanel-head .fp-close:hover{color:var(--fg);border-color:var(--muted-fg)}
+.fpanel-body{overflow-y:auto;padding:16px 18px 6px}
+.fp-group{margin-bottom:20px}
+.fp-group h4{font-family:"Inter",sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:11px}
+.fp-options{display:flex;flex-wrap:wrap;gap:9px}
+.chip{font-size:13.5px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--muted-fg);border-radius:999px;padding:9px 15px;cursor:pointer;transition:.15s;white-space:nowrap}
+.chip:hover{border-color:var(--primary);color:var(--primary)}
+.chip.active{background:var(--primary);color:var(--primary-fg);border-color:var(--primary)}
+.fpanel-foot{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--border)}
+.fpanel-foot .btn{flex:1;height:44px;border-radius:999px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;border:1px solid var(--border)}
+.fpanel-foot .btn.ghost{background:var(--bg);color:var(--muted-fg)}
+.fpanel-foot .btn.ghost:hover{color:var(--fg)}
+.fpanel-foot .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.fpanel-foot .btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+@media(max-width:640px){
+  .toolbar{flex-wrap:wrap;gap:12px}
+  .toolbar .count-txt{flex:1 1 100%;order:2}
+  .filterbox{flex:1 1 100%;order:1}
+  .filter-btn{width:100%;justify-content:center;height:50px;font-size:15.5px}
+  .fpanel{left:0;right:0;width:auto}
+}
+
+/* SECTION rhythm */
+section.block{padding:46px 0}
+section.cream{background:var(--bg)}
+section.tint{background:var(--muted)}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px;gap:16px;flex-wrap:wrap}
+.sec-head .kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:block}
+.sec-head h2{font-size:clamp(25px,3.2vw,34px)}
+.sec-head p{color:var(--muted-fg);font-size:15px;margin-top:6px;max-width:62ch}
+
+/* RATGEBER GRID */
+.grid{display:grid;gap:24px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid-3{grid-template-columns:1fr}}
+.rcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
+.rcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.rcard .imgwrap{aspect-ratio:16/10;background:var(--muted);overflow:hidden;position:relative;display:block}
+.rcard .imgwrap img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.rcard:hover .imgwrap img{transform:scale(1.04)}
+.cat-badge{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;box-shadow:0 4px 12px -4px rgba(40,20,40,.4)}
+.rbody{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
+/* format badge */
+.fmt{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 11px;border-radius:999px}
+.fmt::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.7}
+.fmt.comparison{background:var(--fmt-comp-bg);color:var(--fmt-comp-fg)}
+.fmt.use_case{background:var(--fmt-use-bg);color:var(--fmt-use-fg)}
+.fmt.decision{background:var(--fmt-dec-bg);color:var(--fmt-dec-fg)}
+.rbody h3{font-size:18.5px;line-height:1.25}
+.rbody p{font-size:14px;color:var(--muted-fg);line-height:1.5}
+.rmeta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border)}
+.rmeta .date{font-size:12.5px;color:var(--muted-fg);display:flex;align-items:center;gap:5px}
+.rmeta .date .dot{width:7px;height:7px;border-radius:50%;background:hsl(160 55% 42%)}
+.rmeta .go{font-size:14px;font-weight:700;color:var(--primary);transition:.15s}
+.rcard:hover .rmeta .go{color:var(--accent)}
+
+/* empty state (no results) */
+.no-results{display:none;text-align:center;padding:50px 20px;color:var(--muted-fg)}
+.no-results.show{display:block}
+.no-results b{font-family:"Fraunces",serif;font-size:22px;color:var(--primary);display:block;margin-bottom:6px}
+
+/* COMING SOON band */
+.soon-band{background:linear-gradient(160deg,var(--primary) 0%,var(--primary-deep) 100%);border-radius:calc(var(--radius)*1.5);padding:42px 40px;color:var(--primary-fg);position:relative;overflow:hidden}
+.soon-band::before{content:"";position:absolute;top:-100px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,hsla(18,70%,55%,.25),transparent 70%)}
+.soon-head{position:relative;z-index:1;margin-bottom:28px;max-width:680px}
+.preview-pill{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:hsl(43 90% 70%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:5px 12px;border-radius:999px;margin-bottom:14px}
+.preview-pill .pulse{width:7px;height:7px;border-radius:50%;background:hsl(43 90% 65%);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.soon-head h2{color:#fff;font-size:clamp(26px,3vw,36px);margin-bottom:8px}
+.soon-head p{color:rgba(250,248,245,.82);font-size:15px}
+.soon-types{display:grid;grid-template-columns:1fr 1fr;gap:26px;position:relative;z-index:1}
+@media(max-width:760px){.soon-types{grid-template-columns:1fr}}
+.soon-type>h3{color:#fff;font-size:21px;margin-bottom:5px;display:flex;align-items:center;gap:10px}
+.soon-type>p{color:rgba(250,248,245,.78);font-size:14px;margin-bottom:16px;max-width:42ch}
+.scard-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.scard-row{grid-template-columns:1fr}}
+.scard{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:16px;position:relative;min-height:118px;display:flex;flex-direction:column}
+.scard .sbadge{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.78);background:rgba(255,255,255,.12);border:1px dashed rgba(255,255,255,.32);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.scard .sbadge .pulse{width:6px;height:6px;border-radius:50%;background:hsl(43 90% 65%);animation:pulse 1.8s infinite}
+.scard .sline{height:9px;border-radius:6px;background:rgba(255,255,255,.14);margin-bottom:8px}
+.scard .sline.w70{width:70%}
+.scard .sline.w90{width:90%}
+.scard .sline.w50{width:50%;margin-bottom:0}
+
+/* FOOTER */
+footer{background:var(--primary-deep);color:var(--on-dark);margin-top:0;padding:52px 0 30px;font-size:14px}
+.fgrid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:30px}
+.fgrid .brand{font-size:23px;margin-bottom:8px;display:block;color:#fff}
+.fgrid .brand span{color:var(--accent)}
+.fgrid>div>p{color:var(--on-dark-soft)}
+.fcol h4{font-family:"Inter",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#fff;margin-bottom:12px;font-weight:600}
+.fcol a{display:block;margin-bottom:7px;color:var(--on-dark-soft)}
+.fcol a:hover{color:#fff}
+.disc{border-top:1px solid rgba(255,255,255,.14);padding-top:18px;font-size:13px;color:var(--on-dark-soft)}
+</style>
+</head>
+<body>
+<div class="mockup-flag">🎨 <b>Designentwurf</b> — primlio Ratgeber-Übersicht (statisches Mockup, echte Daten · nicht live)
+  &nbsp;·&nbsp; <a href="index.html">→ Übersicht</a>
+  &nbsp;·&nbsp; <a href="start-final.html">→ Startseite (final)</a>
+  &nbsp;·&nbsp; <a href="kategorie.html">→ Kategorie-Seite</a>
+  &nbsp;·&nbsp; <a href="produkt.html">→ Produktseite</a>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">prim<span>lio</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Startseite</a>
+      <a href="index.html#kategorien">Kategorien ▾</a>
+      <a href="ratgeber-liste.html" class="active">Ratgeber</a>
+      <a href="#">Über uns</a>
+    </nav>
+    <form class="nav-search" onsubmit="return false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="Produkt oder Ratgeber suchen…" aria-label="Suchen">
+      <button class="go-btn" title="Suchen" aria-label="Suchen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+    <button class="icon-btn" title="Sprache">DE</button>
+    <button class="icon-btn" title="Design">◐</button>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-backdrop" id="mobileBackdrop"></div>
+<aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mm-top">
+    <span class="brand">prim<span>lio</span></span>
+    <button class="mm-close" id="mmClose" aria-label="Menü schließen">×</button>
+  </div>
+  <form class="mm-search" onsubmit="return false">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,.72)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input placeholder="Produkt oder Ratgeber suchen…" aria-label="Suchen">
+  </form>
+  <nav>
+    <a href="index.html">Startseite</a>
+    <a href="index.html#kategorien">Kategorien</a>
+    <a href="ratgeber-liste.html">Ratgeber</a>
+    <a href="#">Über uns</a>
+    <a href="produkt.html">Beispiel-Produktseite</a>
+  </nav>
+  <div class="mm-foot">
+    <button>DE / EN</button>
+    <button>◐ Design</button>
+  </div>
+</aside>
+
+<!-- HERO -->
+<div class="rhero">
+  <div class="wrap">
+    <span class="eyebrow">Kaufberatung</span>
+    <h1>Ratgeber</h1>
+    <p class="intro">Echte Kaufberatung: Vergleiche, Entscheidungshilfen und klare Empfehlungen — pro Thema das richtige Produkt.</p>
+  </div>
+</div>
+
+<!-- FILTER / SORT TOOLBAR -->
+<div class="wrap">
+  <div class="toolbar">
+    <div class="count-txt"><b id="visCount">14</b> Ratgeber · sortiert nach Aktualität</div>
+    <div class="filterbox">
+      <button class="filter-btn" id="filterBtn" aria-haspopup="true" aria-expanded="false" aria-controls="filterPanel">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        Filter &amp; Sortieren
+        <span class="fb-count" id="fbCount" hidden>0</span>
+        <svg class="fb-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <!-- ROLL-DOWN PANEL -->
+      <div class="fpanel" id="filterPanel" role="dialog" aria-label="Filter und Sortierung" aria-hidden="true">
+        <div class="fpanel-head">
+          <h3>Filter &amp; Sortieren</h3>
+          <button class="fp-close" id="fpClose" aria-label="Schließen">×</button>
+        </div>
+        <div class="fpanel-body">
+          <div class="fp-group">
+            <h4>Format</h4>
+            <div class="fp-options" role="group" aria-label="Nach Format filtern">
+              <button class="chip" data-filter="format" data-value="comparison">Vergleich</button>
+              <button class="chip" data-filter="format" data-value="use_case">Anwendung</button>
+              <button class="chip" data-filter="format" data-value="decision">Entscheidung</button>
+            </div>
+          </div>
+          <div class="fp-group">
+            <h4>Kategorie</h4>
+            <div class="fp-options" role="group" aria-label="Nach Kategorie filtern">
+              <button class="chip" data-filter="cat" data-value="Pflanzenschutz">Pflanzenschutz</button>
+              <button class="chip" data-filter="cat" data-value="Garten-Deko &amp; Zubehör">Garten-Deko</button>
+              <button class="chip" data-filter="cat" data-value="Poolpflege">Poolpflege</button>
+              <button class="chip" data-filter="cat" data-value="Rasenpflege">Rasenpflege</button>
+              <button class="chip" data-filter="cat" data-value="Hochbeet &amp; Anzucht">Hochbeet &amp; Anzucht</button>
+              <button class="chip" data-filter="cat" data-value="Gartenwerkzeug">Gartenwerkzeug</button>
+              <button class="chip" data-filter="cat" data-value="Sichtschutz &amp; Gartenzaun">Sichtschutz &amp; Gartenzaun</button>
+              <button class="chip" data-filter="cat" data-value="Grillzubehör &amp; Grillgeräte">Grillzubehör</button>
+            </div>
+          </div>
+          <div class="fp-group">
+            <h4>Sortieren nach</h4>
+            <div class="fp-options" role="group" aria-label="Sortierung">
+              <button class="chip active" data-sort="recent">Aktualität</button>
+              <button class="chip" data-sort="az">A–Z</button>
+            </div>
+          </div>
+        </div>
+        <div class="fpanel-foot">
+          <button class="btn ghost" id="fpReset">Zurücksetzen</button>
+          <button class="btn primary" id="fpApply">14 Ratgeber anzeigen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RATGEBER GRID -->
+<section class="block cream">
+  <div class="wrap">
+    <div class="grid grid-3" id="ratgeberGrid">
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="comparison" data-cat="Hochbeet &amp; Anzucht">
+        <div class="imgwrap"><span class="cat-badge">Hochbeet &amp; Anzucht</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/49f14dac0a1f9e77b934dc24f343c6fa.png" alt="Hochbeet aus Metall und Holz im Vergleich"></div>
+        <div class="rbody">
+          <span class="fmt comparison">Vergleich</span>
+          <h3>Hochbeet kaufen: Metall oder Holz – die besten Modelle</h3>
+          <p>Metall oder Holz? Sechs Hochbeete mit klarer Entscheidungshilfe.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="comparison" data-cat="Sichtschutz &amp; Gartenzaun">
+        <div class="imgwrap"><span class="cat-badge">Sichtschutz &amp; Gartenzaun</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/03c7dd5a62bab6d4b7903ea6c5f0eef1.png" alt="Zaunblende als Sichtschutz im Vergleich"></div>
+        <div class="rbody">
+          <span class="fmt comparison">Vergleich</span>
+          <h3>Zaunblende im Vergleich: Der richtige Sichtschutz</h3>
+          <p>Welche Zaunblende schützt wirklich vor Blicken und hält dem Wetter stand?</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="comparison" data-cat="Gartenwerkzeug">
+        <div class="imgwrap"><span class="cat-badge">Gartenwerkzeug</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/e9756f8eb32caf9adede454b304f6d9d.png" alt="Gartenwerkzeug-Set im Test"></div>
+        <div class="rbody">
+          <span class="fmt comparison">Vergleich</span>
+          <h3>Gartenwerkzeug-Set Test: Die besten Sets im Vergleich</h3>
+          <p>Sechs Sets nach Material, Ergonomie, Umfang und Aufbewahrung.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="use_case" data-cat="Grillzubehör &amp; Grillgeräte">
+        <div class="imgwrap"><span class="cat-badge">Grillzubehör &amp; Grillgeräte</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/debbea25e219577ebcc6842a4417a197.png" alt="Schwenkgrill-Zubehör für den Dreibein-Grill"></div>
+        <div class="rbody">
+          <span class="fmt use_case">Anwendung</span>
+          <h3>Schwenkgrill-Zubehör: Die besten Ergänzungen für den Dreibein-Grill</h3>
+          <p>Vom Edelstahl-Rundrost bis zu langen Campingspießen.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="use_case" data-cat="Pflanzenschutz">
+        <div class="imgwrap"><span class="cat-badge">Pflanzenschutz</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/e0cd98dc06bf5d4d0e0a4be8f1594535.png" alt="Trauermücken bekämpfen mit Gelbtafeln oder Nematoden"></div>
+        <div class="rbody">
+          <span class="fmt use_case">Anwendung</span>
+          <h3>Trauermücken bekämpfen: Gelbtafeln oder Nematoden</h3>
+          <p>Welche Methode löst das Problem an der Wurzel?</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="comparison" data-cat="Pflanzenschutz">
+        <div class="imgwrap"><span class="cat-badge">Pflanzenschutz</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/d371b0f684fb2baa360492f8c600d120.png" alt="Pilzkrankheiten an Pflanzen chemisch oder biologisch bekämpfen"></div>
+        <div class="rbody">
+          <span class="fmt comparison">Vergleich</span>
+          <h3>Pilzkrankheiten an Pflanzen bekämpfen – chemisch oder biologisch?</h3>
+          <p>Zwei Wirkansätze gegen Mehltau, Schorf, Blattflecken.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="use_case" data-cat="Pflanzenschutz">
+        <div class="imgwrap"><span class="cat-badge">Pflanzenschutz</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/9b6044be814331c6657246d9e853ddb1.png" alt="Schnecken im Garten bekämpfen"></div>
+        <div class="rbody">
+          <span class="fmt use_case">Anwendung</span>
+          <h3>Schnecken im Garten bekämpfen</h3>
+          <p>Wann welcher Schneckenschutz sinnvoll ist.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="use_case" data-cat="Rasenpflege">
+        <div class="imgwrap"><span class="cat-badge">Rasenpflege</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8f21561a8c5b69cd19a90393d88e2a15.png" alt="Unkraut im Rasen entfernen"></div>
+        <div class="rbody">
+          <span class="fmt use_case">Anwendung</span>
+          <h3>Unkraut im Rasen entfernen</h3>
+          <p>Herbizide, Nachsaat und Prävention im Überblick.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="comparison" data-cat="Garten-Deko &amp; Zubehör">
+        <div class="imgwrap"><span class="cat-badge">Garten-Deko &amp; Zubehör</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/6d1da3538f72055c173b96a6e667ad2b.png" alt="Solar-Gartendeko: Leuchten und Brunnen im Vergleich"></div>
+        <div class="rbody">
+          <span class="fmt comparison">Vergleich</span>
+          <h3>Solar-Gartendeko für draußen: Leuchten und Brunnen im Vergleich</h3>
+          <p>Vier Picks: zwei Leuchten, zwei Brunnen.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="decision" data-cat="Garten-Deko &amp; Zubehör">
+        <div class="imgwrap"><span class="cat-badge">Garten-Deko &amp; Zubehör</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ratgeber-heroes/deko-metall-VTlxkuZMfv1ifnL0Zx5e6gIoR5X4p9.png" alt="Wetterfeste Gartendeko aus Metall"></div>
+        <div class="rbody">
+          <span class="fmt decision">Entscheidung</span>
+          <h3>Wetterfeste Gartendeko aus Metall</h3>
+          <p>Fünf Stücke nach Typ, Stil und Einsatzort.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="use_case" data-cat="Poolpflege">
+        <div class="imgwrap"><span class="cat-badge">Poolpflege</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ratgeber-heroes/poolpflege-eKeqUEHLTls4sVXO1u1PzzbbZB1Y3N.png" alt="Grünes oder trübes Poolwasser wieder klar bekommen"></div>
+        <div class="rbody">
+          <span class="fmt use_case">Anwendung</span>
+          <h3>Grünes oder trübes Poolwasser: Schritt für Schritt wieder klar</h3>
+          <p>Diagnose stellen und das richtige Mittel finden.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="use_case" data-cat="Poolpflege">
+        <div class="imgwrap"><span class="cat-badge">Poolpflege</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/2562c97dfff74b4d0e0444a72cf8d245.png" alt="Pool richtig pflegen: das richtige Mittel für jede Situation"></div>
+        <div class="rbody">
+          <span class="fmt use_case">Anwendung</span>
+          <h3>Pool richtig pflegen: Das richtige Mittel für jede Situation</h3>
+          <p>Multitabs, Algizid oder Kinderpool-Lösung?</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="comparison" data-cat="Pflanzenschutz">
+        <div class="imgwrap"><span class="cat-badge">Pflanzenschutz</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/afdf69f341fd0cd5ac60fc7ee1dc0386.png" alt="Schädlingsbekämpfung im Garten: welches Mittel passt"></div>
+        <div class="rbody">
+          <span class="fmt comparison">Vergleich</span>
+          <h3>Schädlingsbekämpfung im Garten: Welches Mittel passt zu dir?</h3>
+          <p>Vier meistbewertete Mittel im Vergleich.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcard" href="ratgeber-detail.html" data-format="comparison" data-cat="Rasenpflege">
+        <div class="imgwrap"><span class="cat-badge">Rasenpflege</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/9c089af1e87963e8cf9a25e9f2527ca3.png" alt="Rasensamen im Sommer für Nachsaat und Neuanlage"></div>
+        <div class="rbody">
+          <span class="fmt comparison">Vergleich</span>
+          <h3>Rasensamen im Sommer: Die besten Produkte für Nachsaat und Neuanlage</h3>
+          <p>Welcher Rasensamen für welche Situation.</p>
+          <div class="rmeta"><span class="date"><span class="dot"></span>Aktualisiert Juni 2026</span><span class="go">Ratgeber lesen →</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="no-results" id="noResults">
+      <b>Keine Ratgeber gefunden</b>
+      <span>Für diese Kombination gibt es aktuell keinen Ratgeber. Filter zurücksetzen und erneut stöbern.</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMING SOON — future content types -->
+<section class="block tint">
+  <div class="wrap">
+    <div class="soon-band">
+      <div class="soon-head">
+        <span class="preview-pill"><span class="pulse"></span>Bald · In Vorbereitung</span>
+        <h2>Was als Nächstes kommt</h2>
+        <p>Neben Kaufberatung bauen wir zwei weitere Inhalts-Formate auf. Diese Karten sind eine Design-Vorschau auf das künftige Layout, noch keine echten Artikel.</p>
+      </div>
+      <div class="soon-types">
+
+        <div class="soon-type">
+          <h3>📰 News &amp; Trends</h3>
+          <p>Recherchierte Probleme, aktuelle Trends, neueste Produkte und Updates – pro Kategorie.</p>
+          <div class="scard-row">
+            <div class="scard">
+              <span class="sbadge"><span class="pulse"></span>Bald</span>
+              <div class="sline w90"></div><div class="sline w70"></div><div class="sline w50"></div>
+            </div>
+            <div class="scard">
+              <span class="sbadge"><span class="pulse"></span>Bald</span>
+              <div class="sline w70"></div><div class="sline w90"></div><div class="sline w50"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="soon-type">
+          <h3>🛠️ DIY-Projekte &amp; Hacks</h3>
+          <p>Anleitungen, clevere Verwendungszwecke und passende Produktlisten zum Nachmachen.</p>
+          <div class="scard-row">
+            <div class="scard">
+              <span class="sbadge"><span class="pulse"></span>Bald</span>
+              <div class="sline w70"></div><div class="sline w90"></div><div class="sline w50"></div>
+            </div>
+            <div class="scard">
+              <span class="sbadge"><span class="pulse"></span>Bald</span>
+              <div class="sline w90"></div><div class="sline w70"></div><div class="sline w50"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div style="max-width:260px">
+        <span class="brand">prim<span>lio</span></span>
+        <p>Die besten Amazon-Produkte, persönlich kuratiert.</p>
+      </div>
+      <div class="fcol"><h4>Bereiche</h4><a href="kategorie.html">Garten-Deko</a><a href="index.html#kategorien">Rasenpflege</a><a href="index.html#kategorien">Hochbeet &amp; Anzucht</a><a href="index.html#kategorien">Poolpflege</a></div>
+      <div class="fcol"><h4>Entdecken</h4><a href="index.html">Top-Empfehlungen</a><a href="ratgeber-liste.html">Ratgeber</a><a href="#">Über uns</a></div>
+      <div class="fcol"><h4>Rechtliches</h4><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Cookie-Einstellungen</a></div>
+    </div>
+    <div class="disc">Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. &nbsp;·&nbsp; © 2026 primlio. Alle Rechte vorbehalten.</div>
+  </div>
+</footer>
+
+<script>
+// Mobile hamburger menu
+(function(){
+  var menu=document.getElementById('mobileMenu');
+  var burger=document.getElementById('hamburger');
+  var backdrop=document.getElementById('mobileBackdrop');
+  var close=document.getElementById('mmClose');
+  function open(){menu.classList.add('open');backdrop.classList.add('open');burger.setAttribute('aria-expanded','true');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function shut(){menu.classList.remove('open');backdrop.classList.remove('open');burger.setAttribute('aria-expanded','false');menu.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  burger.addEventListener('click',open);
+  close.addEventListener('click',shut);
+  backdrop.addEventListener('click',shut);
+  menu.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',shut);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
+})();
+
+// Filter & sort roll-down panel (shared pattern)
+(function(){
+  var box=document.querySelector('.filterbox');
+  var panel=document.getElementById('filterPanel');
+  var btn=document.getElementById('filterBtn');
+  var closeBtn=document.getElementById('fpClose');
+  var applyBtn=document.getElementById('fpApply');
+  var resetBtn=document.getElementById('fpReset');
+  var badge=document.getElementById('fbCount');
+  var grid=document.getElementById('ratgeberGrid');
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.rcard'));
+  var noResults=document.getElementById('noResults');
+  var visCount=document.getElementById('visCount');
+
+  function open(){panel.classList.add('open');btn.setAttribute('aria-expanded','true');panel.setAttribute('aria-hidden','false');}
+  function shut(){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');panel.setAttribute('aria-hidden','true');}
+  function toggle(){panel.classList.contains('open')?shut():open();}
+
+  function activeValues(filter){
+    return panel.querySelectorAll('.chip.active[data-filter="'+filter+'"]');
+  }
+  function apply(){
+    var fmt=[].map.call(activeValues('format'),function(c){return c.dataset.value;});
+    var cat=[].map.call(activeValues('cat'),function(c){return c.dataset.value;});
+    var sortChip=panel.querySelector('.chip.active[data-sort]');
+    var sort=sortChip?sortChip.dataset.sort:'recent';
+
+    var visible=cards.filter(function(card){
+      var okF=!fmt.length||fmt.indexOf(card.dataset.format)>-1;
+      var okC=!cat.length||cat.indexOf(card.dataset.cat)>-1;
+      var ok=okF&&okC;
+      card.style.display=ok?'':'none';
+      return ok;
+    });
+
+    // sort visible cards
+    var sorted=visible.slice();
+    if(sort==='az'){
+      sorted.sort(function(a,b){
+        return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent,'de');
+      });
+    }
+    sorted.forEach(function(c){grid.appendChild(c);});
+
+    visCount.textContent=visible.length;
+    applyBtn.textContent=visible.length+(visible.length===1?' Ratgeber anzeigen':' Ratgeber anzeigen');
+    noResults.classList.toggle('show',visible.length===0);
+
+    var n=fmt.length+cat.length;
+    if(n>0){badge.textContent=n;badge.hidden=false;}else{badge.hidden=true;}
+  }
+
+  btn.addEventListener('click',function(e){e.stopPropagation();toggle();});
+  closeBtn.addEventListener('click',shut);
+  applyBtn.addEventListener('click',shut);
+  resetBtn.addEventListener('click',function(){
+    panel.querySelectorAll('.chip.active').forEach(function(c){c.classList.remove('active');});
+    var def=panel.querySelector('.chip[data-sort="recent"]');if(def)def.classList.add('active');
+    apply();
+  });
+  panel.querySelectorAll('.chip[data-filter]').forEach(function(c){
+    c.addEventListener('click',function(){this.classList.toggle('active');apply();});
+  });
+  panel.querySelectorAll('.chip[data-sort]').forEach(function(c){
+    c.addEventListener('click',function(){
+      panel.querySelectorAll('.chip[data-sort]').forEach(function(x){x.classList.remove('active');});
+      this.classList.add('active');apply();
+    });
+  });
+  document.addEventListener('click',function(e){if(panel.classList.contains('open')&&!box.contains(e.target))shut();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&panel.classList.contains('open'))shut();});
+})();
+</script>
+</body>
+</html>
