@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garten-Deko &amp; Zubehör — primlio (Designentwurf)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:hsl(36 33% 98%); --fg:hsl(280 15% 12%); --card:#fff;
+  --primary:hsl(285 45% 25%); --primary-fg:hsl(36 33% 98%);
+  --accent:hsl(18 70% 55%); --accent-fg:hsl(36 33% 98%);
+  --muted:hsl(36 15% 94%); --muted-fg:hsl(280 8% 40%);
+  --border:hsl(36 15% 88%); --radius:0.75rem;
+  --gold:hsl(43 74% 50%);
+  --shadow:0 1px 2px rgba(40,20,40,.04),0 8px 24px -12px rgba(40,20,40,.12);
+  --shadow-lg:0 12px 40px -16px rgba(40,20,40,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.mockup-flag{background:var(--primary);color:var(--primary-fg);text-align:center;font-size:13px;padding:7px 16px;letter-spacing:.01em}
+.mockup-flag b{font-weight:600}
+.mockup-flag a{text-decoration:underline}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:60;background:rgba(250,248,245,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav{display:flex;align-items:center;gap:26px;height:68px}
+.brand{font-family:"Fraunces",serif;font-weight:600;font-size:26px;color:var(--primary);letter-spacing:-.03em}
+.nav-links{display:flex;gap:22px;align-items:center;font-size:15px;font-weight:500}
+.nav-links a{color:var(--fg);padding:6px 0;border-bottom:2px solid transparent;transition:.15s}
+.nav-links a:hover,.nav-links a.active{color:var(--primary);border-color:var(--accent)}
+.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:999px;height:40px;padding:0 8px 0 16px;width:250px;color:var(--muted-fg);font-size:14px;box-shadow:var(--shadow)}
+.nav-search svg{flex:0 0 auto}
+.nav-search input{flex:1;border:0;background:transparent;font-family:inherit;font-size:14px;outline:none;color:var(--fg);min-width:0}
+.nav-search input::placeholder{color:var(--muted-fg)}
+.nav-search .go-btn{flex:0 0 auto;border:0;background:var(--primary);color:var(--primary-fg);width:30px;height:30px;border-radius:999px;display:grid;place-items:center;cursor:pointer}
+.hamburger{display:none;margin-left:auto;width:42px;height:42px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--primary);align-items:center;justify-content:center}
+.hamburger svg{width:22px;height:22px}
+@media(max-width:860px){
+  .nav-links{display:none}
+  .nav-search{display:none}
+  .hamburger{display:flex}
+}
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0;z-index:55;background:rgba(30,15,30,.45);backdrop-filter:blur(2px)}
+.mobile-menu.open{display:block}
+.mm-panel{position:absolute;top:0;right:0;width:min(82vw,330px);height:100%;background:var(--bg);box-shadow:-12px 0 40px -16px rgba(40,20,40,.4);padding:22px;display:flex;flex-direction:column;gap:6px;transform:translateX(100%);transition:transform .25s ease}
+.mobile-menu.open .mm-panel{transform:translateX(0)}
+.mm-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.mm-top .brand{font-size:23px}
+.mm-close{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:var(--card);font-size:20px;cursor:pointer;color:var(--muted-fg);line-height:1}
+.mm-search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:999px;height:42px;padding:0 14px;margin-bottom:14px}
+.mm-search input{flex:1;border:0;background:transparent;font-family:inherit;font-size:14px;outline:none;min-width:0}
+.mm-panel nav a{padding:13px 6px;font-size:17px;font-weight:500;border-bottom:1px solid var(--border)}
+.mm-panel nav a:hover{color:var(--primary)}
+
+/* BREADCRUMB */
+.crumb{font-size:13.5px;color:var(--muted-fg);padding:22px 0 0}
+.crumb a:hover{color:var(--primary)}
+.crumb span{color:var(--fg)}
+
+/* CATEGORY HERO */
+.chero{padding:26px 0 14px}
+.chero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+@media(max-width:860px){.chero-inner{grid-template-columns:1fr;gap:24px}}
+.chero .eyebrow{display:inline-block;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.chero h1{font-size:clamp(32px,4.6vw,50px);margin-bottom:16px}
+.chero p.intro{font-size:clamp(16px,1.8vw,19px);color:var(--muted-fg);max-width:520px;margin-bottom:20px}
+.chero .htrust{display:inline-flex;align-items:center;gap:9px;font-size:14px;color:var(--muted-fg);background:var(--muted);border-radius:999px;padding:8px 16px}
+.chero .htrust .dot{width:8px;height:8px;border-radius:50%;background:hsl(160 55% 42%)}
+.chero .htrust b{color:var(--primary);font-weight:600}
+.chero-img{aspect-ratio:4/3;border-radius:calc(var(--radius)*1.3);overflow:hidden;box-shadow:var(--shadow-lg);background:var(--muted)}
+.chero-img img{width:100%;height:100%;object-fit:cover}
+
+/* DEALS PREVIEW STRIP */
+.deals{margin:34px 0 0}
+.deals-bar{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:linear-gradient(100deg,hsl(285 45% 25%) 0%,hsl(285 42% 33%) 100%);color:var(--primary-fg);border-radius:var(--radius);padding:20px 24px;position:relative;overflow:hidden}
+.deals-bar .soon{position:absolute;top:14px;right:18px;background:var(--accent);color:var(--accent-fg);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px}
+.deals-bar .dtxt{flex:1;min-width:200px}
+.deals-bar .dtxt b{font-family:"Fraunces",serif;font-size:20px;display:block;margin-bottom:3px}
+.deals-bar .dtxt span{font-size:14px;color:rgba(250,248,245,.82)}
+.deal-slot{display:flex;align-items:center;gap:12px;background:rgba(250,248,245,.12);border:1px dashed rgba(250,248,245,.4);border-radius:10px;padding:11px 15px}
+.deal-badge{background:var(--accent);color:var(--accent-fg);font-size:13px;font-weight:700;padding:5px 10px;border-radius:8px;white-space:nowrap}
+.deal-slot .ds{font-size:13.5px;color:rgba(250,248,245,.88);line-height:1.35}
+.deal-slot .ds s{color:rgba(250,248,245,.55)}
+@media(max-width:560px){.deals-bar .soon{position:static;margin-bottom:6px}}
+
+/* SORT / FILTER UI (cosmetic) */
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:38px 0 4px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.toolbar .count-txt{font-size:14px;color:var(--muted-fg)}
+.toolbar .count-txt b{color:var(--fg);font-weight:600}
+.tb-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:13.5px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--muted-fg);border-radius:999px;padding:7px 14px;cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--primary);color:var(--primary)}
+.chip.active{background:var(--primary);color:var(--primary-fg);border-color:var(--primary)}
+.sortsel{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted-fg)}
+.sortsel select{font-family:inherit;font-size:13.5px;border:1px solid var(--border);background:var(--card);border-radius:999px;padding:8px 14px;color:var(--fg);cursor:pointer}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 0}
+.filter-row .fl-label{font-size:13px;font-weight:600;color:var(--muted-fg);align-self:center;margin-right:4px}
+
+/* SECTION */
+section.block{padding:46px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px;gap:16px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(25px,3.2vw,34px)}
+.sec-head p{color:var(--muted-fg);font-size:15px;margin-top:6px}
+.sec-head a.more{color:var(--primary);font-weight:600;font-size:15px;white-space:nowrap}
+.sec-head a.more:hover{color:var(--accent)}
+
+/* RANKED TOP 10 */
+.toplist{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+@media(max-width:760px){.toplist{grid-template-columns:1fr}}
+.rcardp{display:flex;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;position:relative}
+.rcardp:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.rank{flex:0 0 auto;width:54px;display:flex;align-items:flex-start;justify-content:center;padding-top:16px;background:var(--muted)}
+.rank .num{font-family:"Fraunces",serif;font-weight:700;font-size:28px;color:var(--primary);line-height:1}
+.rcardp.top3 .rank{background:linear-gradient(180deg,hsl(43 74% 92%),var(--muted))}
+.rcardp.top3 .rank .num{color:var(--accent)}
+.rcardp .rimg{flex:0 0 auto;width:116px;align-self:stretch;background:var(--muted);overflow:hidden}
+.rcardp .rimg img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.rcardp:hover .rimg img{transform:scale(1.05)}
+.rcardp .rinfo{flex:1;min-width:0;padding:15px 16px 14px;display:flex;flex-direction:column}
+.rcardp .rinfo h3{font-size:16.5px;font-weight:600;line-height:1.25;margin-bottom:8px}
+.rcardp .stars{display:flex;align-items:center;gap:7px;font-size:13.5px;margin-bottom:auto}
+.rcardp .stars .st{color:var(--gold);letter-spacing:1px}
+.rcardp .stars b{font-weight:700}
+.rcardp .stars .rev{color:var(--muted-fg)}
+.rcardp .rfoot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:11px;border-top:1px solid var(--border)}
+.rcardp .fresh{font-size:12px;color:var(--muted-fg);display:flex;align-items:center;gap:5px}
+.rcardp .fresh .dot{width:7px;height:7px;border-radius:50%;background:hsl(160 55% 42%)}
+.rcardp .go{font-size:13.5px;font-weight:600;color:var(--primary)}
+
+/* RATGEBER */
+.grid{display:grid;gap:22px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:760px){.grid-2{grid-template-columns:1fr}}
+.rcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
+.rcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.rcard .imgwrap{aspect-ratio:16/9;background:var(--muted);overflow:hidden}
+.rcard .imgwrap img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.rcard:hover .imgwrap img{transform:scale(1.04)}
+.rtag{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.rbody{padding:18px;display:flex;flex-direction:column;gap:9px;flex:1}
+.rbody h3{font-size:19px;line-height:1.25}
+.rbody p{font-size:14px;color:var(--muted-fg);line-height:1.5}
+.rbody .go{margin-top:auto;font-size:14px;font-weight:600;color:var(--primary);padding-top:6px}
+
+/* HOW WE CHOOSE band */
+.band{background:var(--primary);color:var(--primary-fg);border-radius:calc(var(--radius)*1.5);padding:46px;text-align:center}
+.band h2{color:var(--primary-fg);font-size:clamp(25px,3vw,32px);margin-bottom:14px}
+.band p{max-width:640px;margin:0 auto;color:rgba(250,248,245,.85);font-size:16px}
+.band .pillars{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;margin-top:28px;text-align:left}
+.band .pillar{max-width:230px}
+.band .pillar b{display:block;font-family:"Fraunces",serif;font-size:18px;margin-bottom:5px}
+.band .pillar span{font-size:14px;color:rgba(250,248,245,.78)}
+
+/* OTHER CATEGORIES */
+.othercats{display:flex;gap:10px;flex-wrap:wrap}
+.othercats a{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:11px 18px;font-size:14.5px;font-weight:500;color:var(--fg);box-shadow:var(--shadow);transition:.15s}
+.othercats a:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px)}
+.othercats a .arr{color:var(--accent);font-weight:700}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);margin-top:40px;padding:48px 0 30px;color:var(--muted-fg);font-size:14px}
+.fgrid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:30px}
+.fgrid .brand{font-size:22px;margin-bottom:8px;display:block}
+.fcol h4{font-family:"Inter",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg);margin-bottom:12px;font-weight:600}
+.fcol a{display:block;margin-bottom:7px;color:var(--muted-fg)}
+.fcol a:hover{color:var(--primary)}
+.disc{border-top:1px solid var(--border);padding-top:18px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="mockup-flag">🎨 <b>Designentwurf</b> — primlio Kategorieseite (statisches Mockup, echte Daten · nicht live) &nbsp;·&nbsp; <a href="index.html">→ Übersicht</a> &nbsp;·&nbsp; <a href="produkt.html">→ Produktseite</a></div>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">primlio</a>
+    <nav class="nav-links">
+      <a href="index.html">Startseite</a>
+      <a href="index.html#kategorien">Kategorien ▾</a>
+      <a href="index.html#ratgeber">Ratgeber</a>
+      <a href="#">Über uns</a>
+    </nav>
+    <form class="nav-search" onsubmit="return false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="Produkt oder Ratgeber suchen…" aria-label="Suchen">
+      <button class="go-btn" title="Suchen" aria-label="Suchen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-panel">
+    <div class="mm-top">
+      <a href="index.html" class="brand">primlio</a>
+      <button class="mm-close" id="mmClose" aria-label="Menü schließen">×</button>
+    </div>
+    <form class="mm-search" onsubmit="return false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="Produkt oder Ratgeber suchen…" aria-label="Suchen">
+    </form>
+    <nav>
+      <a href="index.html">Startseite</a>
+      <a href="index.html#kategorien">Kategorien</a>
+      <a href="index.html#ratgeber">Ratgeber</a>
+      <a href="#">Über uns</a>
+      <a href="produkt.html">Beispiel-Produktseite</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- BREADCRUMB -->
+  <div class="crumb"><a href="index.html">Startseite</a> › <span>Garten-Deko &amp; Zubehör</span></div>
+
+  <!-- CATEGORY HERO -->
+  <div class="chero">
+    <div class="chero-inner">
+      <div>
+        <span class="eyebrow">Garten &amp; Außenbereich</span>
+        <h1>Garten-Deko &amp; Zubehör</h1>
+        <p class="intro">Was dem Garten Persönlichkeit gibt — Kübel, Leuchten und Deko-Elemente, die wirklich zum Verweilen einladen, nicht nur gut aussehen.</p>
+        <div class="htrust"><span class="dot"></span><b>10 Produkte</b>&nbsp;von Hand geprüft · Stand Juni 2026</div>
+      </div>
+      <div class="chero-img">
+        <img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/2661d8071b45a9c5fb113bb18040158c.png" alt="Garten-Deko &amp; Zubehör">
+      </div>
+    </div>
+  </div>
+
+  <!-- DEALS PREVIEW (Future) -->
+  <div class="deals">
+    <div class="deals-bar">
+      <span class="soon">Bald · Vorschau</span>
+      <div class="dtxt">
+        <b>Deals dieser Kategorie</b>
+        <span>Hier erscheinen künftig zeitlich begrenzte Angebote für Garten-Deko — handverlesen, nicht automatisch.</span>
+      </div>
+      <div class="deal-slot">
+        <span class="deal-badge">−25 %</span>
+        <span class="ds">Beispiel-Platzhalter<br><s>—,—€</s> &nbsp;Vorschau auf das Deal-Layout</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SORT / FILTER UI CONCEPT -->
+  <div class="toolbar">
+    <div class="count-txt"><b>10</b> kuratierte Produkte</div>
+    <div class="tb-right">
+      <div class="chips" role="group" aria-label="Schnellsortierung (Konzept)">
+        <button class="chip active">Beste Bewertung</button>
+        <button class="chip">Beliebteste</button>
+        <button class="chip">Preis-Leistung</button>
+      </div>
+      <div class="sortsel">
+        <label for="sortby">Sortieren:</label>
+        <select id="sortby" aria-label="Sortieren nach">
+          <option>Beste Bewertung</option>
+          <option>Meiste Bewertungen</option>
+          <option>Preis-Leistung</option>
+          <option>Neu hinzugekommen</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="filter-row">
+    <span class="fl-label">Filter:</span>
+    <button class="chip">Solarbetrieben</button>
+    <button class="chip">Aus Metall</button>
+    <button class="chip">Wetterfest</button>
+    <button class="chip">Statuen &amp; Figuren</button>
+    <button class="chip">Beleuchtung</button>
+    <button class="chip">Unter 50 €</button>
+  </div>
+</div>
+
+<!-- TOP 10 -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Unsere Top 10</h2>
+        <p>Persönlich geprüft und nach Bewertung, Beliebtheit und Preis-Leistung sortiert.</p>
+      </div>
+    </div>
+    <div class="toplist">
+
+      <a class="rcardp top3" href="produkt.html">
+        <div class="rank"><span class="num">1</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b7b496787779e42c455bafdd975ecef3.png" alt="Rostikal Edelrost Säule Familie"></div>
+        <div class="rinfo">
+          <h3>Rostikal Edelrost Säule Familie</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,8</b><span class="rev">(578)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp top3" href="produkt.html">
+        <div class="rank"><span class="num">2</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/d7433618526c8f32391a0cdcbb1249fa.png" alt="TERESA'S COLLECTIONS Pfau-Gartenstatue Metall"></div>
+        <div class="rinfo">
+          <h3>TERESA'S COLLECTIONS Pfau-Gartenstatue Metall</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(851)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp top3" href="produkt.html">
+        <div class="rank"><span class="num">3</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8ae116077cc99410d43a7c55b19e9261.png" alt="TERESA'S COLLECTIONS Pfau Metallfigur"></div>
+        <div class="rinfo">
+          <h3>TERESA'S COLLECTIONS Pfau Metallfigur</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,6</b><span class="rev">(861)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp" href="produkt.html">
+        <div class="rank"><span class="num">4</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/faf9be50e179adf6844d82487789dde2.png" alt="Cepewa Schiefertafel Wetterstation"></div>
+        <div class="rinfo">
+          <h3>Cepewa Schiefertafel Wetterstation</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,6</b><span class="rev">(837)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp" href="produkt.html">
+        <div class="rank"><span class="num">5</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/f6875584e772530ef8acf34712108c82.png" alt="BITPOTT Solar-Gartenleuchten 4er-Set"></div>
+        <div class="rinfo">
+          <h3>BITPOTT Solar-Gartenleuchten 4er-Set</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,6</b><span class="rev">(611)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp" href="produkt.html">
+        <div class="rank"><span class="num">6</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/330f8037217d231803ad00557aef676d.png" alt="OUILA Solar-Gießkanne Lichterkette"></div>
+        <div class="rinfo">
+          <h3>OUILA Solar-Gießkanne Lichterkette</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,6</b><span class="rev">(393)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp" href="produkt.html">
+        <div class="rank"><span class="num">7</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/0d1b48a4603429c045fff40c8d69e85f.png" alt="Linkind StarRay Solar-Strahler"></div>
+        <div class="rinfo">
+          <h3>Linkind StarRay Solar-Strahler</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,5</b><span class="rev">(2.908)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp" href="produkt.html">
+        <div class="rank"><span class="num">8</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/0346c1fd49d2046abaff83477b3d7426.png" alt="Solar Lotus Gartenleuchte Metall"></div>
+        <div class="rinfo">
+          <h3>Solar Lotus Gartenleuchte Metall</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,5</b><span class="rev">(1.272)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp" href="produkt.html">
+        <div class="rank"><span class="num">9</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/7cede38bef1cb56a5449d861fefb9dd0.png" alt="Dahlie Windspiel Metall Kupfer"></div>
+        <div class="rinfo">
+          <h3>Dahlie Windspiel Metall Kupfer</h3>
+          <div class="stars"><span class="st">★★★★☆</span><b>4,4</b><span class="rev">(1.120)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+      <a class="rcardp" href="produkt.html">
+        <div class="rank"><span class="num">10</span></div>
+        <div class="rimg"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/d19610183b6f05036bbe3dfe543ff83b.png" alt="Antike Metall-Vogeltränke Stehend"></div>
+        <div class="rinfo">
+          <h3>Antike Metall-Vogeltränke Stehend</h3>
+          <div class="stars"><span class="st">★★★★☆</span><b>4,2</b><span class="rev">(979)</span></div>
+          <div class="rfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Details ansehen →</span></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- RATGEBER -->
+<section class="block" style="background:var(--muted)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>Ratgeber zu Garten-Deko</h2><p>Echte Kaufberatung mit Vergleich und klarer Empfehlung — passend zu dieser Kategorie.</p></div>
+      <a class="more" href="index.html#ratgeber">Alle Ratgeber →</a>
+    </div>
+    <div class="grid grid-2">
+      <a class="rcard" href="#">
+        <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/6d1da3538f72055c173b96a6e667ad2b.png" alt="Solar-Gartendeko"></div>
+        <div class="rbody"><span class="rtag">Vergleich · Solar-Deko</span>
+          <h3>Solar-Gartendeko für draußen: Leuchten und Brunnen im Vergleich</h3>
+          <p>Kabellos, wartungsarm, stimmungsvoll – Solar-Gartendeko verwandelt Terrasse und Garten ganz ohne Stromanschluss. Vier Picks im direkten Vergleich.</p>
+          <span class="go">Ratgeber lesen →</span></div>
+      </a>
+      <a class="rcard" href="#">
+        <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ratgeber-heroes/deko-metall-VTlxkuZMfv1ifnL0Zx5e6gIoR5X4p9.png" alt="Wetterfeste Gartendeko aus Metall"></div>
+        <div class="rbody"><span class="rtag">Vergleich · Metall-Deko</span>
+          <h3>Wetterfeste Gartendeko aus Metall: Das richtige Stück für jeden Außenbereich</h3>
+          <p>Metalldekoration im Garten überdauert Jahreszeiten – vorausgesetzt, Material und Verarbeitung stimmen. Dieser Ratgeber sortiert fünf Stücke nach Typ, Stil und Einsatzort.</p>
+          <span class="go">Ratgeber lesen →</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- WIE WIR AUSWÄHLEN -->
+<section class="block">
+  <div class="wrap">
+    <div class="band">
+      <h2>Wie wir auswählen</h2>
+      <p>Diese Kategorie wird kuratiert statt automatisch befüllt. Wir orientieren uns an Bewertungen, Verkaufsrang und Preis-Leistung — und geben jedes Produkt von Hand frei. Schwächere Produkte werden ersetzt, kein endloses Archiv.</p>
+      <div class="pillars">
+        <div class="pillar"><b>Geprüft</b><span>Jedes Produkt durchläuft eine manuelle Qualitäts-Freigabe, bevor es erscheint.</span></div>
+        <div class="pillar"><b>Begründet</b><span>Sortiert nach Bewertung, Verkaufsrang und Preis-Leistung — nachvollziehbar.</span></div>
+        <div class="pillar"><b>Aktuell</b><span>Auslaufende Produkte fliegen raus, bessere rücken nach. Stand immer sichtbar.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEITERE KATEGORIEN -->
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><div><h2>Weitere Kategorien</h2><p>Stöbere in den anderen kuratierten Bereichen rund um Garten &amp; Außenbereich.</p></div></div>
+    <div class="othercats">
+      <a href="index.html#kategorien">Rasenpflege <span class="arr">→</span></a>
+      <a href="index.html#kategorien">Pflanzenschutz <span class="arr">→</span></a>
+      <a href="index.html#kategorien">Hochbeet &amp; Anzucht <span class="arr">→</span></a>
+      <a href="index.html#kategorien">Poolpflege <span class="arr">→</span></a>
+      <a href="index.html#kategorien">Gartenwerkzeug <span class="arr">→</span></a>
+      <a href="index.html#kategorien">Sichtschutz &amp; Gartenzaun <span class="arr">→</span></a>
+      <a href="index.html#kategorien">Grillzubehör &amp; Grillgeräte <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div style="max-width:260px">
+        <span class="brand">primlio</span>
+        <p>Die besten Amazon-Produkte, persönlich kuratiert.</p>
+      </div>
+      <div class="fcol"><h4>Bereiche</h4><a href="kategorie.html">Garten-Deko</a><a href="index.html#kategorien">Rasenpflege</a><a href="index.html#kategorien">Hochbeet &amp; Anzucht</a><a href="index.html#kategorien">Poolpflege</a></div>
+      <div class="fcol"><h4>Entdecken</h4><a href="index.html">Top-Empfehlungen</a><a href="index.html#ratgeber">Ratgeber</a><a href="#">Über uns</a></div>
+      <div class="fcol"><h4>Rechtliches</h4><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Cookie-Einstellungen</a></div>
+    </div>
+    <div class="disc">Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. &nbsp;·&nbsp; © 2026 primlio. Alle Rechte vorbehalten.</div>
+  </div>
+</footer>
+
+<script>
+// Mobile hamburger menu
+(function(){
+  var mm=document.getElementById('mobileMenu');
+  var burger=document.getElementById('hamburger');
+  var close=document.getElementById('mmClose');
+  function open(){mm.classList.add('open');burger.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';}
+  function shut(){mm.classList.remove('open');burger.setAttribute('aria-expanded','false');document.body.style.overflow='';}
+  burger.addEventListener('click',open);
+  close.addEventListener('click',shut);
+  mm.addEventListener('click',function(e){if(e.target===mm)shut();});
+  mm.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',shut);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
+})();
+
+// Sort/filter chips (cosmetic toggle)
+document.querySelectorAll('.chips .chip').forEach(function(c){
+  c.addEventListener('click',function(){
+    this.parentElement.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active');});
+    this.classList.add('active');
+  });
+});
+document.querySelectorAll('.filter-row .chip').forEach(function(c){
+  c.addEventListener('click',function(){this.classList.toggle('active');});
+});
+</script>
+</body>
+</html>

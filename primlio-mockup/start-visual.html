@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>primlio — Startseite Visual (Designentwurf)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:hsl(36 33% 98%); --fg:hsl(280 15% 12%); --card:#fff;
+  --primary:hsl(285 45% 25%); --primary-fg:hsl(36 33% 98%);
+  --accent:hsl(18 70% 55%); --accent-fg:hsl(36 33% 98%);
+  --muted:hsl(36 15% 94%); --muted-fg:hsl(280 8% 40%);
+  --border:hsl(36 15% 88%); --radius:0.75rem;
+  --gold:hsl(43 74% 50%);
+  --shadow:0 1px 2px rgba(40,20,40,.04),0 8px 24px -12px rgba(40,20,40,.12);
+  --shadow-lg:0 12px 40px -16px rgba(40,20,40,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+.mockup-flag{background:var(--primary);color:var(--primary-fg);text-align:center;font-size:13px;padding:7px 16px;letter-spacing:.01em}
+.mockup-flag b{font-weight:600}
+.mockup-flag a{text-decoration:underline}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:60;background:rgba(250,248,245,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav{display:flex;align-items:center;gap:26px;height:64px}
+.brand{font-family:"Fraunces",serif;font-weight:600;font-size:26px;color:var(--primary);letter-spacing:-.03em}
+.nav-links{display:flex;gap:22px;align-items:center;font-size:15px;font-weight:500}
+.nav-links a{color:var(--fg);padding:6px 0;border-bottom:2px solid transparent;transition:.15s}
+.nav-links a:hover,.nav-links a.active{color:var(--primary);border-color:var(--accent)}
+/* fixed search bar — compact 38px, vertically centered */
+.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;height:38px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:0 14px;width:250px;color:var(--muted-fg);font-size:14px;box-shadow:var(--shadow)}
+.nav-search svg{flex:0 0 auto}
+.nav-search input{flex:1;border:0;background:transparent;outline:none;font-family:inherit;font-size:14px;color:var(--fg);min-width:0}
+.nav-search input::placeholder{color:var(--muted-fg)}
+.icon-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--muted-fg);font-size:14px}
+.hamburger{display:none;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;color:var(--primary);align-items:center;justify-content:center;margin-left:auto}
+.hamburger svg{width:22px;height:22px}
+/* mobile drawer */
+.mobile-menu{display:none;border-top:1px solid var(--border);background:rgba(250,248,245,.98);backdrop-filter:blur(12px)}
+.mobile-menu.open{display:block}
+.mobile-menu .wrap{padding-top:14px;padding-bottom:18px}
+.mobile-search{display:flex;align-items:center;gap:8px;height:42px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:0 16px;margin-bottom:14px;color:var(--muted-fg)}
+.mobile-search input{flex:1;border:0;background:transparent;outline:none;font-family:inherit;font-size:15px;color:var(--fg);min-width:0}
+.mobile-menu nav a{display:block;padding:11px 4px;font-size:16px;font-weight:500;border-bottom:1px solid var(--border)}
+.mobile-menu nav a:last-child{border-bottom:0}
+@media(max-width:860px){
+  .nav-links{display:none}
+  .nav-search{display:none}
+  .icon-btn{display:none}
+  .hamburger{display:flex}
+}
+
+/* FULL-BLEED HERO */
+.hero{position:relative;min-height:clamp(440px,62vh,600px);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;color:#fff}
+.hero .bg{position:absolute;inset:0;background-image:url('https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/cbdda78b21df29b7ed73e5564ca30a78.png');background-size:cover;background-position:center;transform:scale(1.04)}
+.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,12,30,.55) 0%,rgba(40,18,42,.45) 40%,rgba(30,12,30,.78) 100%)}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:780px;padding:72px 24px}
+.hero-eyebrow{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:6px 16px;border-radius:999px;margin-bottom:22px;backdrop-filter:blur(4px)}
+.hero h1{font-size:clamp(36px,6vw,68px);margin:0 auto 18px;text-shadow:0 2px 30px rgba(0,0,0,.35);max-width:14ch}
+.hero h1 em{font-style:italic;color:hsl(18 90% 72%)}
+.hero p.lede{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.9);max-width:540px;margin:0 auto 32px;text-shadow:0 1px 12px rgba(0,0,0,.3)}
+.hero-search{display:flex;gap:0;max-width:560px;margin:0 auto;background:rgba(255,255,255,.97);border-radius:999px;padding:7px 7px 7px 24px;box-shadow:0 20px 60px -20px rgba(0,0,0,.55);align-items:center}
+.hero-search input{flex:1;border:0;background:transparent;font-size:16px;font-family:inherit;outline:none;color:var(--fg);min-width:0}
+.hero-search button{background:var(--accent);color:#fff;border:0;border-radius:999px;padding:14px 28px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;transition:.15s}
+.hero-search button:hover{filter:brightness(1.05)}
+.trust-strip{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:26px;font-size:13.5px;color:rgba(255,255,255,.92)}
+.trust-strip span{display:flex;align-items:center;gap:7px}
+.trust-strip b{color:hsl(18 90% 72%);font-weight:700}
+
+/* SECTION */
+section.block{padding:60px 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:30px;gap:16px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(28px,3.4vw,40px)}
+.sec-head p{color:var(--muted-fg);font-size:15px;margin-top:6px;max-width:60ch}
+.sec-head a.more{color:var(--primary);font-weight:600;font-size:15px;white-space:nowrap}
+.sec-head a.more:hover{color:var(--accent)}
+
+/* TOP CARDS — large, image-led */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+@media(max-width:900px){.tgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.tgrid{grid-template-columns:1fr}}
+.tcard{position:relative;border-radius:calc(var(--radius)*1.2);overflow:hidden;box-shadow:var(--shadow);transition:.25s;display:block;background:var(--card)}
+.tcard:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.tcard .imgwrap{aspect-ratio:4/3;background:var(--muted);overflow:hidden;position:relative}
+.tcard .imgwrap img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.tcard:hover .imgwrap img{transform:scale(1.06)}
+.cat-badge{position:absolute;top:14px;left:14px;background:rgba(250,248,245,.94);backdrop-filter:blur(4px);color:var(--primary);font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px}
+.tbody{padding:18px 18px 20px}
+.tbody h3{font-size:19px;font-weight:600;margin-bottom:11px;line-height:1.25}
+.stars{display:flex;align-items:center;gap:7px;font-size:14px}
+.stars .st{color:var(--gold);letter-spacing:1px}
+.stars b{font-weight:700}
+.stars .rev{color:var(--muted-fg)}
+.tfoot{display:flex;align-items:center;justify-content:space-between;margin-top:15px;padding-top:14px;border-top:1px solid var(--border)}
+.fresh{font-size:12.5px;color:var(--muted-fg);display:flex;align-items:center;gap:5px}
+.fresh .dot{width:7px;height:7px;border-radius:50%;background:hsl(160 55% 42%)}
+.go{font-size:14px;font-weight:600;color:var(--primary)}
+
+/* BENTO MOSAIC CATEGORIES */
+.cat-group-label{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.cat-group-label::after{content:"";flex:1;height:1px;background:var(--border)}
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:18px}
+.btile{position:relative;border-radius:calc(var(--radius)*1.1);overflow:hidden;box-shadow:var(--shadow);display:block;transition:.25s}
+.btile:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.btile img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.btile:hover img{transform:scale(1.06)}
+.btile .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(30,12,30,.85) 0%,rgba(30,12,30,.2) 50%,transparent 78%);display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
+.btile h3{color:#fff;font-size:20px;margin-bottom:4px;text-shadow:0 1px 14px rgba(0,0,0,.4)}
+.btile .count{color:rgba(255,255,255,.85);font-size:13px;font-weight:500}
+/* size variants */
+.btile.lg{grid-column:span 2;grid-row:span 2}
+.btile.lg h3{font-size:30px}
+.btile.wide{grid-column:span 2}
+.btile.tall{grid-row:span 2}
+@media(max-width:900px){
+  .bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:170px}
+  .btile.lg{grid-column:span 2;grid-row:span 2}
+  .btile.lg h3{font-size:26px}
+  .btile.wide{grid-column:span 2}
+  .btile.tall{grid-row:span 1}
+}
+@media(max-width:520px){
+  .bento{grid-template-columns:1fr;grid-auto-rows:160px}
+  .btile.lg,.btile.wide,.btile.tall{grid-column:span 1;grid-row:span 1}
+  .btile.lg h3{font-size:24px}
+}
+.cat-soon{border:1.5px dashed var(--border);border-radius:calc(var(--radius)*1.1);display:grid;place-items:center;text-align:center;color:var(--muted-fg);background:var(--muted)}
+.cat-soon b{font-family:"Fraunces",serif;font-size:20px;color:var(--primary);display:block;margin-bottom:4px}
+
+/* DEALS — future / coming-soon */
+.deals-wrap{background:var(--primary);color:var(--primary-fg);position:relative;overflow:hidden}
+.deals-wrap .block{padding:60px 0}
+.soon-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:#fff;padding:6px 14px;border-radius:999px;margin-bottom:16px}
+.soon-badge .pulse{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.deals-wrap .sec-head h2{color:#fff}
+.deals-wrap .sec-head p{color:rgba(250,248,245,.82)}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:900px){.dgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.dgrid{grid-template-columns:1fr}}
+.dcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);overflow:hidden;backdrop-filter:blur(2px);display:flex;flex-direction:column}
+.dcard .imgwrap{aspect-ratio:4/3;position:relative;overflow:hidden;background:rgba(255,255,255,.05)}
+.dcard .imgwrap img{width:100%;height:100%;object-fit:cover;filter:saturate(.9)}
+.deal-slot{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;padding:5px 11px;border-radius:8px;display:flex;align-items:center;gap:6px}
+.deal-slot .ph{opacity:.7;font-weight:500}
+.dbody{padding:16px 17px 18px;flex:1;display:flex;flex-direction:column}
+.dbody h3{color:#fff;font-size:17px;margin-bottom:8px;line-height:1.3}
+.dbody .meta{font-size:13px;color:rgba(250,248,245,.7);margin-bottom:14px}
+.dbody .priceline{display:flex;align-items:center;gap:10px;margin-top:auto}
+.dbody .ph-price{height:14px;border-radius:5px;background:rgba(255,255,255,.22)}
+.dbody .ph-price.a{width:70px}.dbody .ph-price.b{width:46px;opacity:.5}
+.deal-note{text-align:center;color:rgba(250,248,245,.8);font-size:14px;margin-top:28px}
+.deal-note a{color:#fff;text-decoration:underline}
+
+/* HOW WE CHOOSE */
+.band{background:var(--card);border:1px solid var(--border);border-radius:calc(var(--radius)*1.5);padding:48px;text-align:center;box-shadow:var(--shadow)}
+.band h2{font-size:clamp(26px,3vw,34px);margin-bottom:16px}
+.band p{max-width:640px;margin:0 auto;color:var(--muted-fg);font-size:16px}
+.band .pillars{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:32px;text-align:left}
+.band .pillar{max-width:240px}
+.band .pillar b{display:block;font-family:"Fraunces",serif;font-size:18px;margin-bottom:5px;color:var(--primary)}
+.band .pillar span{font-size:14px;color:var(--muted-fg)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);margin-top:0;padding:48px 0 30px;color:var(--muted-fg);font-size:14px}
+.fgrid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:30px}
+.fgrid .brand{font-size:22px;margin-bottom:8px;display:block}
+.fcol h4{font-family:"Inter",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg);margin-bottom:12px;font-weight:600}
+.fcol a{display:block;margin-bottom:7px;color:var(--muted-fg)}
+.fcol a:hover{color:var(--primary)}
+.disc{border-top:1px solid var(--border);padding-top:18px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="mockup-flag">🎨 <b>Designentwurf</b> — primlio Startseite · Variante „Visual / Bold" (statisches Mockup, echte Daten · nicht live) &nbsp;·&nbsp; <a href="index.html">→ Übersicht</a> &nbsp;·&nbsp; <a href="produkt.html">→ Produktseite</a></div>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">primlio</a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Startseite</a>
+      <a href="#kategorien">Kategorien</a>
+      <a href="#deals">Angebote</a>
+      <a href="#ratgeber">Ratgeber</a>
+      <a href="#">Über uns</a>
+    </nav>
+    <div class="nav-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="Produkt oder Ratgeber suchen…" aria-label="Suche">
+    </div>
+    <button class="icon-btn" title="Sprache">DE</button>
+    <button class="icon-btn" title="Design">◐</button>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="wrap">
+      <div class="mobile-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="Produkt oder Ratgeber suchen…" aria-label="Suche mobil">
+      </div>
+      <nav>
+        <a href="index.html">Startseite</a>
+        <a href="#kategorien">Kategorien</a>
+        <a href="#deals">Angebote (bald)</a>
+        <a href="#ratgeber">Ratgeber</a>
+        <a href="#">Über uns</a>
+        <a href="produkt.html">→ Produktseite ansehen</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- FULL-BLEED HERO -->
+<div class="hero">
+  <div class="bg" role="img" aria-label="Garten-Stimmungsbild"></div>
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Persönlich kuratiert</span>
+    <h1>Dein Garten, <em>handverlesen</em>.</h1>
+    <p class="lede">Pro Bereich nur die Produkte, die wir wirklich empfehlen — geprüft, begründet, aktuell gehalten. Kein Algorithmus, keine endlosen Listen.</p>
+    <form class="hero-search" onsubmit="return false">
+      <input placeholder="Wonach suchst du? z.B. Hochbeet, Solarleuchte, Chlortabletten…" aria-label="Suche im Hero">
+      <button>Finden</button>
+    </form>
+    <div class="trust-strip">
+      <span><b>✓</b> Von Hand geprüft</span>
+      <span><b>✓</b> Unabhängig &amp; ehrlich</span>
+      <span><b>✓</b> Immer aktuell</span>
+    </div>
+  </div>
+</div>
+
+<!-- TOP-EMPFEHLUNGEN -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Unsere Top-Empfehlungen</h2>
+        <p>Die stärksten Picks quer durch alle Bereiche — persönlich geprüft und für gut befunden.</p>
+      </div>
+      <a class="more" href="#kategorien">Alle Bereiche →</a>
+    </div>
+    <div class="tgrid">
+      <a class="tcard" href="produkt.html">
+        <div class="imgwrap"><span class="cat-badge">Poolpflege</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/77088d5edb3a6936670b315f75776039.png" alt="BAYZID Chlor Multitabs"></div>
+        <div class="tbody"><h3>BAYZID Chlor Multitabs 5-in-1</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(16.965)</span></div>
+          <div class="tfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Ansehen →</span></div></div>
+      </a>
+      <a class="tcard" href="produkt.html">
+        <div class="imgwrap"><span class="cat-badge">Garten-Deko</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b7b496787779e42c455bafdd975ecef3.png" alt="Rostikal Edelrost Säule"></div>
+        <div class="tbody"><h3>Rostikal Edelrost Säule Familie</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,8</b><span class="rev">(578)</span></div>
+          <div class="tfoot"><span class="fresh"><span class="dot"></span>Geprüft 12. Juni 2026</span><span class="go">Ansehen →</span></div></div>
+      </a>
+      <a class="tcard" href="produkt.html">
+        <div class="imgwrap"><span class="cat-badge">Gartenwerkzeug</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/a9b4bd02dabe27e5d99e48fd48514e3f.png" alt="Gardena Unkrautstecher"></div>
+        <div class="tbody"><h3>Gardena Unkrautstecher Qualitätsstahl</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(6.494)</span></div>
+          <div class="tfoot"><span class="fresh"><span class="dot"></span>Geprüft Mai 2026</span><span class="go">Ansehen →</span></div></div>
+      </a>
+      <a class="tcard" href="produkt.html">
+        <div class="imgwrap"><span class="cat-badge">Gartenwerkzeug</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/7e57fc908833f4dfdb8826af81684aad.png" alt="Grenebo Gartenwerkzeug Set"></div>
+        <div class="tbody"><h3>Grenebo Gartenwerkzeug Set</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(3.962)</span></div>
+          <div class="tfoot"><span class="fresh"><span class="dot"></span>Geprüft 9. Juni 2026</span><span class="go">Ansehen →</span></div></div>
+      </a>
+      <a class="tcard" href="produkt.html">
+        <div class="imgwrap"><span class="cat-badge">Garten-Deko</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/d7433618526c8f32391a0cdcbb1249fa.png" alt="TERESA'S Pfau-Gartenstatue"></div>
+        <div class="tbody"><h3>TERESA'S COLLECTIONS Pfau-Gartenstatue</h3>
+          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(851)</span></div>
+          <div class="tfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Ansehen →</span></div></div>
+      </a>
+      <a class="tcard" href="produkt.html">
+        <div class="imgwrap"><span class="cat-badge">Garten-Deko</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/faf9be50e179adf6844d82487789dde2.png" alt="Cepewa Schiefertafel Wetterstation"></div>
+        <div class="tbody"><h3>Cepewa Schiefertafel Wetterstation</h3>
+          <div class="stars"><span class="st">★★★★½</span><b>4,6</b><span class="rev">(837)</span></div>
+          <div class="tfoot"><span class="fresh"><span class="dot"></span>Geprüft 14. Juni 2026</span><span class="go">Ansehen →</span></div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- KATEGORIEN — BENTO MOSAIC -->
+<section class="block" id="kategorien" style="background:var(--muted)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>Stöbere nach Bereich</h2><p>Pro Bereich eine kuratierte Auswahl — kein endloses Archiv, nur die aktuell besten.</p></div>
+    </div>
+    <div class="cat-group-label">🌿 Garten &amp; Außenbereich</div>
+    <div class="bento">
+      <a class="btile lg" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/2661d8071b45a9c5fb113bb18040158c.png" alt="Garten-Deko"><div class="ov"><h3>Garten-Deko &amp; Zubehör</h3><span class="count">10 Produkte geprüft</span></div></a>
+      <a class="btile" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/484d3cd706bbf47a68a4976a80a9fa05.png" alt="Rasenpflege"><div class="ov"><h3>Rasenpflege</h3><span class="count">9 geprüft</span></div></a>
+      <a class="btile" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8993652741e016b65975456ae3ef9b07.png" alt="Pflanzenschutz"><div class="ov"><h3>Pflanzenschutz</h3><span class="count">10 geprüft</span></div></a>
+      <a class="btile wide" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/289568963134c1ec8d92182a84bfdf5e.png" alt="Sichtschutz"><div class="ov"><h3>Sichtschutz &amp; Gartenzaun</h3><span class="count">10 Produkte geprüft</span></div></a>
+      <a class="btile tall" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/cbdda78b21df29b7ed73e5564ca30a78.png" alt="Hochbeet"><div class="ov"><h3>Hochbeet &amp; Anzucht</h3><span class="count">9 Produkte geprüft</span></div></a>
+      <a class="btile" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/18839927c58318455d78e670bd391e61.png" alt="Gartenwerkzeug"><div class="ov"><h3>Gartenwerkzeug</h3><span class="count">9 geprüft</span></div></a>
+      <a class="btile" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b4754be4bfc3d587a8075943262cc65a.png" alt="Poolpflege"><div class="ov"><h3>Poolpflege</h3><span class="count">10 geprüft</span></div></a>
+      <a class="btile wide" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/0b8bbe5ba90f858dcf5106210a31938d.png" alt="Grillzubehör"><div class="ov"><h3>Grillzubehör &amp; Grillgeräte</h3><span class="count">7 Produkte geprüft</span></div></a>
+    </div>
+    <div class="cat-group-label" style="margin-top:34px">🔌 Elektronik &amp; mehr</div>
+    <div class="bento" style="grid-auto-rows:140px">
+      <div class="cat-soon" style="grid-column:span 2"><div><b>Bald verfügbar</b><span>Neue Oberkategorien in Vorbereitung</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEALS — coming soon -->
+<div class="deals-wrap" id="deals">
+  <div class="wrap block">
+    <div class="sec-head">
+      <div>
+        <span class="soon-badge"><span class="pulse"></span>Vorschau · Bald</span>
+        <h2>Special-Angebote &amp; Deals</h2>
+        <p>Demnächst zeigen wir hier handgeprüfte Deals — nur Produkte, die wir ohnehin empfehlen, jetzt mit Preisvorteil. Die folgenden Karten sind eine Design-Vorschau, noch nicht live.</p>
+      </div>
+    </div>
+    <div class="dgrid">
+      <div class="dcard">
+        <div class="imgwrap"><span class="deal-slot">% <span class="ph">Deal-Badge</span></span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/77088d5edb3a6936670b315f75776039.png" alt="Beispiel Poolpflege"></div>
+        <div class="dbody"><h3>BAYZID Chlor Multitabs 5-in-1</h3><span class="meta">Poolpflege · 4,7 ★</span>
+          <div class="priceline"><span class="ph-price a"></span><span class="ph-price b"></span></div></div>
+      </div>
+      <div class="dcard">
+        <div class="imgwrap"><span class="deal-slot">% <span class="ph">Deal-Badge</span></span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/7e57fc908833f4dfdb8826af81684aad.png" alt="Beispiel Gartenwerkzeug"></div>
+        <div class="dbody"><h3>Grenebo Gartenwerkzeug Set</h3><span class="meta">Gartenwerkzeug · 4,7 ★</span>
+          <div class="priceline"><span class="ph-price a"></span><span class="ph-price b"></span></div></div>
+      </div>
+      <div class="dcard">
+        <div class="imgwrap"><span class="deal-slot">% <span class="ph">Deal-Badge</span></span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b7b496787779e42c455bafdd975ecef3.png" alt="Beispiel Garten-Deko"></div>
+        <div class="dbody"><h3>Rostikal Edelrost Säule Familie</h3><span class="meta">Garten-Deko · 4,8 ★</span>
+          <div class="priceline"><span class="ph-price a"></span><span class="ph-price b"></span></div></div>
+      </div>
+    </div>
+    <p class="deal-note">Konzept-Vorschau — der Deals-Bereich wird gerade vorbereitet. <a href="#ratgeber">Solange in den Ratgebern stöbern →</a></p>
+  </div>
+</div>
+
+<!-- RATGEBER -->
+<section class="block" id="ratgeber">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>Frische Ratgeber</h2><p>Echte Kaufberatung mit Vergleich, Entscheidungshilfe und klarer Empfehlung.</p></div>
+      <a class="more" href="#">Alle Ratgeber →</a>
+    </div>
+    <div class="tgrid">
+      <a class="tcard" href="#">
+        <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/49f14dac0a1f9e77b934dc24f343c6fa.png" alt="Hochbeet"></div>
+        <div class="tbody"><span style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)">Vergleich · Hochbeet</span>
+          <h3 style="margin:8px 0 8px">Hochbeet kaufen: Metall oder Holz</h3>
+          <p style="font-size:14px;color:var(--muted-fg);line-height:1.5">Sechs gefragte Hochbeete für Garten und Balkon – mit klarer Entscheidungshilfe nach Standort, Höhe und Material.</p>
+          <span style="margin-top:14px;font-size:12.5px;color:var(--muted-fg)">Aktualisiert 17. Juni 2026</span></div>
+      </a>
+      <a class="tcard" href="#">
+        <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/e9756f8eb32caf9adede454b304f6d9d.png" alt="Gartenwerkzeug Set"></div>
+        <div class="tbody"><span style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)">Test · Gartenwerkzeug</span>
+          <h3 style="margin:8px 0 8px">Gartenwerkzeug-Set Test im Vergleich</h3>
+          <p style="font-size:14px;color:var(--muted-fg);line-height:1.5">Sechs Sets nach Material, Ergonomie, Umfang und Aufbewahrung – damit du direkt das Passende wählst.</p>
+          <span style="margin-top:14px;font-size:12.5px;color:var(--muted-fg)">Aktualisiert 15. Juni 2026</span></div>
+      </a>
+      <a class="tcard" href="#">
+        <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/03c7dd5a62bab6d4b7903ea6c5f0eef1.png" alt="Zaunblende"></div>
+        <div class="tbody"><span style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)">Vergleich · Sichtschutz</span>
+          <h3 style="margin:8px 0 8px">Zaunblende im Vergleich: Sichtschutz</h3>
+          <p style="font-size:14px;color:var(--muted-fg);line-height:1.5">Welche Zaunblende schützt wirklich vor Blicken – und hält dem Wetter stand? Der richtige Typ für jeden Zaun.</p>
+          <span style="margin-top:14px;font-size:12.5px;color:var(--muted-fg)">Aktualisiert 11. Juni 2026</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- WIE WIR AUSWÄHLEN -->
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="band">
+      <h2>Wie wir auswählen</h2>
+      <p>Jede Auswahl wird kuratiert statt automatisch befüllt. Wir orientieren uns an Bewertungen, Verkaufsrang und Preis-Leistung — und geben jedes Produkt von Hand frei. Schwächere Produkte werden ersetzt, kein endloses Archiv.</p>
+      <div class="pillars">
+        <div class="pillar"><b>Geprüft</b><span>Jedes Produkt durchläuft eine manuelle Qualitäts-Freigabe, bevor es erscheint.</span></div>
+        <div class="pillar"><b>Begründet</b><span>Pro, Kontra und Einsatzzweck — damit du die Entscheidung nachvollziehen kannst.</span></div>
+        <div class="pillar"><b>Aktuell</b><span>Auslaufende Produkte fliegen raus, bessere rücken nach. Stand immer sichtbar.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div style="max-width:260px">
+        <span class="brand">primlio</span>
+        <p>Die besten Amazon-Produkte, persönlich kuratiert.</p>
+      </div>
+      <div class="fcol"><h4>Bereiche</h4><a href="#">Garten-Deko</a><a href="#">Rasenpflege</a><a href="#">Hochbeet &amp; Anzucht</a><a href="#">Poolpflege</a></div>
+      <div class="fcol"><h4>Entdecken</h4><a href="#">Top-Empfehlungen</a><a href="#deals">Angebote (bald)</a><a href="#ratgeber">Ratgeber</a><a href="#">Über uns</a></div>
+      <div class="fcol"><h4>Rechtliches</h4><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Cookie-Einstellungen</a></div>
+    </div>
+    <div class="disc">Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. &nbsp;·&nbsp; © 2026 primlio. Alle Rechte vorbehalten.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('hamburger');
+  var menu=document.getElementById('mobileMenu');
+  if(!btn||!menu)return;
+  btn.addEventListener('click',function(){
+    var open=menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    btn.setAttribute('aria-label',open?'Menü schließen':'Menü öffnen');
+  });
+  // close drawer when a link is tapped
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
+      btn.setAttribute('aria-label','Menü öffnen');
+    });
+  });
+})();
+</script>
+</body>
+</html>

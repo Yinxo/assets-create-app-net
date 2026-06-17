@@ -3,307 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>primlio — Startseite (Designentwurf)</title>
+<title>primlio — Design-Entwürfe (Übersicht)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:hsl(36 33% 98%); --fg:hsl(280 15% 12%); --card:#fff;
-  --primary:hsl(285 45% 25%); --primary-fg:hsl(36 33% 98%);
-  --accent:hsl(18 70% 55%); --accent-fg:hsl(36 33% 98%);
-  --muted:hsl(36 15% 94%); --muted-fg:hsl(280 8% 40%);
-  --border:hsl(36 15% 88%); --radius:0.75rem;
-  --gold:hsl(43 74% 50%);
-  --shadow:0 1px 2px rgba(40,20,40,.04),0 8px 24px -12px rgba(40,20,40,.12);
-  --shadow-lg:0 12px 40px -16px rgba(40,20,40,.22);
-}
+:root{--bg:hsl(36 33% 98%);--fg:hsl(280 15% 12%);--card:#fff;--primary:hsl(285 45% 25%);--primary-fg:hsl(36 33% 98%);--accent:hsl(18 70% 55%);--muted:hsl(36 15% 94%);--muted-fg:hsl(280 8% 40%);--border:hsl(36 15% 88%);--radius:0.9rem;--shadow:0 1px 2px rgba(40,20,40,.04),0 10px 30px -14px rgba(40,20,40,.16);--shadow-lg:0 16px 50px -18px rgba(40,20,40,.28)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
 body{font-family:"Inter",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
-a{color:inherit;text-decoration:none}
-img{display:block;max-width:100%}
-.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
-.mockup-flag{background:var(--primary);color:var(--primary-fg);text-align:center;font-size:13px;padding:7px 16px;letter-spacing:.01em}
-.mockup-flag b{font-weight:600}
-
-/* HEADER */
-header{position:sticky;top:0;z-index:50;background:rgba(250,248,245,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav{display:flex;align-items:center;gap:28px;height:68px}
-.brand{font-family:"Fraunces",serif;font-weight:600;font-size:26px;color:var(--primary);letter-spacing:-.03em}
-.nav-links{display:flex;gap:22px;align-items:center;font-size:15px;font-weight:500}
-.nav-links a{color:var(--fg);padding:6px 0;border-bottom:2px solid transparent;transition:.15s}
-.nav-links a:hover,.nav-links a.active{color:var(--primary);border-color:var(--accent)}
-.nav-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:8px 14px;width:230px;color:var(--muted-fg);font-size:14px;box-shadow:var(--shadow)}
-.nav-search svg{flex:0 0 auto}
-.icon-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--muted-fg)}
-@media(max-width:860px){.nav-links{display:none}.nav-search{width:auto;padding:8px;width:40px;justify-content:center}.nav-search span{display:none}}
-
-/* HERO */
-.hero{padding:64px 0 40px;text-align:center;position:relative;overflow:hidden}
-.hero-eyebrow{display:inline-block;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
-.hero h1{font-size:clamp(34px,5vw,56px);max-width:760px;margin:0 auto 20px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;letter-spacing:-.02em;line-height:1.1;font-weight:600}
+a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+.hero{text-align:center;padding:60px 0 36px}
+.brand{font-family:"Fraunces",serif;font-weight:600;font-size:30px;color:var(--primary);margin-bottom:18px;display:inline-block}
+.hero h1{font-size:clamp(30px,4.4vw,46px);max-width:720px;margin:0 auto 14px}
 .hero h1 em{font-style:italic;color:var(--primary)}
-.hero p.lede{font-size:clamp(17px,2vw,20px);color:var(--muted-fg);max-width:560px;margin:0 auto 30px}
-.hero-search{display:flex;gap:0;max-width:520px;margin:0 auto;background:var(--card);border:1.5px solid var(--border);border-radius:999px;padding:6px 6px 6px 22px;box-shadow:var(--shadow-lg);align-items:center}
-.hero-search input{flex:1;border:0;background:transparent;font-size:16px;font-family:inherit;outline:none;color:var(--fg)}
-.hero-search button{background:var(--primary);color:var(--primary-fg);border:0;border-radius:999px;padding:13px 26px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap}
-.trust-strip{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:30px;font-size:14px;color:var(--muted-fg)}
-.trust-strip span{display:flex;align-items:center;gap:7px}
-.trust-strip b{color:var(--accent);font-weight:700}
-
-/* SECTION */
-section.block{padding:54px 0}
-.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
-.sec-head h2{font-size:clamp(26px,3.2vw,36px)}
-.sec-head p{color:var(--muted-fg);font-size:15px;margin-top:6px}
-.sec-head a.more{color:var(--primary);font-weight:600;font-size:15px;white-space:nowrap}
-.sec-head a.more:hover{color:var(--accent)}
-
-/* PRODUCT CARDS */
-.grid{display:grid;gap:22px}
-.grid-3{grid-template-columns:repeat(3,1fr)}
-.grid-4{grid-template-columns:repeat(4,1fr)}
-@media(max-width:900px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.grid-3,.grid-4{grid-template-columns:1fr}}
-.pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
-.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-.pcard .imgwrap{aspect-ratio:1/1;background:var(--muted);position:relative;overflow:hidden}
-.pcard .imgwrap img{width:100%;height:100%;object-fit:cover;transition:.4s}
-.pcard:hover .imgwrap img{transform:scale(1.04)}
-.cat-badge{position:absolute;top:12px;left:12px;background:rgba(250,248,245,.92);backdrop-filter:blur(4px);color:var(--primary);font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px}
-.pbody{padding:16px 17px 18px;display:flex;flex-direction:column;flex:1}
-.pbody h3{font-size:18px;font-weight:600;margin-bottom:9px;line-height:1.25}
-.stars{display:flex;align-items:center;gap:7px;font-size:14px;margin-bottom:auto}
-.stars .st{color:var(--gold);letter-spacing:1px}
-.stars b{font-weight:700}
-.stars .rev{color:var(--muted-fg)}
-.pfoot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:13px;border-top:1px solid var(--border)}
-.fresh{font-size:12.5px;color:var(--muted-fg);display:flex;align-items:center;gap:5px}
-.fresh .dot{width:7px;height:7px;border-radius:50%;background:hsl(160 55% 42%)}
-.go{font-size:14px;font-weight:600;color:var(--primary)}
-
-/* RATGEBER */
-.rcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
-.rcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-.rcard .imgwrap{aspect-ratio:16/10;background:var(--muted);overflow:hidden}
-.rcard .imgwrap img{width:100%;height:100%;object-fit:cover}
-.rtag{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
-.rbody{padding:18px;display:flex;flex-direction:column;gap:9px;flex:1}
-.rbody h3{font-size:19px;line-height:1.25}
-.rbody p{font-size:14px;color:var(--muted-fg);line-height:1.5}
-.rbody .date{margin-top:auto;font-size:12.5px;color:var(--muted-fg);padding-top:8px}
-
-/* CATEGORIES */
-.cat-group-label{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:18px;display:flex;align-items:center;gap:12px}
-.cat-group-label::after{content:"";flex:1;height:1px;background:var(--border)}
-.ccard{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow);display:block;transition:.2s}
-.ccard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-.ccard img{width:100%;height:100%;object-fit:cover;transition:.4s}
-.ccard:hover img{transform:scale(1.05)}
-.ccard .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(30,15,30,.82) 0%,rgba(30,15,30,.25) 45%,transparent 75%);display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
-.ccard h3{color:#fff;font-size:21px;margin-bottom:4px}
-.ccard .count{color:rgba(255,255,255,.85);font-size:13px;font-weight:500}
-.cat-soon{border:1.5px dashed var(--border);border-radius:var(--radius);aspect-ratio:4/3;display:grid;place-items:center;text-align:center;color:var(--muted-fg);background:var(--muted)}
-.cat-soon b{font-family:"Fraunces",serif;font-size:20px;color:var(--primary);display:block;margin-bottom:4px}
-
-/* HOW WE CHOOSE band */
-.band{background:var(--primary);color:var(--primary-fg);border-radius:calc(var(--radius)*1.5);padding:48px;text-align:center;margin:0 auto}
-.band h2{color:var(--primary-fg);font-size:clamp(26px,3vw,34px);margin-bottom:16px}
-.band p{max-width:640px;margin:0 auto;color:rgba(250,248,245,.85);font-size:16px}
-.band .pillars{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:30px;text-align:left}
-.band .pillar{max-width:240px}
-.band .pillar b{display:block;font-family:"Fraunces",serif;font-size:18px;margin-bottom:5px}
-.band .pillar span{font-size:14px;color:rgba(250,248,245,.78)}
-
-/* FOOTER */
-footer{border-top:1px solid var(--border);margin-top:40px;padding:48px 0 30px;color:var(--muted-fg);font-size:14px}
-.fgrid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:30px}
-.fgrid .brand{font-size:22px;margin-bottom:8px;display:block}
-.fcol h4{font-family:"Inter",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg);margin-bottom:12px;font-weight:600}
-.fcol a{display:block;margin-bottom:7px;color:var(--muted-fg)}
-.fcol a:hover{color:var(--primary)}
-.disc{border-top:1px solid var(--border);padding-top:18px;font-size:13px}
-.annot{background:hsl(43 74% 92%);border:1px solid var(--gold);border-radius:10px;padding:12px 16px;font-size:13.5px;color:hsl(40 40% 25%);margin:0 auto 0;max-width:1132px}
-.annot b{color:hsl(35 60% 30%)}
+.hero p{color:var(--muted-fg);max-width:600px;margin:0 auto;font-size:17px}
+.note{background:hsl(43 74% 92%);border:1px solid hsl(43 74% 60%);border-radius:12px;padding:14px 18px;font-size:14px;color:hsl(40 40% 25%);max-width:760px;margin:24px auto 0;text-align:left;line-height:1.6}
+.note b{color:hsl(35 60% 30%)}
+.sec{padding:34px 0}
+.sec-label{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.sec-label::after{content:"";flex:1;height:1px;background:var(--border)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.card .ph{aspect-ratio:16/9;background:var(--muted);position:relative;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.card:hover .ph img{transform:scale(1.04)}
+.card .ph .tag{position:absolute;top:12px;left:12px;background:rgba(250,248,245,.92);backdrop-filter:blur(4px);color:var(--primary);font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px}
+.card .b{padding:20px;display:flex;flex-direction:column;flex:1}
+.card h3{font-size:21px;margin-bottom:7px}
+.card p{font-size:14.5px;color:var(--muted-fg);flex:1;line-height:1.5}
+.card .open{margin-top:16px;font-weight:600;color:var(--accent);font-size:15px}
+.single{grid-template-columns:repeat(2,1fr)}
+.crit{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow)}
+.crit h3{font-size:20px;margin-bottom:14px}
+.crit ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.crit li{display:flex;gap:10px;font-size:14.5px;line-height:1.45}
+.crit li::before{content:"✓";color:var(--accent);font-weight:700;flex:0 0 auto}
+footer{text-align:center;color:var(--muted-fg);font-size:13px;padding:40px 0 30px;border-top:1px solid var(--border);margin-top:30px}
 </style>
 </head>
 <body>
-<div class="mockup-flag">🎨 <b>Designentwurf</b> — primlio Startseite (statisches Mockup, echte Daten · nicht live) &nbsp;·&nbsp; <a href="produkt.html" style="text-decoration:underline">→ zur Produktseiten-Ansicht</a></div>
-
-<header>
-  <div class="wrap nav">
-    <a href="index.html" class="brand">primlio</a>
-    <nav class="nav-links">
-      <a href="index.html" class="active">Startseite</a>
-      <a href="#kategorien">Kategorien ▾</a>
-      <a href="#ratgeber">Ratgeber</a>
-      <a href="#">Über uns</a>
-    </nav>
-    <div class="nav-search">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <span>Produkt oder Ratgeber suchen…</span>
-    </div>
-    <button class="icon-btn" title="Sprache">DE</button>
-    <button class="icon-btn" title="Design">◐</button>
+<div class="wrap">
+  <div class="hero">
+    <span class="brand">primlio</span>
+    <h1>Design-Entwürfe — <em>wähl deine Richtung</em></h1>
+    <p>Vier Startseiten-Varianten, die neue Kategorieseite und die überarbeitete Produktseite. Alles mit echten primlio-Daten, Bildern und Farben.</p>
+    <div class="note"><b>Hinweis:</b> Statische Mockups zum Ansehen — Suche, Deals-Bereiche und CTAs sind Attrappen (Deals sind als „Vorschau/Bald" gelabelt, kommen später). Interaktiv sind Mobile-Menü, Galerie &amp; FAQ. In allen vier Varianten umgesetzt: <b>Suchleisten-Fix</b> · <b>Mobile-Hamburger-Menü</b> · <b>Deals-Konzept-Slot</b> · Oberkategorie-Teaser.</div>
   </div>
-</header>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="wrap">
-    <span class="hero-eyebrow">Persönlich kuratiert</span>
-    <h1>Die besten Garten-Produkte — <em>von Hand ausgewählt</em>, nicht vom Algorithmus.</h1>
-    <p class="lede">Statt endloser Trefferlisten zeigen wir pro Bereich nur die Produkte, die wir wirklich empfehlen — geprüft, begründet, aktuell gehalten.</p>
-    <form class="hero-search" onsubmit="return false">
-      <input placeholder="Wonach suchst du? z.B. Hochbeet, Solarleuchte, Chlortabletten…">
-      <button>Finden</button>
-    </form>
-    <div class="trust-strip">
-      <span><b>✓</b> Jedes Produkt von Hand geprüft</span>
-      <span><b>✓</b> Unabhängig &amp; ehrlich</span>
-      <span><b>✓</b> Immer aktuell gehalten</span>
+  <section class="sec">
+    <div class="sec-label">🏠 Startseite — 4 Richtungen</div>
+    <div class="grid">
+      <a class="card" href="start-basis.html">
+        <div class="ph"><span class="tag">Variante 1</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/2661d8071b45a9c5fb113bb18040158c.png" alt=""></div>
+        <div class="b"><h3>Verfeinert (Basis)</h3><p>Die vertraute editoriale Richtung — poliert: Suchleisten-Fix, „Pick der Woche" mit Bild, ruhig &amp; hochwertig. Der sichere Referenz-Look.</p><span class="open">Ansehen →</span></div>
+      </a>
+      <a class="card" href="start-visual.html">
+        <div class="ph"><span class="tag">Variante 2</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/cbdda78b21df29b7ed73e5564ca30a78.png" alt=""></div>
+        <div class="b"><h3>Visual-First / Bold</h3><p>Bild-getrieben: großes Full-Bleed-Hero, immersives Bento-/Mosaik-Layout, weniger Text, mehr Stimmung. Magazin-/Lifestyle-Gefühl.</p><span class="open">Ansehen →</span></div>
+      </a>
+      <a class="card" href="start-deals.html">
+        <div class="ph"><span class="tag">Variante 3</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b4754be4bfc3d587a8075943262cc65a.png" alt=""></div>
+        <div class="b"><h3>Deal- &amp; kompakt-orientiert</h3><p>idealo-Stil: dominante Suche, „Aktuelle Angebote"-Schiene oben, dichte Raster, viel oberhalb der Falz. Zeigt das Deals-Thema prominent.</p><span class="open">Ansehen →</span></div>
+      </a>
+      <a class="card" href="start-marke.html">
+        <div class="ph"><span class="tag">Variante 4</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8993652741e016b65975456ae3ef9b07.png" alt=""></div>
+        <div class="b"><h3>Mutige Marke (Farbe)</h3><p>Gleiches Layout, aber Aubergine/Terrakotta kräftig: vollflächige Farbbänder, Akzentflächen. Markant &amp; selbstbewusst statt zurückhaltend.</p><span class="open">Ansehen →</span></div>
+      </a>
     </div>
-  </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">📄 Unterseiten — eine durchgehende Linie</div>
+    <div class="grid">
+      <a class="card" href="kategorie.html">
+        <div class="ph"><span class="tag">Neu</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/2661d8071b45a9c5fb113bb18040158c.png" alt=""></div>
+        <div class="b"><h3>Kategorieseite</h3><p>Garten-Deko im neuen Stil: Hero, Sortier-/Filter-Konzept, Ratgeber-Teaser, Deals-Vorschau, Top-10 mit Rang-Badges. Glattgezogen auf die neue Linie.</p><span class="open">Ansehen →</span></div>
+      </a>
+      <a class="card" href="produkt.html">
+        <div class="ph"><span class="tag">Überarbeitet</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b7b496787779e42c455bafdd975ecef3.png" alt=""></div>
+        <div class="b"><h3>Produktseite</h3><p>Kurztitel als H1 (statt Amazon-Wortwurst), Bildergalerie mit Thumbnails, prominenter Kauf-Block, Pro/Kontra, FAQ-Akkordeon.</p><span class="open">Ansehen →</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">🔧 Was ich gegenüber der ersten Runde verbessert habe</div>
+    <div class="crit">
+      <ul>
+        <li><b>Suchleiste im Desktop-Menü</b> auf saubere Höhe gebracht (dein Hinweis).</li>
+        <li><b>Mobile-Hamburger-Menü</b> ergänzt (vorher gefehlt).</li>
+        <li><b>Deals-/Special-Angebote-Konzept</b> eingebaut — als „Vorschau/Bald" gelabelt, auf Startseite &amp; Kategorie.</li>
+        <li><b>„Pick der Woche"</b> mit Bild als visueller Anker im Hero (statt rein textlich).</li>
+        <li><b>„Geprüft"-Daten variiert</b> statt überall identisch (wirkte templated).</li>
+        <li><b>Kategorieseite glattgezogen</b> auf die neue Linie — Startseite ↔ Kategorie ↔ Produkt einheitlich.</li>
+      </ul>
+    </div>
+  </section>
 </div>
-
-<!-- TOP-EMPFEHLUNGEN -->
-<section class="block">
-  <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <h2>Unsere Top-Empfehlungen</h2>
-        <p>Die stärksten Picks quer durch alle Bereiche — persönlich geprüft und für gut befunden.</p>
-      </div>
-      <a class="more" href="#kategorien">Alle Bereiche ansehen →</a>
-    </div>
-    <div class="grid grid-3">
-      <a class="pcard" href="produkt.html">
-        <div class="imgwrap"><span class="cat-badge">Poolpflege</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/77088d5edb3a6936670b315f75776039.png" alt="BAYZID Chlor Multitabs"></div>
-        <div class="pbody"><h3>BAYZID Chlor Multitabs 5-in-1</h3>
-          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(16.965)</span></div>
-          <div class="pfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Ansehen →</span></div></div>
-      </a>
-      <a class="pcard" href="produkt.html">
-        <div class="imgwrap"><span class="cat-badge">Gartenwerkzeug</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/a9b4bd02dabe27e5d99e48fd48514e3f.png" alt="Gardena Unkrautstecher"></div>
-        <div class="pbody"><h3>Gardena Unkrautstecher Qualitätsstahl</h3>
-          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(6.494)</span></div>
-          <div class="pfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Ansehen →</span></div></div>
-      </a>
-      <a class="pcard" href="produkt.html">
-        <div class="imgwrap"><span class="cat-badge">Garten-Deko</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b7b496787779e42c455bafdd975ecef3.png" alt="Rostikal Edelrost Säule"></div>
-        <div class="pbody"><h3>Rostikal Edelrost Säule Familie</h3>
-          <div class="stars"><span class="st">★★★★★</span><b>4,8</b><span class="rev">(578)</span></div>
-          <div class="pfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Ansehen →</span></div></div>
-      </a>
-      <a class="pcard" href="produkt.html">
-        <div class="imgwrap"><span class="cat-badge">Gartenwerkzeug</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/7e57fc908833f4dfdb8826af81684aad.png" alt="Grenebo Gartenwerkzeug Set"></div>
-        <div class="pbody"><h3>Grenebo Gartenwerkzeug Set</h3>
-          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(3.962)</span></div>
-          <div class="pfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Ansehen →</span></div></div>
-      </a>
-      <a class="pcard" href="produkt.html">
-        <div class="imgwrap"><span class="cat-badge">Garten-Deko</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/d7433618526c8f32391a0cdcbb1249fa.png" alt="TERESA'S Pfau-Gartenstatue"></div>
-        <div class="pbody"><h3>TERESA'S COLLECTIONS Pfau-Gartenstatue</h3>
-          <div class="stars"><span class="st">★★★★★</span><b>4,7</b><span class="rev">(851)</span></div>
-          <div class="pfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Ansehen →</span></div></div>
-      </a>
-      <a class="pcard" href="produkt.html">
-        <div class="imgwrap"><span class="cat-badge">Garten-Deko</span><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/faf9be50e179adf6844d82487789dde2.png" alt="Cepewa Schiefertafel Wetterstation"></div>
-        <div class="pbody"><h3>Cepewa Schiefertafel Wetterstation</h3>
-          <div class="stars"><span class="st">★★★★★</span><b>4,6</b><span class="rev">(837)</span></div>
-          <div class="pfoot"><span class="fresh"><span class="dot"></span>Geprüft Juni 2026</span><span class="go">Ansehen →</span></div></div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- RATGEBER -->
-<section class="block" id="ratgeber" style="background:var(--muted)">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><h2>Frische Ratgeber</h2><p>Echte Kaufberatung mit Vergleich, Entscheidungshilfe und klarer Empfehlung.</p></div>
-      <a class="more" href="#">Alle Ratgeber →</a>
-    </div>
-    <div class="grid grid-3">
-      <a class="rcard" href="#">
-        <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/49f14dac0a1f9e77b934dc24f343c6fa.png" alt="Hochbeet"></div>
-        <div class="rbody"><span class="rtag">Vergleich · Hochbeet</span>
-          <h3>Hochbeet kaufen: Metall oder Holz – die besten Modelle</h3>
-          <p>Metall oder Holz? Sechs gefragte Hochbeete für Garten und Balkon – mit klarer Entscheidungshilfe nach Standort, Höhe und Material.</p>
-          <span class="date">Aktualisiert 17. Juni 2026</span></div>
-      </a>
-      <a class="rcard" href="#">
-        <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/e9756f8eb32caf9adede454b304f6d9d.png" alt="Gartenwerkzeug Set"></div>
-        <div class="rbody"><span class="rtag">Test · Gartenwerkzeug</span>
-          <h3>Gartenwerkzeug-Set Test: Die besten Sets im Vergleich</h3>
-          <p>Welches Set hält wirklich, was es verspricht? Sechs Sets nach Material, Ergonomie, Umfang und Aufbewahrung – damit du direkt das Passende wählst.</p>
-          <span class="date">Aktualisiert 17. Juni 2026</span></div>
-      </a>
-      <a class="rcard" href="#">
-        <div class="imgwrap"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/03c7dd5a62bab6d4b7903ea6c5f0eef1.png" alt="Zaunblende"></div>
-        <div class="rbody"><span class="rtag">Vergleich · Sichtschutz</span>
-          <h3>Zaunblende im Vergleich: Der richtige Sichtschutz</h3>
-          <p>Welche Zaunblende schützt wirklich vor Blicken – und hält dem Wetter stand? Welcher Typ für welchen Zaun und welches Bedürfnis am besten passt.</p>
-          <span class="date">Aktualisiert 17. Juni 2026</span></div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- KATEGORIEN -->
-<section class="block" id="kategorien">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><h2>Stöbere nach Bereich</h2><p>Pro Bereich eine kuratierte Auswahl — kein endloses Archiv, nur die aktuell besten.</p></div>
-    </div>
-    <div class="cat-group-label">🌿 Garten &amp; Außenbereich</div>
-    <div class="grid grid-4">
-      <a class="ccard" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/2661d8071b45a9c5fb113bb18040158c.png" alt="Garten-Deko"><div class="ov"><h3>Garten-Deko &amp; Zubehör</h3><span class="count">10 Produkte geprüft</span></div></a>
-      <a class="ccard" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/484d3cd706bbf47a68a4976a80a9fa05.png" alt="Rasenpflege"><div class="ov"><h3>Rasenpflege</h3><span class="count">9 Produkte geprüft</span></div></a>
-      <a class="ccard" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/8993652741e016b65975456ae3ef9b07.png" alt="Pflanzenschutz"><div class="ov"><h3>Pflanzenschutz</h3><span class="count">10 Produkte geprüft</span></div></a>
-      <a class="ccard" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/cbdda78b21df29b7ed73e5564ca30a78.png" alt="Hochbeet"><div class="ov"><h3>Hochbeet &amp; Anzucht</h3><span class="count">9 Produkte geprüft</span></div></a>
-      <a class="ccard" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/289568963134c1ec8d92182a84bfdf5e.png" alt="Sichtschutz"><div class="ov"><h3>Sichtschutz &amp; Gartenzaun</h3><span class="count">10 Produkte geprüft</span></div></a>
-      <a class="ccard" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/18839927c58318455d78e670bd391e61.png" alt="Gartenwerkzeug"><div class="ov"><h3>Gartenwerkzeug</h3><span class="count">9 Produkte geprüft</span></div></a>
-      <a class="ccard" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/b4754be4bfc3d587a8075943262cc65a.png" alt="Poolpflege"><div class="ov"><h3>Poolpflege</h3><span class="count">10 Produkte geprüft</span></div></a>
-      <a class="ccard" href="#"><img src="https://mqjigubajgzyxybt.public.blob.vercel-storage.com/ai-images/0b8bbe5ba90f858dcf5106210a31938d.png" alt="Grillzubehör"><div class="ov"><h3>Grillzubehör &amp; Grillgeräte</h3><span class="count">7 Produkte geprüft</span></div></a>
-    </div>
-    <div class="cat-group-label" style="margin-top:34px">🔌 Elektronik &amp; mehr</div>
-    <div class="grid grid-4">
-      <div class="cat-soon"><div><b>Bald verfügbar</b><span>Neue Oberkategorien in Vorbereitung</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- WIE WIR AUSWÄHLEN -->
-<section class="block">
-  <div class="wrap">
-    <div class="band">
-      <h2>Wie wir auswählen</h2>
-      <p>Jede Auswahl wird kuratiert statt automatisch befüllt. Wir orientieren uns an Bewertungen, Verkaufsrang und Preis-Leistung — und geben jedes Produkt von Hand frei. Schwächere Produkte werden ersetzt, kein endloses Archiv.</p>
-      <div class="pillars">
-        <div class="pillar"><b>Geprüft</b><span>Jedes Produkt durchläuft eine manuelle Qualitäts-Freigabe, bevor es erscheint.</span></div>
-        <div class="pillar"><b>Begründet</b><span>Pro, Kontra und Einsatzzweck — damit du die Entscheidung nachvollziehen kannst.</span></div>
-        <div class="pillar"><b>Aktuell</b><span>Auslaufende Produkte fliegen raus, bessere rücken nach. Stand immer sichtbar.</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <div class="fgrid">
-      <div style="max-width:260px">
-        <span class="brand">primlio</span>
-        <p>Die besten Amazon-Produkte, persönlich kuratiert.</p>
-      </div>
-      <div class="fcol"><h4>Bereiche</h4><a href="#">Garten-Deko</a><a href="#">Rasenpflege</a><a href="#">Hochbeet &amp; Anzucht</a><a href="#">Poolpflege</a></div>
-      <div class="fcol"><h4>Entdecken</h4><a href="#">Top-Empfehlungen</a><a href="#">Ratgeber</a><a href="#">Über uns</a></div>
-      <div class="fcol"><h4>Rechtliches</h4><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Cookie-Einstellungen</a></div>
-    </div>
-    <div class="disc">Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. &nbsp;·&nbsp; © 2026 primlio. Alle Rechte vorbehalten.</div>
-  </div>
-</footer>
+<footer>primlio · Design-Entwürfe (statische Mockups, nicht live) · © 2026</footer>
 </body>
 </html>
