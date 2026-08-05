@@ -548,7 +548,7 @@
       seedOpenWeeks();
       applyTheme(); render(); fetchData();
       tickTimer = setInterval(tick, 1000);
-      healTimer = setInterval(applyTheme, 3000);
+      healTimer = setInterval(applyTheme, 1000); // Theme-Wechsel nahezu sofort (LS feuert kein Event)
     } catch (e) { console.error('[TC24-EC] Init error:', e); }
   }
 
