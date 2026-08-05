@@ -55,7 +55,7 @@
     display: inline-flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s;
   }
   .tc24-ec-refresh:hover { background: var(--tc24-ec-hover); color: var(--tc24-ec-text); }
-  .tc24-ec-refresh.tc24-ec-spin { animation: tc24-ec-spin 0.6s linear; }
+  .tc24-ec-refresh.tc24-ec-spin { animation: tc24-ec-spin 0.6s linear infinite; }
   .tc24-ec-updated { font-size: 11px; color: var(--tc24-ec-text-3); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
   .tc24-ec-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--tc24-ec-accent); display: inline-block; }
   .tc24-ec-live-dot.tc24-ec-burst { animation: tc24-ec-pulse 1s infinite; }
@@ -64,6 +64,7 @@
   .tc24-ec-filters { padding: 12px 20px; border-bottom: 1px solid var(--tc24-ec-border); display: flex; flex-direction: column; gap: 10px; }
   .tc24-ec-filter-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
   .tc24-ec-filter-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--tc24-ec-text-3); margin-right: 4px; min-width: 60px; }
+  .tc24-ec-cur-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .tc24-ec-chip {
     font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; cursor: pointer;
     border: 1px solid var(--tc24-ec-border); background: var(--tc24-ec-chip-off); color: var(--tc24-ec-text-2);
@@ -75,6 +76,7 @@
   .tc24-ec-chip.tc24-ec-imp-high.tc24-ec-on { background: var(--tc24-ec-high); border-color: var(--tc24-ec-high); }
   .tc24-ec-chip.tc24-ec-imp-medium.tc24-ec-on { background: var(--tc24-ec-medium); border-color: var(--tc24-ec-medium); color: rgba(0,0,0,0.8); }
   .tc24-ec-chip.tc24-ec-imp-low.tc24-ec-on { background: var(--tc24-ec-low); border-color: var(--tc24-ec-low); color: rgba(0,0,0,0.8); }
+  .tc24-ec-chip.tc24-ec-imp-holiday.tc24-ec-on { background: var(--tc24-ec-holiday); border-color: var(--tc24-ec-holiday); color: #fff; }
 
   .tc24-ec-body { max-height: 640px; overflow-y: auto; }
 
@@ -94,18 +96,23 @@
   /* Tag — nur zwischen Tagen ein Divider, Zeilen innerhalb ohne Linien */
   .tc24-ec-day-head { display: flex; align-items: center; gap: 8px; padding: 8px 20px 3px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--tc24-ec-text-2); }
   .tc24-ec-day + .tc24-ec-day .tc24-ec-day-head { border-top: 1px solid var(--tc24-ec-border); margin-top: 2px; padding-top: 9px; }
+  .tc24-ec-day.tc24-ec-today { background: rgba(16,185,129,0.07); box-shadow: inset 3px 0 0 var(--tc24-ec-accent); }
   .tc24-ec-day.tc24-ec-today .tc24-ec-day-head { color: var(--tc24-ec-accent); }
   .tc24-ec-today-badge { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--tc24-ec-accent); color: #fff; letter-spacing: 0.3px; }
   .tc24-ec-day-body { padding-bottom: 4px; }
 
-  /* Event-Zeile — einzeilig (Desktop), Impact-Pill zuerst, Werte rechts am Rand */
-  .tc24-ec-row { display: flex; align-items: center; gap: 10px; padding: 6px 20px; font-size: 13px; }
+  /* Event-Zeile — Grid mit festen Spalten (saubere Ausrichtung), Impact-Pill zuerst, Werte rechts */
+  .tc24-ec-row {
+    display: grid; align-items: center; column-gap: 10px; padding: 6px 20px; font-size: 13px;
+    grid-template-columns: 24px 74px 40px minmax(0, 1fr) max-content;
+    grid-template-areas: "imp time cur name vals";
+  }
   .tc24-ec-row:hover { background: var(--tc24-ec-hover); }
-  .tc24-ec-imp { flex: 0 0 auto; font-size: 10px; font-weight: 700; padding: 1px 0; width: 22px; text-align: center; border-radius: 999px; line-height: 1.6; }
-  .tc24-ec-time { flex: 0 0 auto; min-width: 50px; color: var(--tc24-ec-text-2); font-weight: 600; white-space: nowrap; }
-  .tc24-ec-cur { flex: 0 0 auto; min-width: 34px; font-weight: 700; }
-  .tc24-ec-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--tc24-ec-text); }
-  .tc24-ec-vals { flex: 0 0 auto; margin-left: auto; white-space: nowrap; text-align: right; color: var(--tc24-ec-text-2); font-variant-numeric: tabular-nums; }
+  .tc24-ec-imp { grid-area: imp; font-size: 10px; font-weight: 700; padding: 1px 0; width: 22px; text-align: center; border-radius: 999px; line-height: 1.6; }
+  .tc24-ec-time { grid-area: time; color: var(--tc24-ec-text-2); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tc24-ec-cur { grid-area: cur; font-weight: 700; }
+  .tc24-ec-name { grid-area: name; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--tc24-ec-text); }
+  .tc24-ec-vals { grid-area: vals; white-space: nowrap; text-align: right; color: var(--tc24-ec-text-2); font-variant-numeric: tabular-nums; }
   .tc24-ec-lbl { color: var(--tc24-ec-text-3); }
   .tc24-ec-val { color: var(--tc24-ec-text-2); }
   .tc24-ec-ist { font-weight: 700; color: var(--tc24-ec-text); }
@@ -120,11 +127,16 @@
   @keyframes tc24-ec-spin { to { transform: rotate(360deg); } }
   .tc24-ec-foot { padding: 8px 20px; font-size: 10px; color: var(--tc24-ec-text-3); border-top: 1px solid var(--tc24-ec-border); text-align: right; }
 
-  /* Schmale Karte: Werte in zweite Zeile, mit Trennern */
+  /* Schmale Karte: Titel bleibt einzeilig (Ellipsis), Werte linksbündig in zweiter Zeile */
   @container (max-width: 600px) {
-    .tc24-ec-row { flex-wrap: wrap; row-gap: 2px; padding: 7px 16px; }
-    .tc24-ec-name { white-space: normal; }
-    .tc24-ec-vals { flex: 1 1 100%; margin-left: 0; text-align: left; padding-left: 32px; white-space: normal; }
+    .tc24-ec-row {
+      grid-template-columns: 22px 70px 36px minmax(0, 1fr);
+      grid-template-areas: "imp time cur name" "vals vals vals vals";
+      column-gap: 8px; row-gap: 2px; padding: 7px 16px;
+    }
+    .tc24-ec-vals { text-align: left; white-space: normal; }
+    .tc24-ec-cur-row { flex-wrap: wrap; }
+    .tc24-ec-cur-chips { flex: 1 1 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
     .tc24-ec-head, .tc24-ec-filters, .tc24-ec-week-head, .tc24-ec-day-head, .tc24-ec-foot { padding-left: 16px; padding-right: 16px; }
     .tc24-ec-sep { margin: 0 5px; }
   }
@@ -149,7 +161,7 @@
   var IMPACTS = ['high', 'medium', 'low'];
   var DEFAULT_CUR = MAJORS.slice();
   var DEFAULT_IMP = ['high', 'medium'];
-  var LS_KEY = 'tc24_ec_filters_v1';
+  var LS_KEY = 'tc24_ec_filters_v2';
 
   var SLOW_MS = 300000, FAST_MS = 15000, BURST_BEFORE = 60000, BURST_AFTER = 900000;
   var INVERSE_RE = /unemploy|jobless|claims|arbeitslos/i; // hoeher = schlechter
@@ -160,7 +172,7 @@
   var IMP_NAME = { high: 'Hoch', medium: 'Mittel', low: 'Niedrig' };
 
   // ===================== STATE =====================
-  var state = { events: [], generatedAt: null, error: null, loading: true, filters: loadFilters(), openWeeks: {} };
+  var state = { events: [], generatedAt: null, error: null, loading: true, filters: loadFilters(), openWeeks: {}, refreshing: false };
   var pollTimer = null, tickTimer = null, healTimer = null, cadence = 0;
 
   if (window.__tc24ec && window.__tc24ec.teardown) { try { window.__tc24ec.teardown(); } catch (e) {} }
@@ -204,6 +216,14 @@
         if (pollTimer) clearTimeout(pollTimer); pollTimer = setTimeout(fetchData, SLOW_MS); // weiter versuchen
       });
   }
+  function doRefresh() {
+    if (state.refreshing) return;
+    state.refreshing = true; render();
+    var started = Date.now();
+    var done = function () { setTimeout(function () { state.refreshing = false; render(); }, Math.max(0, 600 - (Date.now() - started))); };
+    if (!ENDPOINT) FIXTURE_BASE = Date.now(); // Demo: Daten sichtbar auffrischen
+    Promise.resolve(fetchData()).then(done, done);
+  }
   function apply(j) {
     state.error = (j && j.error) ? j.error : null;
     state.generatedAt = (j && j.generatedAt) || null;
@@ -235,13 +255,14 @@
 
   // ===================== HELPERS =====================
   function loadFilters() {
-    var d = { cur: DEFAULT_CUR.slice(), imp: DEFAULT_IMP.slice() };
+    var d = { cur: DEFAULT_CUR.slice(), imp: DEFAULT_IMP.slice(), holidays: true };
     try {
       var raw = localStorage.getItem(LS_KEY); if (!raw) return d;
       var p = JSON.parse(raw);
       if (p && Array.isArray(p.cur) && Array.isArray(p.imp)) {
         d.cur = p.cur.filter(function (c) { return MAJORS.indexOf(c) >= 0; });
         d.imp = p.imp.filter(function (c) { return IMPACTS.indexOf(c) >= 0; });
+        if (typeof p.holidays === 'boolean') d.holidays = p.holidays;
       }
     } catch (e) { log('filter load error', e); }
     return d;
@@ -327,7 +348,8 @@
       var e = state.events[i];
       if (e.t < start || e.t > end) continue;
       if (f.cur.indexOf(e.currency) < 0) continue;
-      if (!e.isHoliday && f.imp.indexOf(e.impact) < 0) continue; // Feiertage nicht per Impact filtern
+      if (e.isHoliday) { if (!f.holidays) continue; } // eigener Feiertage-Toggle (nicht in "Niedrig")
+      else if (f.imp.indexOf(e.impact) < 0) continue;
 
       out.push(e);
     }
@@ -353,8 +375,8 @@
     var head = el('div', 'tc24-ec-head');
     head.appendChild(el('div', 'tc24-ec-title', 'Wirtschaftskalender'));
     var hr = el('div', 'tc24-ec-headright');
-    var rb = el('button', 'tc24-ec-refresh', '⟳'); rb.type = 'button'; rb.title = 'Aktualisieren';
-    rb.addEventListener('click', function () { rb.classList.add('tc24-ec-spin'); fetchData(); });
+    var rb = el('button', 'tc24-ec-refresh' + (state.refreshing ? ' tc24-ec-spin' : ''), '⟳'); rb.type = 'button'; rb.title = 'Aktualisieren';
+    rb.addEventListener('click', doRefresh);
     hr.appendChild(rb);
     var upd = el('div', 'tc24-ec-updated');
     upd.appendChild(el('span', 'tc24-ec-live-dot' + (inBurst() ? ' tc24-ec-burst' : '')));
@@ -382,13 +404,15 @@
 
   function buildFilters() {
     var wrap = el('div', 'tc24-ec-filters'), f = state.filters;
-    var curRow = el('div', 'tc24-ec-filter-row');
+    var curRow = el('div', 'tc24-ec-filter-row tc24-ec-cur-row');
     curRow.appendChild(el('span', 'tc24-ec-filter-label', 'Währung'));
+    var curChips = el('div', 'tc24-ec-cur-chips');
     MAJORS.forEach(function (c) {
       var chip = el('span', 'tc24-ec-chip' + (f.cur.indexOf(c) >= 0 ? ' tc24-ec-on' : ''), c);
       clickable(chip, function () { toggle(f.cur, c); saveFilters(); render(); });
-      curRow.appendChild(chip);
+      curChips.appendChild(chip);
     });
+    curRow.appendChild(curChips);
     wrap.appendChild(curRow);
     var impRow = el('div', 'tc24-ec-filter-row');
     impRow.appendChild(el('span', 'tc24-ec-filter-label', 'Impact'));
@@ -397,6 +421,9 @@
       clickable(chip, function () { toggle(f.imp, im); saveFilters(); render(); });
       impRow.appendChild(chip);
     });
+    var hchip = el('span', 'tc24-ec-chip tc24-ec-imp-holiday' + (f.holidays ? ' tc24-ec-on' : ''), 'Feiertage');
+    clickable(hchip, function () { f.holidays = !f.holidays; saveFilters(); render(); });
+    impRow.appendChild(hchip);
     wrap.appendChild(impRow);
     return wrap;
   }
