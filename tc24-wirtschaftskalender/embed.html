@@ -76,7 +76,7 @@
   .tc24-ec-body { }
 
   /* Woche (Accordion) */
-  .tc24-ec-week + .tc24-ec-week { border-top: 1px solid var(--tc24-ec-border); }
+  .tc24-ec-week + .tc24-ec-week { border-top: 1px solid var(--tc24-ec-border); box-shadow: inset 0 6px 6px -6px rgba(0,0,0,0.4); }
   .tc24-ec-week-head { display: flex; align-items: center; gap: 10px; padding: 11px 20px; cursor: pointer; user-select: none; background: var(--tc24-ec-elev-bg); transition: background 0.15s; }
   .tc24-ec-week-head:hover { background: var(--tc24-ec-hover); }
   .tc24-ec-chev { display: inline-block; font-size: 11px; color: var(--tc24-ec-text-3); transition: transform 0.15s; }
@@ -88,6 +88,7 @@
   /* Tag */
   .tc24-ec-day.tc24-ec-today { background: rgba(16,185,129,0.07); box-shadow: inset 3px 0 0 var(--tc24-ec-accent); }
   .tc24-ec-day-head { display: flex; align-items: center; gap: 8px; padding: 8px 20px 3px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--tc24-ec-text-2); }
+  .tc24-ec-day + .tc24-ec-day { box-shadow: inset 0 9px 8px -8px rgba(0,0,0,0.5); }
   .tc24-ec-day + .tc24-ec-day .tc24-ec-day-head { border-top: 1px solid var(--tc24-ec-border); margin-top: 2px; padding-top: 9px; }
   .tc24-ec-day.tc24-ec-today .tc24-ec-day-head { color: var(--tc24-ec-accent); }
   .tc24-ec-day-body { padding-bottom: 4px; }
@@ -95,10 +96,12 @@
   /* Event — 2 Zeilen: Titel oben (voll sichtbar), darunter Daten mit ausgerichteten Wert-Spalten */
   .tc24-ec-row { padding: 7px 20px; }
   .tc24-ec-row:hover { background: var(--tc24-ec-hover); }
-  .tc24-ec-title-line { color: var(--tc24-ec-text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 3px; }
+  .tc24-ec-title-line { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+  .tc24-ec-title-text { flex: 1 1 auto; min-width: 0; color: var(--tc24-ec-text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .tc24-ec-data-line { display: flex; align-items: center; gap: 8px; font-size: 12px; font-variant-numeric: tabular-nums; }
   .tc24-ec-imp { flex: 0 0 auto; font-size: 10px; font-weight: 700; padding: 1px 0; width: 22px; text-align: center; border-radius: 999px; line-height: 1.6; }
-  .tc24-ec-timer { flex: 0 0 auto; width: 52px; color: var(--tc24-ec-accent); font-weight: 700; white-space: nowrap; }
+  .tc24-ec-timer { flex: 0 0 auto; width: 52px; color: var(--tc24-ec-text-3); font-weight: 700; white-space: nowrap; }
+  .tc24-ec-timer.tc24-ec-active { color: var(--tc24-ec-accent); }
   .tc24-ec-timer.tc24-ec-soon { color: var(--tc24-ec-high); }
   .tc24-ec-time { flex: 0 0 auto; width: 64px; color: var(--tc24-ec-text-2); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tc24-ec-cur { flex: 0 0 auto; width: 36px; font-weight: 700; }
@@ -456,23 +459,29 @@
 
   function renderRow(e) {
     var row = el('div', 'tc24-ec-row');
-    var tl = el('div', 'tc24-ec-title-line', e.title); tl.title = e.title;
-    row.appendChild(tl);
 
-    var dl = el('div', 'tc24-ec-data-line');
+    // Titelzeile: Impact-Badge VOR der Headline
+    var tl = el('div', 'tc24-ec-title-line');
     var pill = el('span', 'tc24-ec-imp', e.isHoliday ? 'F' : IMP_LETTER[e.impact]);
     pill.style.background = e.isHoliday ? 'var(--tc24-ec-holiday)' : IMP_BG[e.impact];
     pill.style.color = (e.impact === 'high' || e.isHoliday) ? '#fff' : 'rgba(0,0,0,0.8)';
     pill.title = e.isHoliday ? 'Feiertag' : IMP_NAME[e.impact];
-    dl.appendChild(pill);
+    tl.appendChild(pill);
+    var ttext = el('span', 'tc24-ec-title-text', e.title); ttext.title = e.title;
+    tl.appendChild(ttext);
+    row.appendChild(tl);
 
-    // Timer VOR der Uhrzeit (nur fuer anstehende getimte Events ohne Ist-Wert); sonst leere Spalte
+    // Datenzeile: Timer | Uhrzeit | Währung ... Werte
+    var dl = el('div', 'tc24-ec-data-line');
     var showTimer = e.timeStatus === 'timed' && e.actual == null && e.t > Date.now();
-    var timer = el('span', 'tc24-ec-timer' + (showTimer && (e.t - Date.now() <= SOON_MS) ? ' tc24-ec-soon' : ''));
+    var soon = showTimer && (e.t - Date.now() <= SOON_MS);
+    var timer = el('span', 'tc24-ec-timer' + (showTimer ? ' tc24-ec-active' : '') + (soon ? ' tc24-ec-soon' : ''));
     if (showTimer) { timer.setAttribute('data-cd', String(e.t)); timer.textContent = timerText(e.t); }
+    else { timer.textContent = '–'; } // vorüber / Feiertag / ohne Uhrzeit -> "–"
     dl.appendChild(timer);
-
+    dl.appendChild(el('span', 'tc24-ec-sep', '|'));
     dl.appendChild(el('span', 'tc24-ec-time', timeLabel(e)));
+    dl.appendChild(el('span', 'tc24-ec-sep', '|'));
     dl.appendChild(el('span', 'tc24-ec-cur', e.currency));
     dl.appendChild(renderVals(e));
     row.appendChild(dl);
