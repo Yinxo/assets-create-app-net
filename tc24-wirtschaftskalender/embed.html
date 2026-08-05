@@ -5,7 +5,7 @@
   Contract: docs/specs/economic-calendar-endpoint-contract.md
   Einbetten: LS → Seite bearbeiten → Karte "Code einbetten" → "In Seite anzeigen" → HTML einfügen.
   DEV: ENDPOINT leer lassen -> laeuft gegen eingebaute (laufzeit-relative) Fixture.
-  Responsive via Container-Queries (reagiert auf Karten-Breite, nicht Viewport).
+  Responsive via Container-Queries (reagiert auf Karten-Breite, nicht Viewport). Kein Inner-Scroll.
 -->
 <style>
   #tc24-ec-root {
@@ -29,18 +29,13 @@
 
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--tc24-ec-text);
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
+    display: block; width: 100%; box-sizing: border-box;
   }
   #tc24-ec-root * { box-sizing: border-box; }
 
   .tc24-ec-card {
-    background: var(--tc24-ec-card-bg);
-    border: 1px solid var(--tc24-ec-border);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    background: var(--tc24-ec-card-bg); border: 1px solid var(--tc24-ec-border);
+    border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
 
   .tc24-ec-head {
@@ -61,12 +56,12 @@
   .tc24-ec-live-dot.tc24-ec-burst { animation: tc24-ec-pulse 1s infinite; }
   @keyframes tc24-ec-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  .tc24-ec-filters { padding: 12px 20px; border-bottom: 1px solid var(--tc24-ec-border); display: flex; flex-direction: column; gap: 10px; }
-  .tc24-ec-filter-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .tc24-ec-filter-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--tc24-ec-text-3); margin-right: 4px; min-width: 60px; }
-  .tc24-ec-cur-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tc24-ec-filters { padding: 12px 20px; border-bottom: 1px solid var(--tc24-ec-border); display: flex; flex-direction: column; gap: 12px; }
+  .tc24-ec-filter-row { display: flex; align-items: center; gap: 8px; }
+  .tc24-ec-filter-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--tc24-ec-text-3); min-width: 60px; }
+  .tc24-ec-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .tc24-ec-chip {
-    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; cursor: pointer; text-align: center;
     border: 1px solid var(--tc24-ec-border); background: var(--tc24-ec-chip-off); color: var(--tc24-ec-text-2);
     user-select: none; transition: background 0.15s, color 0.15s, border-color 0.15s; line-height: 1.4;
   }
@@ -78,14 +73,11 @@
   .tc24-ec-chip.tc24-ec-imp-low.tc24-ec-on { background: var(--tc24-ec-low); border-color: var(--tc24-ec-low); color: rgba(0,0,0,0.8); }
   .tc24-ec-chip.tc24-ec-imp-holiday.tc24-ec-on { background: var(--tc24-ec-holiday); border-color: var(--tc24-ec-holiday); color: #fff; }
 
-  .tc24-ec-body { max-height: 640px; overflow-y: auto; }
+  .tc24-ec-body { }
 
-  /* Woche (Accordion) — starke Trennung zwischen Wochen */
+  /* Woche (Accordion) */
   .tc24-ec-week + .tc24-ec-week { border-top: 1px solid var(--tc24-ec-border); }
-  .tc24-ec-week-head {
-    display: flex; align-items: center; gap: 10px; padding: 11px 20px; cursor: pointer; user-select: none;
-    background: var(--tc24-ec-elev-bg); transition: background 0.15s;
-  }
+  .tc24-ec-week-head { display: flex; align-items: center; gap: 10px; padding: 11px 20px; cursor: pointer; user-select: none; background: var(--tc24-ec-elev-bg); transition: background 0.15s; }
   .tc24-ec-week-head:hover { background: var(--tc24-ec-hover); }
   .tc24-ec-chev { display: inline-block; font-size: 11px; color: var(--tc24-ec-text-3); transition: transform 0.15s; }
   .tc24-ec-chev.tc24-ec-open { transform: rotate(90deg); }
@@ -93,52 +85,46 @@
   .tc24-ec-week-range { font-size: 11px; color: var(--tc24-ec-text-3); }
   .tc24-ec-week-count { margin-left: auto; font-size: 11px; color: var(--tc24-ec-text-3); }
 
-  /* Tag — nur zwischen Tagen ein Divider, Zeilen innerhalb ohne Linien */
+  /* Tag */
+  .tc24-ec-day.tc24-ec-today { background: rgba(16,185,129,0.07); box-shadow: inset 3px 0 0 var(--tc24-ec-accent); }
   .tc24-ec-day-head { display: flex; align-items: center; gap: 8px; padding: 8px 20px 3px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--tc24-ec-text-2); }
   .tc24-ec-day + .tc24-ec-day .tc24-ec-day-head { border-top: 1px solid var(--tc24-ec-border); margin-top: 2px; padding-top: 9px; }
-  .tc24-ec-day.tc24-ec-today { background: rgba(16,185,129,0.07); box-shadow: inset 3px 0 0 var(--tc24-ec-accent); }
   .tc24-ec-day.tc24-ec-today .tc24-ec-day-head { color: var(--tc24-ec-accent); }
-  .tc24-ec-today-badge { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--tc24-ec-accent); color: #fff; letter-spacing: 0.3px; }
   .tc24-ec-day-body { padding-bottom: 4px; }
 
-  /* Event-Zeile — Grid mit festen Spalten (saubere Ausrichtung), Impact-Pill zuerst, Werte rechts */
-  .tc24-ec-row {
-    display: grid; align-items: center; column-gap: 10px; padding: 6px 20px; font-size: 13px;
-    grid-template-columns: 24px 74px 40px minmax(0, 1fr) max-content;
-    grid-template-areas: "imp time cur name vals";
-  }
+  /* Event — 2 Zeilen: Titel oben (voll sichtbar), darunter Daten mit ausgerichteten Wert-Spalten */
+  .tc24-ec-row { padding: 7px 20px; }
   .tc24-ec-row:hover { background: var(--tc24-ec-hover); }
-  .tc24-ec-imp { grid-area: imp; font-size: 10px; font-weight: 700; padding: 1px 0; width: 22px; text-align: center; border-radius: 999px; line-height: 1.6; }
-  .tc24-ec-time { grid-area: time; color: var(--tc24-ec-text-2); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tc24-ec-cur { grid-area: cur; font-weight: 700; }
-  .tc24-ec-name { grid-area: name; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--tc24-ec-text); }
-  .tc24-ec-vals { grid-area: vals; white-space: nowrap; text-align: right; color: var(--tc24-ec-text-2); font-variant-numeric: tabular-nums; }
+  .tc24-ec-title-line { color: var(--tc24-ec-text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 3px; }
+  .tc24-ec-data-line { display: flex; align-items: center; gap: 8px; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .tc24-ec-imp { flex: 0 0 auto; font-size: 10px; font-weight: 700; padding: 1px 0; width: 22px; text-align: center; border-radius: 999px; line-height: 1.6; }
+  .tc24-ec-timer { flex: 0 0 auto; width: 52px; color: var(--tc24-ec-accent); font-weight: 700; white-space: nowrap; }
+  .tc24-ec-timer.tc24-ec-soon { color: var(--tc24-ec-high); }
+  .tc24-ec-time { flex: 0 0 auto; width: 64px; color: var(--tc24-ec-text-2); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tc24-ec-cur { flex: 0 0 auto; width: 36px; font-weight: 700; }
+  .tc24-ec-vals { margin-left: auto; flex: 0 0 auto; display: grid; grid-template-columns: 78px 12px 78px 12px 78px; align-items: center; color: var(--tc24-ec-text-2); }
+  .tc24-ec-vcell { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tc24-ec-lbl { color: var(--tc24-ec-text-3); }
   .tc24-ec-val { color: var(--tc24-ec-text-2); }
   .tc24-ec-ist { font-weight: 700; color: var(--tc24-ec-text); }
   .tc24-ec-ist.tc24-ec-good { color: var(--tc24-ec-good); }
   .tc24-ec-ist.tc24-ec-bad { color: var(--tc24-ec-bad); }
-  .tc24-ec-sep { color: var(--tc24-ec-text-3); margin: 0 7px; }
-  .tc24-ec-countdown { font-size: 11px; font-weight: 600; color: var(--tc24-ec-accent); background: rgba(16,185,129,0.12); padding: 1px 6px; border-radius: 6px; }
-  .tc24-ec-countdown.tc24-ec-soon { color: var(--tc24-ec-high); background: rgba(239,68,68,0.14); }
+  .tc24-ec-sep { text-align: center; color: var(--tc24-ec-text-3); }
 
   .tc24-ec-state { padding: 32px 20px; text-align: center; color: var(--tc24-ec-text-3); font-size: 13px; }
   .tc24-ec-spinner { width: 22px; height: 22px; border: 2px solid var(--tc24-ec-border); border-top-color: var(--tc24-ec-accent); border-radius: 50%; margin: 0 auto 10px; animation: tc24-ec-spin 0.8s linear infinite; }
   @keyframes tc24-ec-spin { to { transform: rotate(360deg); } }
   .tc24-ec-foot { padding: 8px 20px; font-size: 10px; color: var(--tc24-ec-text-3); border-top: 1px solid var(--tc24-ec-border); text-align: right; }
 
-  /* Schmale Karte: Titel bleibt einzeilig (Ellipsis), Werte linksbündig in zweiter Zeile */
+  /* Schmale Karte: Filter gestapelt (Label ueber Chips), Werte in eigene Zeile, kleinere Schrift */
   @container (max-width: 600px) {
-    .tc24-ec-row {
-      grid-template-columns: 22px 70px 36px minmax(0, 1fr);
-      grid-template-areas: "imp time cur name" "vals vals vals vals";
-      column-gap: 8px; row-gap: 2px; padding: 7px 16px;
-    }
-    .tc24-ec-vals { text-align: left; white-space: normal; }
-    .tc24-ec-cur-row { flex-wrap: wrap; }
-    .tc24-ec-cur-chips { flex: 1 1 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-    .tc24-ec-head, .tc24-ec-filters, .tc24-ec-week-head, .tc24-ec-day-head, .tc24-ec-foot { padding-left: 16px; padding-right: 16px; }
-    .tc24-ec-sep { margin: 0 5px; }
+    .tc24-ec-filter-row { flex-direction: column; align-items: stretch; gap: 6px; }
+    .tc24-ec-filter-label { min-width: 0; }
+    .tc24-ec-cur-chips { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .tc24-ec-data-line { flex-wrap: wrap; font-size: 11px; }
+    .tc24-ec-title-line { font-size: 12px; }
+    .tc24-ec-vals { flex: 1 1 100%; margin-left: 0; margin-top: 3px; grid-template-columns: 66px 10px 66px 10px 66px; }
+    .tc24-ec-head, .tc24-ec-filters, .tc24-ec-week-head, .tc24-ec-day-head, .tc24-ec-row, .tc24-ec-foot { padding-left: 16px; padding-right: 16px; }
   }
 </style>
 
@@ -152,11 +138,10 @@
   var DEBUG = false;
   var log = function () { if (DEBUG) console.log.apply(console, ['[TC24-EC]'].concat([].slice.call(arguments))); };
 
-  // Leer lassen => DEV-Fixture. Fuer Live: URL des Vercel-Endpoints (Contract: /api/economic-calendar).
-  var ENDPOINT = '';
+  var ENDPOINT = ''; // leer => DEV-Fixture. Live: URL des Vercel-Endpoints (/api/economic-calendar)
 
   var TZ = 'Europe/Berlin';
-  var MAX_AHEAD_DAYS = 42;               // Sicherheits-Cap fuer die Wochen-Liste
+  var MAX_AHEAD_DAYS = 42;
   var MAJORS = ['USD', 'EUR', 'GBP', 'JPY', 'CHF', 'CAD', 'AUD', 'NZD', 'CNY'];
   var IMPACTS = ['high', 'medium', 'low'];
   var DEFAULT_CUR = MAJORS.slice();
@@ -164,7 +149,8 @@
   var LS_KEY = 'tc24_ec_filters_v2';
 
   var SLOW_MS = 300000, FAST_MS = 15000, BURST_BEFORE = 60000, BURST_AFTER = 900000;
-  var INVERSE_RE = /unemploy|jobless|claims|arbeitslos/i; // hoeher = schlechter
+  var SOON_MS = 300000; // <= 5 min -> Sekunden-Countdown + rote Faerbung
+  var INVERSE_RE = /unemploy|jobless|claims|arbeitslos/i;
 
   var ROOT_ID = 'tc24-ec-root';
   var IMP_LETTER = { high: 'H', medium: 'M', low: 'N' };
@@ -213,7 +199,7 @@
       .then(function (j) { apply(j); })
       .catch(function (e) {
         log('fetch error', e); state.error = 'unavailable'; state.loading = false; render();
-        if (pollTimer) clearTimeout(pollTimer); pollTimer = setTimeout(fetchData, SLOW_MS); // weiter versuchen
+        if (pollTimer) clearTimeout(pollTimer); pollTimer = setTimeout(fetchData, SLOW_MS);
       });
   }
   function doRefresh() {
@@ -221,7 +207,7 @@
     state.refreshing = true; render();
     var started = Date.now();
     var done = function () { setTimeout(function () { state.refreshing = false; render(); }, Math.max(0, 600 - (Date.now() - started))); };
-    if (!ENDPOINT) FIXTURE_BASE = Date.now(); // Demo: Daten sichtbar auffrischen
+    if (!ENDPOINT) FIXTURE_BASE = Date.now();
     Promise.resolve(fetchData()).then(done, done);
   }
   function apply(j) {
@@ -296,13 +282,14 @@
     if (e.timeStatus === 'tentative') return 'unbestimmt';
     return dtfTime.format(new Date(e.t));
   }
-
-  function countdownText(ms) {
+  // Countdown: <=5min -> M:SS (Sekunden), sonst Xm / Xh Ym / Xd
+  function timerText(ms) {
     var d = ms - Date.now(); if (d <= 0) return '';
     var s = Math.floor(d / 1000);
-    if (s < 3600) { var m = Math.floor(s / 60), ss = s % 60; return 'in ' + m + ':' + (ss < 10 ? '0' : '') + ss; }
-    if (d < 86400000) { var h = Math.floor(s / 3600), mm = Math.floor((s % 3600) / 60); return 'in ' + h + 'h ' + mm + 'm'; }
-    return 'in ' + Math.floor(s / 86400) + 'd';
+    if (d <= SOON_MS) { var m = Math.floor(s / 60), ss = s % 60; return m + ':' + (ss < 10 ? '0' : '') + ss; }
+    if (s < 3600) return Math.ceil(s / 60) + 'm';
+    if (d < 86400000) { var h = Math.floor(s / 3600), mm = Math.floor((s % 3600) / 60); return h + 'h ' + mm + 'm'; }
+    return Math.floor(s / 86400) + 'd';
   }
 
   function inBurst() {
@@ -324,7 +311,6 @@
     var ber = new Date(d.toLocaleString('en-US', { timeZone: TZ }));
     return ber - utc;
   }
-  // Montag (Berlin-Woche) als YYYY-MM-DD-Schluessel
   function weekOf(ms) {
     var d = new Date(dayKey(ms) + 'T12:00:00Z');
     var wd = d.getUTCDay(); var diff = (wd === 0 ? 6 : wd - 1);
@@ -337,10 +323,7 @@
     var main = monKey === cur ? 'Diese Woche' : (monKey === nxt ? 'Nächste Woche' : 'Woche ' + dtfDM.format(new Date(monMs)));
     return { main: main, range: range };
   }
-  function seedOpenWeeks() {
-    var cur = weekOf(Date.now());
-    if (state.openWeeks[cur] === undefined) state.openWeeks[cur] = true;
-  }
+  function seedOpenWeeks() { var cur = weekOf(Date.now()); if (state.openWeeks[cur] === undefined) state.openWeeks[cur] = true; }
 
   function filteredEvents() {
     var start = startOfTodayMs(), end = Date.now() + MAX_AHEAD_DAYS * 86400000, f = state.filters, out = [];
@@ -350,7 +333,6 @@
       if (f.cur.indexOf(e.currency) < 0) continue;
       if (e.isHoliday) { if (!f.holidays) continue; } // eigener Feiertage-Toggle (nicht in "Niedrig")
       else if (f.imp.indexOf(e.impact) < 0) continue;
-
       out.push(e);
     }
     return out;
@@ -367,11 +349,9 @@
 
   function render() {
     var root = document.getElementById(ROOT_ID); if (!root) return;
-    var prevBody = root.querySelector('.tc24-ec-body'); var prevScroll = prevBody ? prevBody.scrollTop : 0;
     root.innerHTML = '';
     var card = el('div', 'tc24-ec-card');
 
-    // Header (Titel · Refresh · Live/aktualisiert)
     var head = el('div', 'tc24-ec-head');
     head.appendChild(el('div', 'tc24-ec-title', 'Wirtschaftskalender'));
     var hr = el('div', 'tc24-ec-headright');
@@ -397,34 +377,34 @@
     }
     card.appendChild(body);
     card.appendChild(el('div', 'tc24-ec-foot', 'Zeiten in Europe/Berlin · Quelle: ForexFactory'));
-
     root.appendChild(card);
-    var nb = root.querySelector('.tc24-ec-body'); if (nb) nb.scrollTop = prevScroll;
   }
 
   function buildFilters() {
     var wrap = el('div', 'tc24-ec-filters'), f = state.filters;
+    // Währung
     var curRow = el('div', 'tc24-ec-filter-row tc24-ec-cur-row');
     curRow.appendChild(el('span', 'tc24-ec-filter-label', 'Währung'));
-    var curChips = el('div', 'tc24-ec-cur-chips');
+    var curChips = el('div', 'tc24-ec-chips tc24-ec-cur-chips');
     MAJORS.forEach(function (c) {
       var chip = el('span', 'tc24-ec-chip' + (f.cur.indexOf(c) >= 0 ? ' tc24-ec-on' : ''), c);
       clickable(chip, function () { toggle(f.cur, c); saveFilters(); render(); });
       curChips.appendChild(chip);
     });
-    curRow.appendChild(curChips);
-    wrap.appendChild(curRow);
-    var impRow = el('div', 'tc24-ec-filter-row');
+    curRow.appendChild(curChips); wrap.appendChild(curRow);
+    // Impact + Feiertage
+    var impRow = el('div', 'tc24-ec-filter-row tc24-ec-imp-row');
     impRow.appendChild(el('span', 'tc24-ec-filter-label', 'Impact'));
+    var impChips = el('div', 'tc24-ec-chips');
     IMPACTS.forEach(function (im) {
       var chip = el('span', 'tc24-ec-chip tc24-ec-imp-' + im + (f.imp.indexOf(im) >= 0 ? ' tc24-ec-on' : ''), IMP_NAME[im]);
       clickable(chip, function () { toggle(f.imp, im); saveFilters(); render(); });
-      impRow.appendChild(chip);
+      impChips.appendChild(chip);
     });
     var hchip = el('span', 'tc24-ec-chip tc24-ec-imp-holiday' + (f.holidays ? ' tc24-ec-on' : ''), 'Feiertage');
     clickable(hchip, function () { f.holidays = !f.holidays; saveFilters(); render(); });
-    impRow.appendChild(hchip);
-    wrap.appendChild(impRow);
+    impChips.appendChild(hchip);
+    impRow.appendChild(impChips); wrap.appendChild(impRow);
     return wrap;
   }
   function toggle(arr, v) { var i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); }
@@ -475,34 +455,45 @@
   function impRank(i) { return i === 'high' ? 3 : i === 'medium' ? 2 : 1; }
 
   function renderRow(e) {
-    var row = el('div', 'tc24-ec-row'); row.title = e.title;
-    // Impact-Pill zuerst
+    var row = el('div', 'tc24-ec-row');
+    var tl = el('div', 'tc24-ec-title-line', e.title); tl.title = e.title;
+    row.appendChild(tl);
+
+    var dl = el('div', 'tc24-ec-data-line');
     var pill = el('span', 'tc24-ec-imp', e.isHoliday ? 'F' : IMP_LETTER[e.impact]);
     pill.style.background = e.isHoliday ? 'var(--tc24-ec-holiday)' : IMP_BG[e.impact];
     pill.style.color = (e.impact === 'high' || e.isHoliday) ? '#fff' : 'rgba(0,0,0,0.8)';
     pill.title = e.isHoliday ? 'Feiertag' : IMP_NAME[e.impact];
-    row.appendChild(pill);
-    row.appendChild(el('span', 'tc24-ec-time', timeLabel(e)));
-    row.appendChild(el('span', 'tc24-ec-cur', e.currency));
-    var name = el('span', 'tc24-ec-name', e.title); name.title = e.title; row.appendChild(name);
-    row.appendChild(renderVals(e));
+    dl.appendChild(pill);
+
+    // Timer VOR der Uhrzeit (nur fuer anstehende getimte Events ohne Ist-Wert); sonst leere Spalte
+    var showTimer = e.timeStatus === 'timed' && e.actual == null && e.t > Date.now();
+    var timer = el('span', 'tc24-ec-timer' + (showTimer && (e.t - Date.now() <= SOON_MS) ? ' tc24-ec-soon' : ''));
+    if (showTimer) { timer.setAttribute('data-cd', String(e.t)); timer.textContent = timerText(e.t); }
+    dl.appendChild(timer);
+
+    dl.appendChild(el('span', 'tc24-ec-time', timeLabel(e)));
+    dl.appendChild(el('span', 'tc24-ec-cur', e.currency));
+    dl.appendChild(renderVals(e));
+    row.appendChild(dl);
     return row;
   }
   function renderVals(e) {
     var v = el('span', 'tc24-ec-vals');
-    v.appendChild(el('span', 'tc24-ec-lbl', 'Ist: '));
-    if (e.actual == null && e.timeStatus === 'timed' && e.t > Date.now()) {
-      var cd = el('span', 'tc24-ec-countdown' + (e.t - Date.now() <= 300000 ? ' tc24-ec-soon' : ''));
-      cd.setAttribute('data-cd', String(e.t)); cd.textContent = countdownText(e.t); v.appendChild(cd);
-    } else {
-      v.appendChild(el('span', 'tc24-ec-ist ' + actualClass(e), e.actual == null ? '–' : e.actual));
-    }
+    var ist = el('span', 'tc24-ec-vcell');
+    ist.appendChild(el('span', 'tc24-ec-lbl', 'Ist: '));
+    ist.appendChild(el('span', 'tc24-ec-ist ' + actualClass(e), e.actual == null ? '–' : e.actual));
+    v.appendChild(ist);
     v.appendChild(el('span', 'tc24-ec-sep', '|'));
-    v.appendChild(el('span', 'tc24-ec-lbl', 'Prog.: '));
-    v.appendChild(el('span', 'tc24-ec-val', e.forecast == null ? '–' : e.forecast));
+    var pr = el('span', 'tc24-ec-vcell');
+    pr.appendChild(el('span', 'tc24-ec-lbl', 'Prog.: '));
+    pr.appendChild(el('span', 'tc24-ec-val', e.forecast == null ? '–' : e.forecast));
+    v.appendChild(pr);
     v.appendChild(el('span', 'tc24-ec-sep', '|'));
-    v.appendChild(el('span', 'tc24-ec-lbl', 'Vorher: '));
-    v.appendChild(el('span', 'tc24-ec-val', e.previous == null ? '–' : e.previous));
+    var vo = el('span', 'tc24-ec-vcell');
+    vo.appendChild(el('span', 'tc24-ec-lbl', 'Vorher: '));
+    vo.appendChild(el('span', 'tc24-ec-val', e.previous == null ? '–' : e.previous));
+    v.appendChild(vo);
     return v;
   }
 
@@ -515,10 +506,10 @@
     if (dot) { if (burst) dot.classList.add('tc24-ec-burst'); else dot.classList.remove('tc24-ec-burst'); }
     var cds = root.querySelectorAll('[data-cd]');
     for (var i = 0; i < cds.length; i++) {
-      var t = parseInt(cds[i].getAttribute('data-cd'), 10), txt = countdownText(t);
+      var t = parseInt(cds[i].getAttribute('data-cd'), 10), txt = timerText(t);
       if (txt === '') { render(); return; }
       cds[i].textContent = txt;
-      if (t - Date.now() <= 300000) cds[i].classList.add('tc24-ec-soon');
+      if (t - Date.now() <= SOON_MS) cds[i].classList.add('tc24-ec-soon');
     }
     if (burst && cadence !== FAST_MS) { schedulePollNow(); }
   }
