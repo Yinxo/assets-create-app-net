@@ -1,0 +1,530 @@
+<!--
+  CC-25 Wirtschaftskalender (Economic Calendar) — In-Page Custom Code ("Code einbetten")
+  Prefix: tc24-ec-  ·  Read-only  ·  Vanilla JS/CSS/HTML (kein Build)
+  Spec:     docs/specs/wirtschaftskalender-spec.md
+  Contract: docs/specs/economic-calendar-endpoint-contract.md
+  Einbetten: LS → Seite bearbeiten → Karte "Code einbetten" → "In Seite anzeigen" → HTML einfügen.
+  DEV: ENDPOINT leer lassen -> laeuft gegen eingebaute (laufzeit-relative) Fixture.
+-->
+<style>
+  #tc24-ec-root {
+    --tc24-ec-card-bg: rgb(51,51,51);
+    --tc24-ec-elev-bg: rgba(255,255,255,0.04);
+    --tc24-ec-text: rgb(255,255,255);
+    --tc24-ec-text-2: rgba(255,255,255,0.72);
+    --tc24-ec-text-3: rgba(255,255,255,0.45);
+    --tc24-ec-border: rgba(255,255,255,0.12);
+    --tc24-ec-hover: rgba(255,255,255,0.08);
+    --tc24-ec-chip-off: rgba(255,255,255,0.06);
+
+    --tc24-ec-high: #ef4444;
+    --tc24-ec-medium: #f59e0b;
+    --tc24-ec-low: #f9e2af;
+    --tc24-ec-holiday: #9aa0aa;
+    --tc24-ec-good: #10b981;
+    --tc24-ec-bad: #ef4444;
+    --tc24-ec-accent: #10b981;
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--tc24-ec-text);
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  #tc24-ec-root * { box-sizing: border-box; }
+
+  .tc24-ec-card {
+    background: var(--tc24-ec-card-bg);
+    border: 1px solid var(--tc24-ec-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .tc24-ec-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--tc24-ec-border);
+    flex-wrap: wrap;
+  }
+  .tc24-ec-title { font-size: 16px; font-weight: 700; letter-spacing: 0.2px; }
+  .tc24-ec-updated { font-size: 11px; color: var(--tc24-ec-text-3); display: flex; align-items: center; gap: 6px; }
+  .tc24-ec-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--tc24-ec-accent); display: inline-block; }
+  .tc24-ec-live-dot.tc24-ec-burst { animation: tc24-ec-pulse 1s infinite; }
+  @keyframes tc24-ec-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .tc24-ec-filters { padding: 12px 20px; border-bottom: 1px solid var(--tc24-ec-border); display: flex; flex-direction: column; gap: 10px; }
+  .tc24-ec-filter-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .tc24-ec-filter-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--tc24-ec-text-3); margin-right: 4px; min-width: 60px; }
+  .tc24-ec-chip {
+    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--tc24-ec-border); background: var(--tc24-ec-chip-off); color: var(--tc24-ec-text-2);
+    user-select: none; transition: background 0.15s, color 0.15s, border-color 0.15s; line-height: 1.4;
+  }
+  .tc24-ec-chip:hover { background: var(--tc24-ec-hover); }
+  .tc24-ec-chip.tc24-ec-on { background: var(--tc24-ec-accent); border-color: var(--tc24-ec-accent); color: #fff; }
+  .tc24-ec-chip.tc24-ec-imp-high.tc24-ec-on { background: var(--tc24-ec-high); border-color: var(--tc24-ec-high); }
+  .tc24-ec-chip.tc24-ec-imp-medium.tc24-ec-on { background: var(--tc24-ec-medium); border-color: var(--tc24-ec-medium); color: rgba(0,0,0,0.8); }
+  .tc24-ec-chip.tc24-ec-imp-low.tc24-ec-on { background: var(--tc24-ec-low); border-color: var(--tc24-ec-low); color: rgba(0,0,0,0.8); }
+
+  .tc24-ec-body { max-height: 620px; overflow-y: auto; }
+  .tc24-ec-day { border-bottom: 1px solid var(--tc24-ec-border); }
+  .tc24-ec-day-head {
+    position: sticky; top: 0; z-index: 1; background: var(--tc24-ec-card-bg);
+    padding: 8px 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--tc24-ec-text-2); border-bottom: 1px solid var(--tc24-ec-border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tc24-ec-day.tc24-ec-today .tc24-ec-day-head { color: var(--tc24-ec-accent); }
+  .tc24-ec-today-badge { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--tc24-ec-accent); color: #fff; letter-spacing: 0.3px; }
+
+  .tc24-ec-row {
+    display: grid; grid-template-columns: 62px 46px 1fr 82px 70px 70px 70px; align-items: center;
+    gap: 8px; padding: 9px 20px; font-size: 13px; border-bottom: 1px solid var(--tc24-ec-border);
+  }
+  .tc24-ec-row:last-child { border-bottom: none; }
+  .tc24-ec-row:hover { background: var(--tc24-ec-hover); }
+  .tc24-ec-colhead {
+    display: grid; grid-template-columns: 62px 46px 1fr 82px 70px 70px 70px; gap: 8px; padding: 6px 20px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--tc24-ec-text-3);
+    background: var(--tc24-ec-elev-bg);
+  }
+  .tc24-ec-time { font-weight: 600; color: var(--tc24-ec-text-2); white-space: nowrap; }
+  .tc24-ec-cur { font-weight: 700; font-size: 12px; }
+  .tc24-ec-name { color: var(--tc24-ec-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tc24-ec-impact { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--tc24-ec-text-2); }
+  .tc24-ec-impact-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+  .tc24-ec-num { text-align: right; font-variant-numeric: tabular-nums; color: var(--tc24-ec-text-2); white-space: nowrap; }
+  .tc24-ec-num.tc24-ec-empty { color: var(--tc24-ec-text-3); }
+  .tc24-ec-actual { font-weight: 700; color: var(--tc24-ec-text); }
+  .tc24-ec-actual.tc24-ec-good { color: var(--tc24-ec-good); }
+  .tc24-ec-actual.tc24-ec-bad { color: var(--tc24-ec-bad); }
+  .tc24-ec-countdown {
+    font-size: 11px; font-weight: 600; color: var(--tc24-ec-accent); background: rgba(16,185,129,0.12);
+    padding: 1px 6px; border-radius: 6px; white-space: nowrap; display: inline-block;
+  }
+  .tc24-ec-countdown.tc24-ec-soon { color: var(--tc24-ec-high); background: rgba(239,68,68,0.14); }
+
+  .tc24-ec-vals { display: contents; }
+
+  .tc24-ec-state { padding: 32px 20px; text-align: center; color: var(--tc24-ec-text-3); font-size: 13px; }
+  .tc24-ec-spinner { width: 22px; height: 22px; border: 2px solid var(--tc24-ec-border); border-top-color: var(--tc24-ec-accent); border-radius: 50%; margin: 0 auto 10px; animation: tc24-ec-spin 0.8s linear infinite; }
+  @keyframes tc24-ec-spin { to { transform: rotate(360deg); } }
+  .tc24-ec-foot { padding: 8px 20px; font-size: 10px; color: var(--tc24-ec-text-3); border-top: 1px solid var(--tc24-ec-border); text-align: right; }
+
+  @media (max-width: 768px) {
+    .tc24-ec-body { max-height: none; }
+    .tc24-ec-colhead { display: none; }
+    .tc24-ec-row {
+      grid-template-columns: 52px 40px 1fr; grid-template-areas:
+        "time cur name"
+        "time cur impact"
+        "vals vals vals";
+      row-gap: 3px; padding: 10px 16px;
+    }
+    .tc24-ec-time { grid-area: time; }
+    .tc24-ec-cur { grid-area: cur; }
+    .tc24-ec-name { grid-area: name; white-space: normal; }
+    .tc24-ec-impact { grid-area: impact; }
+    .tc24-ec-vals { grid-area: vals; display: flex; gap: 14px; margin-top: 4px; }
+    .tc24-ec-vals .tc24-ec-num { text-align: left; }
+    .tc24-ec-vals .tc24-ec-num::before { content: attr(data-label) ": "; color: var(--tc24-ec-text-3); font-weight: 600; }
+    .tc24-ec-head, .tc24-ec-filters, .tc24-ec-day-head, .tc24-ec-foot { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+
+<div id="tc24-ec-root"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ===================== CONFIG =====================
+  var DEBUG = false;
+  var log = function () { if (DEBUG) console.log.apply(console, ['[TC24-EC]'].concat([].slice.call(arguments))); };
+
+  // Leer lassen => DEV-Fixture. Fuer Live: URL des Vercel-Endpoints (Contract: /api/economic-calendar).
+  var ENDPOINT = '';
+
+  var TZ = 'Europe/Berlin';
+  var WINDOW_DAYS = 7;
+  var MAJORS = ['USD', 'EUR', 'GBP', 'JPY', 'CHF', 'CAD', 'AUD', 'NZD', 'CNY'];
+  var IMPACTS = ['high', 'medium', 'low'];
+  var DEFAULT_CUR = MAJORS.slice();
+  var DEFAULT_IMP = ['high', 'medium'];
+  var LS_KEY = 'tc24_ec_filters_v1';
+
+  var SLOW_MS = 300000;   // Idle-Poll: 5 min
+  var FAST_MS = 15000;    // Burst-Poll rund um Release: 15 s
+  var BURST_BEFORE = 60000;    // T-60s
+  var BURST_AFTER = 900000;    // T+15min
+  var INVERSE_RE = /unemploy|jobless|claims|arbeitslos/i; // hoeher = schlechter
+
+  var ROOT_ID = 'tc24-ec-root';
+
+  // ===================== STATE =====================
+  var state = { events: [], generatedAt: null, error: null, loading: true, filters: loadFilters() };
+  var pollTimer = null, tickTimer = null, healTimer = null, cadence = 0;
+
+  // Kill any timers left over from a previous mount (SPA re-render replaces the embed).
+  if (window.__tc24ec && window.__tc24ec.teardown) { try { window.__tc24ec.teardown(); } catch (e) {} }
+  window.__tc24ec = { teardown: teardown };
+
+  // ===================== FIXTURE (laufzeit-relativ) =====================
+  var FIXTURE_BASE = Date.now();
+  function buildFixture() {
+    var now = FIXTURE_BASE;
+    var iso = function (ms) { return new Date(ms).toISOString(); };
+    var H = 3600000, D = 86400000, MIN = 60000;
+    var ev = [
+      mk('USD', 'Non-Farm Employment Change', 'high', now + 4 * MIN, 'timed', null, '175K', '206K'),
+      mk('EUR', 'German ifo Business Climate', 'medium', now + 3 * H, 'timed', null, '88.9', '88.6'),
+      mk('USD', 'ISM Services PMI', 'high', now - 1 * H, 'timed', '51.2', '50.8', '50.1'),
+      mk('EUR', 'Unemployment Rate', 'medium', now - 2 * H, 'timed', '6.5%', '6.4%', '6.4%'),
+      mk('GBP', 'BOE Official Bank Rate', 'high', now + 1 * D + 5 * H, 'timed', null, '4.75%', '4.75%'),
+      mk('JPY', 'Bank Holiday', 'holiday', now + 1 * D, 'allday', null, null, null),
+      mk('USD', 'CPI m/m', 'high', now + 2 * D + 6 * H, 'timed', null, '0.2%', '0.3%'),
+      mk('CNY', 'Trade Balance', 'medium', now + 2 * D, 'tentative', null, '95.0B', '99.1B'),
+      mk('AUD', 'Retail Sales m/m', 'low', now + 3 * D + 2 * H, 'timed', null, '0.3%', '0.5%'),
+      mk('CHF', 'SNB Policy Rate', 'high', now + 5 * D + 7 * H, 'timed', null, '1.25%', '1.25%')
+    ];
+    function mk(cur, title, impact, ms, ts, a, f, p) {
+      return { id: iso(ms).slice(0, 10) + '-' + cur + '-' + slug(title), dateUtc: iso(ms), timeStatus: ts, currency: cur, title: title, impact: impact, actual: a, forecast: f, previous: p };
+    }
+    return { generatedAt: iso(now), source: 'fixture', events: ev };
+  }
+  function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+
+  // ===================== API =====================
+  function fetchData() {
+    if (!ENDPOINT) { apply(buildFixture()); return Promise.resolve(); }
+    return fetch(ENDPOINT, { credentials: 'omit', cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { apply(j); })
+      .catch(function (e) { log('fetch error', e); state.error = 'unavailable'; state.loading = false; render(); });
+  }
+  function apply(j) {
+    state.error = (j && j.error) ? j.error : null;
+    state.generatedAt = (j && j.generatedAt) || null;
+    state.events = normalize((j && j.events) || []);
+    state.loading = false;
+    render();
+    schedulePoll();
+  }
+  function normalize(list) {
+    var out = [];
+    for (var i = 0; i < list.length; i++) {
+      var e = list[i]; if (!e || !e.dateUtc) continue;
+      var t = Date.parse(e.dateUtc); if (isNaN(t)) continue;
+      var isHoliday = e.impact === 'holiday';
+      var imp = isHoliday ? 'low' : (IMPACTS.indexOf(e.impact) >= 0 ? e.impact : 'low');
+      out.push({
+        id: e.id || (e.dateUtc.slice(0, 10) + '-' + e.currency + '-' + slug(e.title || '')),
+        t: t, dateUtc: e.dateUtc, timeStatus: e.timeStatus || 'timed',
+        currency: e.currency || '', title: e.title || '', impact: imp, isHoliday: isHoliday,
+        actual: e.actual == null ? null : String(e.actual),
+        forecast: e.forecast == null ? null : String(e.forecast),
+        previous: e.previous == null ? null : String(e.previous)
+      });
+    }
+    out.sort(function (a, b) { return a.t - b.t; });
+    return out;
+  }
+
+  // ===================== HELPERS =====================
+  function loadFilters() {
+    var d = { cur: DEFAULT_CUR.slice(), imp: DEFAULT_IMP.slice() };
+    try {
+      var raw = localStorage.getItem(LS_KEY);
+      if (!raw) return d;
+      var p = JSON.parse(raw);
+      if (p && Array.isArray(p.cur) && Array.isArray(p.imp)) {
+        d.cur = p.cur.filter(function (c) { return MAJORS.indexOf(c) >= 0; });
+        d.imp = p.imp.filter(function (c) { return IMPACTS.indexOf(c) >= 0; });
+      }
+    } catch (e) { log('filter load error', e); }
+    return d;
+  }
+  function saveFilters() { try { localStorage.setItem(LS_KEY, JSON.stringify(state.filters)); } catch (e) { log('filter save error', e); } }
+
+  function parseNum(s) {
+    if (s == null) return null;
+    var m = String(s).replace(/,/g, '').match(/(-?\d+(?:\.\d+)?)\s*([KMBT])?/i);
+    if (!m) return null;
+    var n = parseFloat(m[1]); if (isNaN(n)) return null;
+    var suf = (m[2] || '').toUpperCase();
+    if (suf === 'K') n *= 1e3; else if (suf === 'M') n *= 1e6; else if (suf === 'B') n *= 1e9; else if (suf === 'T') n *= 1e12;
+    return n;
+  }
+  function actualClass(e) {
+    var a = parseNum(e.actual), f = parseNum(e.forecast);
+    if (a == null || f == null || a === f) return '';
+    var better = a > f; if (INVERSE_RE.test(e.title)) better = !better;
+    return better ? 'tc24-ec-good' : 'tc24-ec-bad';
+  }
+
+  var dtfTime = new Intl.DateTimeFormat('de-DE', { timeZone: TZ, hour: '2-digit', minute: '2-digit' });
+  var dtfKey = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
+  var dtfLabel = new Intl.DateTimeFormat('de-DE', { timeZone: TZ, weekday: 'short', day: '2-digit', month: '2-digit' });
+  function dayKey(ms) { return dtfKey.format(new Date(ms)); }
+  function dayLabel(ms) { return dtfLabel.format(new Date(ms)); }
+  function timeLabel(e) {
+    if (e.timeStatus === 'allday') return 'ganztägig';
+    if (e.timeStatus === 'tentative') return 'unbestimmt';
+    return dtfTime.format(new Date(e.t));
+  }
+
+  function countdownText(ms) {
+    var d = ms - Date.now();
+    if (d <= 0) return '';
+    var s = Math.floor(d / 1000);
+    if (s < 3600) { var m = Math.floor(s / 60), ss = s % 60; return 'in ' + m + ':' + (ss < 10 ? '0' : '') + ss; }
+    if (d < 86400000) { var h = Math.floor(s / 3600), mm = Math.floor((s % 3600) / 60); return 'in ' + h + 'h ' + mm + 'm'; }
+    return 'in ' + Math.floor(s / 86400) + 'd';
+  }
+
+  function inBurst() {
+    var now = Date.now();
+    for (var i = 0; i < state.events.length; i++) {
+      var e = state.events[i];
+      if (e.timeStatus === 'timed' && e.actual == null && now >= e.t - BURST_BEFORE && now <= e.t + BURST_AFTER) return true;
+    }
+    return false;
+  }
+
+  function windowEvents() {
+    var now = Date.now(), end = now + WINDOW_DAYS * 86400000, start = startOfTodayMs();
+    var f = state.filters, out = [];
+    for (var i = 0; i < state.events.length; i++) {
+      var e = state.events[i];
+      if (e.t < start || e.t > end) continue;
+      if (f.cur.indexOf(e.currency) < 0) continue;
+      if (f.imp.indexOf(e.impact) < 0) continue;
+      out.push(e);
+    }
+    return out;
+  }
+  function startOfTodayMs() {
+    // Beginn des heutigen Tages in Berlin (damit heutige, schon vergangene Events sichtbar bleiben).
+    var k = dayKey(Date.now());
+    return Date.parse(k + 'T00:00:00Z') - berlinOffsetMs(Date.parse(k + 'T12:00:00Z'));
+  }
+  function berlinOffsetMs(ms) {
+    // Offset Berlin ggue UTC zum Zeitpunkt ms (DST-sicher).
+    var d = new Date(ms);
+    var utc = new Date(d.toLocaleString('en-US', { timeZone: 'UTC' }));
+    var ber = new Date(d.toLocaleString('en-US', { timeZone: TZ }));
+    return ber - utc;
+  }
+
+  // ===================== RENDER =====================
+  function el(tag, cls, txt) { var n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; }
+
+  function render() {
+    var root = document.getElementById(ROOT_ID); if (!root) return;
+    var prevBody = root.querySelector('.tc24-ec-body'); var prevScroll = prevBody ? prevBody.scrollTop : 0;
+    root.innerHTML = '';
+    var card = el('div', 'tc24-ec-card');
+
+    // Header
+    var head = el('div', 'tc24-ec-head');
+    head.appendChild(el('div', 'tc24-ec-title', 'Wirtschaftskalender'));
+    var upd = el('div', 'tc24-ec-updated');
+    var dot = el('span', 'tc24-ec-live-dot' + (inBurst() ? ' tc24-ec-burst' : ''));
+    upd.appendChild(dot);
+    upd.appendChild(el('span', null, state.generatedAt ? 'aktualisiert ' + dtfTime.format(new Date(state.generatedAt)) : 'live'));
+    head.appendChild(upd);
+    card.appendChild(head);
+
+    // Filters
+    card.appendChild(buildFilters());
+
+    // Body
+    var body = el('div', 'tc24-ec-body');
+    if (state.loading) {
+      var ld = el('div', 'tc24-ec-state'); ld.appendChild(el('div', 'tc24-ec-spinner')); ld.appendChild(el('div', null, 'Lade Termine…')); body.appendChild(ld);
+    } else if (state.error) {
+      body.appendChild(el('div', 'tc24-ec-state', 'Kalender momentan nicht erreichbar. Bitte später erneut versuchen.'));
+    } else {
+      var evs = windowEvents();
+      if (!evs.length) {
+        body.appendChild(el('div', 'tc24-ec-state', 'Keine Termine im gewählten Zeitraum/Filter.'));
+      } else {
+        renderDays(body, evs);
+      }
+    }
+    card.appendChild(body);
+
+    var foot = el('div', 'tc24-ec-foot', 'Zeiten in Europe/Berlin · Quelle: ForexFactory');
+    card.appendChild(foot);
+
+    root.appendChild(card);
+    var newBody = root.querySelector('.tc24-ec-body'); if (newBody) newBody.scrollTop = prevScroll;
+  }
+
+  function buildFilters() {
+    var wrap = el('div', 'tc24-ec-filters');
+    var f = state.filters;
+
+    var curRow = el('div', 'tc24-ec-filter-row');
+    curRow.appendChild(el('span', 'tc24-ec-filter-label', 'Währung'));
+    MAJORS.forEach(function (c) {
+      var on = f.cur.indexOf(c) >= 0;
+      var chip = el('span', 'tc24-ec-chip' + (on ? ' tc24-ec-on' : ''), c);
+      chip.addEventListener('click', function () { toggle(f.cur, c); saveFilters(); render(); });
+      curRow.appendChild(chip);
+    });
+    wrap.appendChild(curRow);
+
+    var impRow = el('div', 'tc24-ec-filter-row');
+    impRow.appendChild(el('span', 'tc24-ec-filter-label', 'Impact'));
+    var impLabels = { high: 'Hoch', medium: 'Mittel', low: 'Niedrig' };
+    IMPACTS.forEach(function (im) {
+      var on = f.imp.indexOf(im) >= 0;
+      var chip = el('span', 'tc24-ec-chip tc24-ec-imp-' + im + (on ? ' tc24-ec-on' : ''), impLabels[im]);
+      chip.addEventListener('click', function () { toggle(f.imp, im); saveFilters(); render(); });
+      impRow.appendChild(chip);
+    });
+    wrap.appendChild(impRow);
+    return wrap;
+  }
+  function toggle(arr, v) { var i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); else arr.push(v); }
+
+  var IMPACT_COLOR = { high: 'var(--tc24-ec-high)', medium: 'var(--tc24-ec-medium)', low: 'var(--tc24-ec-low)' };
+  function renderDays(body, evs) {
+    var todayKey = dayKey(Date.now());
+    var groups = {}, order = [];
+    evs.forEach(function (e) { var k = dayKey(e.t); if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(e); });
+
+    order.forEach(function (k) {
+      var day = el('div', 'tc24-ec-day' + (k === todayKey ? ' tc24-ec-today' : ''));
+      var dh = el('div', 'tc24-ec-day-head');
+      dh.appendChild(el('span', null, dayLabel(groups[k][0].t)));
+      if (k === todayKey) dh.appendChild(el('span', 'tc24-ec-today-badge', 'HEUTE'));
+      day.appendChild(dh);
+
+      var ch = el('div', 'tc24-ec-colhead');
+      ['Zeit', 'Wg', 'Event', 'Impact', 'Ist', 'Prog.', 'Vorher'].forEach(function (h) { ch.appendChild(el('span', null, h)); });
+      day.appendChild(ch);
+
+      groups[k].sort(function (a, b) { return a.t - b.t || impRank(b.impact) - impRank(a.impact); });
+      groups[k].forEach(function (e) { day.appendChild(renderRow(e)); });
+      body.appendChild(day);
+    });
+  }
+  function impRank(i) { return i === 'high' ? 3 : i === 'medium' ? 2 : 1; }
+
+  function renderRow(e) {
+    var row = el('div', 'tc24-ec-row');
+
+    row.appendChild(el('span', 'tc24-ec-time', timeLabel(e)));
+    row.appendChild(el('span', 'tc24-ec-cur', e.currency));
+
+    var name = el('span', 'tc24-ec-name', e.title); name.title = e.title;
+    row.appendChild(name);
+
+    var imp = el('span', 'tc24-ec-impact');
+    var idot = el('span', 'tc24-ec-impact-dot'); idot.style.background = e.isHoliday ? 'var(--tc24-ec-holiday)' : IMPACT_COLOR[e.impact];
+    imp.appendChild(idot);
+    imp.appendChild(el('span', null, e.isHoliday ? 'Feiertag' : (e.impact === 'high' ? 'Hoch' : e.impact === 'medium' ? 'Mittel' : 'Niedrig')));
+    row.appendChild(imp);
+
+    var vals = el('span', 'tc24-ec-vals');
+    var actual = numCell(e.actual, 'Ist', 'tc24-ec-actual ' + actualClass(e));
+    // Countdown ersetzt den Ist-Wert solange dieser fehlt und ein Zeitpunkt bevorsteht.
+    if (e.actual == null && e.timeStatus === 'timed' && e.t > Date.now()) {
+      actual = el('span', 'tc24-ec-num'); actual.setAttribute('data-label', 'Ist'); var cd = el('span', 'tc24-ec-countdown'); cd.setAttribute('data-cd', String(e.t)); cd.textContent = countdownText(e.t); actual.appendChild(cd);
+    }
+    vals.appendChild(actual);
+    vals.appendChild(numCell(e.forecast, 'Prog.', ''));
+    vals.appendChild(numCell(e.previous, 'Vorher', ''));
+    row.appendChild(vals);
+    return row;
+  }
+  function numCell(v, label, extra) {
+    var n = el('span', 'tc24-ec-num ' + (extra || '') + (v == null ? ' tc24-ec-empty' : ''), v == null ? '–' : v);
+    n.setAttribute('data-label', label);
+    return n;
+  }
+
+  // ===================== REFRESH (adaptiv) =====================
+  function schedulePoll() {
+    if (pollTimer) clearTimeout(pollTimer);
+    cadence = inBurst() ? FAST_MS : SLOW_MS;
+    pollTimer = setTimeout(fetchData, cadence);
+  }
+  function tick() {
+    var root = document.getElementById(ROOT_ID);
+    if (!root || !root.isConnected) { teardown(); return; }
+    // Countdown-Spans in-place aktualisieren (kein Full-Render).
+    var dot = root.querySelector('.tc24-ec-live-dot');
+    var burst = inBurst();
+    if (dot) { if (burst) dot.classList.add('tc24-ec-burst'); else dot.classList.remove('tc24-ec-burst'); }
+    var cds = root.querySelectorAll('[data-cd]');
+    for (var i = 0; i < cds.length; i++) {
+      var t = parseInt(cds[i].getAttribute('data-cd'), 10);
+      var txt = countdownText(t);
+      if (txt === '') { render(); return; } // Zeitpunkt erreicht -> neu rendern (Ist-Wert/Refresh)
+      cds[i].textContent = txt;
+      if (t - Date.now() <= 300000) cds[i].classList.add('tc24-ec-soon'); // < 5 min
+    }
+    // Beim Eintritt in ein Burst-Fenster sofort nachladen statt auf Idle-Timer zu warten.
+    if (burst && cadence !== FAST_MS) { schedulePollNow(); }
+  }
+  function schedulePollNow() { if (pollTimer) clearTimeout(pollTimer); cadence = FAST_MS; fetchData(); }
+
+  // ===================== THEME =====================
+  var LIGHT = {
+    '--tc24-ec-card-bg': 'rgb(255,255,255)', '--tc24-ec-elev-bg': 'rgba(0,0,0,0.03)',
+    '--tc24-ec-text': 'rgb(52,52,52)', '--tc24-ec-text-2': 'rgb(90,90,90)', '--tc24-ec-text-3': 'rgb(140,140,140)',
+    '--tc24-ec-border': 'rgba(0,0,0,0.1)', '--tc24-ec-hover': 'rgba(0,0,0,0.035)', '--tc24-ec-chip-off': 'rgba(0,0,0,0.04)'
+  };
+  var DARK = {
+    '--tc24-ec-card-bg': 'rgb(51,51,51)', '--tc24-ec-elev-bg': 'rgba(255,255,255,0.04)',
+    '--tc24-ec-text': 'rgb(255,255,255)', '--tc24-ec-text-2': 'rgba(255,255,255,0.72)', '--tc24-ec-text-3': 'rgba(255,255,255,0.45)',
+    '--tc24-ec-border': 'rgba(255,255,255,0.12)', '--tc24-ec-hover': 'rgba(255,255,255,0.08)', '--tc24-ec-chip-off': 'rgba(255,255,255,0.06)'
+  };
+  var lastDark = null;
+  function isDark(el2) {
+    var node = el2, tries = 0;
+    while (node && tries < 6) {
+      var bg = getComputedStyle(node).backgroundColor;
+      var m = bg && bg.match(/\d+/g);
+      if (m && m.length >= 3 && !(m.length >= 4 && Number(m[3]) === 0)) {
+        return (0.299 * m[0] + 0.587 * m[1] + 0.114 * m[2]) / 255 < 0.5;
+      }
+      node = node.parentElement; tries++;
+    }
+    return true;
+  }
+  function applyTheme() {
+    var root = document.getElementById(ROOT_ID); if (!root) return;
+    var dark = isDark(root.parentElement || document.body);
+    if (dark === lastDark) return;
+    lastDark = dark;
+    var pal = dark ? DARK : LIGHT;
+    for (var k in pal) if (pal.hasOwnProperty(k)) root.style.setProperty(k, pal[k]);
+  }
+
+  // ===================== INIT / TEARDOWN =====================
+  function teardown() {
+    if (pollTimer) clearTimeout(pollTimer);
+    if (tickTimer) clearInterval(tickTimer);
+    if (healTimer) clearInterval(healTimer);
+    pollTimer = tickTimer = healTimer = null;
+  }
+  function init() {
+    try {
+      applyTheme();
+      render();
+      fetchData();
+      tickTimer = setInterval(tick, 1000);
+      healTimer = setInterval(applyTheme, 3000); // LS toggelt Theme ohne Event -> pollen
+    } catch (e) { console.error('[TC24-EC] Init error:', e); }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { try { init(); } catch (e) { console.error('[TC24-EC] Boot error:', e); } });
+  } else {
+    try { init(); } catch (e) { console.error('[TC24-EC] Boot error:', e); }
+  }
+})();
+</script>
