@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>TC24 — Live Overlay</title>
+<link rel="icon" href="data:,">
+<!-- Brand-Fonts (Guideline 2026): Headline Lora Medium · Body Inter. DRAFT via Google Fonts → Produktion @fontsource -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:     #1c3941;   /* Petrol */
+    --deep:   #0f232a;
+    --lime:   #c9e600;   /* Trader Green (Dark BG) */
+    --gold:   #e9b84a;   /* Master */
+    --blue:   #3fa6e3;   /* Aktien */
+    --teal:   #69dac9;   /* Sekundär-Akzent */
+    --white:  #ffffff;
+    --muted:  rgba(255,255,255,.56);
+    --line:   rgba(255,255,255,.10);
+    --bar:    rgba(9,22,27,.82);
+    --card:   rgba(255,255,255,.05);
+    --pos:    #8fe36b;
+    --neg:    #ff6b6b;
+    --font-display:"Lora", Georgia, serif;
+    --font-ui:"Inter", system-ui, sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ width:1920px; height:1080px; overflow:hidden; }
+  body{
+    font-family:var(--font-ui); color:var(--white); position:relative;
+    background:
+      radial-gradient(1200px 820px at 88% -6%, #37788a 0%, rgba(55,120,138,0) 54%),
+      radial-gradient(1100px 900px at 0% 112%, #0c242c 0%, rgba(12,36,44,0) 52%),
+      linear-gradient(152deg, #245663 0%, #17343d 52%, #0f232a 100%);
+  }
+  .chart-bg{ position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+  .chart-bg img{ position:absolute; left:-3%; bottom:0; width:108%; opacity:.16; }
+
+  /* ============ TOP-LAUFBAND (Header) ============ */
+  .topbar{
+    position:relative; z-index:2; height:68px; display:flex; align-items:stretch;
+    background:var(--bar); border-bottom:3px solid var(--lime);
+    box-shadow:0 0 24px rgba(0,0,0,.35);
+  }
+  .brand{ display:flex; align-items:center; gap:16px; padding:0 22px 0 26px; flex-shrink:0; border-right:1px solid var(--line); }
+  .brand .logo{ height:30px; width:auto; display:block; }
+  .live{ display:flex; align-items:center; gap:7px; font-weight:700; font-size:15px; letter-spacing:.14em; color:var(--lime); }
+  .live .dot{ width:11px; height:11px; border-radius:50%; background:var(--lime); box-shadow:0 0 10px var(--lime); animation:pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
+  #time{ font-weight:600; font-size:20px; color:var(--white); font-variant-numeric:tabular-nums; letter-spacing:.02em; }
+
+  .ticker-wrap{ flex:1 1 auto; display:flex; align-items:center; min-width:0; position:relative; }
+  .ticker-label{ flex-shrink:0; align-self:stretch; display:flex; align-items:center; padding:0 16px;
+    font-family:var(--font-display); font-weight:600; font-size:16px; color:var(--deep);
+    background:var(--lime); }
+  .marquee{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; }
+  .marquee > span{ white-space:nowrap; display:inline-flex; align-items:center; }
+  .marquee a{ font-family:var(--font-ui); font-size:15px; padding:0 4px; color:rgba(255,255,255,.9); }
+  .marquee .divider{ margin:0 10px 0 24px; }
+  .marquee .hl{ color:var(--lime); font-weight:700; }
+  .marquee .sep{ color:var(--muted); }
+  /* Rand-Fader für den Ticker */
+  .ticker-wrap::before,.ticker-wrap::after{ content:""; position:absolute; top:0; bottom:0; width:56px; z-index:3; pointer-events:none; }
+  .ticker-wrap::before{ left:0;  background:linear-gradient(to right, var(--bar), rgba(9,22,27,0)); }
+  .ticker-wrap::after{ right:0; background:linear-gradient(to left,  var(--bar), rgba(9,22,27,0)); }
+
+  .date-wrap{ flex-shrink:0; display:flex; align-items:center; padding:0 26px; border-left:1px solid var(--line); }
+  #date{ font-weight:600; font-size:16px; color:var(--white); }
+
+  /* ============ CENTER-STAGE ============ */
+  .stage{ position:relative; z-index:1; height:calc(1080px - 68px - 60px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:44px; padding:40px 60px; }
+  .pause-block{ text-align:center; }
+  .pause-title{ font-family:var(--font-display); font-weight:500; font-size:150px; line-height:1; color:var(--white); }
+  .pause-underline{ width:220px; height:8px; border-radius:4px; background:var(--lime); margin:26px auto 0; box-shadow:0 0 24px rgba(201,230,0,.5); }
+  .pause-sub{ margin-top:26px; font-size:24px; color:var(--muted); letter-spacing:.02em; }
+
+  .prices-card{ width:1500px; max-width:80%; background:var(--card); border:1px solid var(--line);
+    border-radius:16px; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,.3); }
+  .prices-head{ display:flex; align-items:center; gap:10px; padding:12px 20px; border-bottom:1px solid var(--line);
+    font-family:var(--font-display); font-weight:600; font-size:18px; color:var(--lime); }
+  .prices-head::before{ content:""; width:9px; height:9px; border-radius:50%; background:var(--lime); box-shadow:0 0 8px var(--lime); }
+  .prices-card iframe{ display:block; width:100%; height:300px; border:0; background:transparent; }
+
+  /* ============ BOTTOM-LAUFBAND (Märkte) ============ */
+  .marketbar{ position:relative; z-index:2; height:60px; display:flex; align-items:stretch;
+    background:var(--bar); border-top:3px solid var(--lime); box-shadow:0 0 24px rgba(0,0,0,.35); }
+  .marqueefoot{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; align-items:center; }
+  .marqueefoot > span{ white-space:nowrap; display:inline-flex; align-items:center; }
+  .marqueefoot a{ font-size:17px; padding:0 6px; color:rgba(255,255,255,.92); }
+  .marqueefoot .divider{ margin:0 12px 0 30px; }
+  .marqueefoot .sym{ font-weight:700; color:var(--white); }
+  .marqueefoot .val{ color:var(--muted); }
+  .pos{ color:var(--pos); font-weight:700; }
+  .neg{ color:var(--neg); font-weight:700; }
+</style>
+</head>
+<body translate="no">
+  <div class="chart-bg"><img src="assets/chart-candles.svg" alt=""></div>
+
+  <!-- ======= TOP-LAUFBAND ======= -->
+  <header class="topbar">
+    <div class="brand">
+      <img class="logo" src="assets/logo-tc24.svg" alt="TradersClub24">
+      <span class="live"><span class="dot"></span>LIVE</span>
+      <span id="time">00:00:00</span>
+    </div>
+    <div class="ticker-wrap">
+      <span class="ticker-label">Wirtschaftstermine</span>
+      <div class="marquee">
+        <span>
+          <a class="divider"></a><a class="hl">Di, 27. Mai · 14:30</a><a class="sep"> | </a><a><b>USA:</b> Auftragseingang langlebiger Güter (Apr)</a>
+          <a class="divider"></a><a class="hl">Di, 27. Mai · 16:00</a><a class="sep"> | </a><a><b>USA:</b> Verbrauchervertrauen Conference Board (Mai)</a>
+          <a class="divider"></a><a class="hl">Mi, 28. Mai · 09:55</a><a class="sep"> | </a><a><b>DE:</b> Arbeitslosenzahl (Mai)</a>
+          <a class="divider"></a><a class="hl">Mi, 28. Mai · 20:00</a><a class="sep"> | </a><a><b>USA:</b> FOMC-Sitzungsprotokoll</a>
+          <a class="divider"></a><a class="hl">Do, 29. Mai · 14:30</a><a class="sep"> | </a><a><b>USA:</b> BIP Q1 (2. Veröffentlichung)</a>
+          <a class="divider"></a><a class="hl">Fr, 30. Mai · 14:30</a><a class="sep"> | </a><a><b>USA:</b> PCE-Kernrate (Apr)</a>
+        </span>
+      </div>
+    </div>
+    <div class="date-wrap"><span id="date">Donnerstag, 24.08.2023</span></div>
+  </header>
+
+  <!-- ======= CENTER ======= -->
+  <main class="stage">
+    <div class="pause-block">
+      <div class="pause-title" id="pauseText">Pause</div>
+      <div class="pause-underline"></div>
+      <div class="pause-sub">Gleich geht's weiter · börsentäglich live</div>
+    </div>
+    <div class="prices-card">
+      <div class="prices-head">Live-Kurse</div>
+      <iframe id="gbe" src="https://devprices.gbebrokers.com/traders-club/templates/traders-club.html" frameborder="0" scrolling="no"></iframe>
+    </div>
+  </main>
+
+  <!-- ======= BOTTOM-LAUFBAND ======= -->
+  <footer class="marketbar">
+    <span class="ticker-label">Märkte</span>
+    <div class="marqueefoot">
+      <span>
+        <a class="divider"></a><a><span class="sym">DAX40</span> <span class="val">15.720</span> <span class="pos">+120 · +0,8 %</span></a>
+        <a class="divider"></a><a><span class="sym">S&amp;P 500</span> <span class="val">4.377</span> <span class="pos">+24 · +0,5 %</span></a>
+        <a class="divider"></a><a><span class="sym">EUR/USD</span> <span class="val">1,1024</span> <span class="neg">−56 · −0,12 %</span></a>
+        <a class="divider"></a><a><span class="sym">GBP/USD</span> <span class="val">1,2624</span> <span class="neg">−123 · −0,32 %</span></a>
+        <a class="divider"></a><a><span class="sym">Gold</span> <span class="val">2.412</span> <span class="pos">+8 · +0,3 %</span></a>
+        <a class="divider"></a><a><span class="sym">BTC/USD</span> <span class="val">67.240</span> <span class="pos">+1.120 · +1,7 %</span></a>
+      </span>
+    </div>
+  </footer>
+
+<script>
+function showTime(){
+  const d=new Date(), p=n=>String(n).padStart(2,'0');
+  document.getElementById('time').textContent = p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+  setTimeout(showTime,1000);
+}
+function showDate(){
+  const d=new Date();
+  const wd=d.toLocaleString('de-DE',{weekday:'long'});
+  const p=n=>String(n).padStart(2,'0');
+  document.getElementById('date').textContent = wd+', '+p(d.getDate())+'.'+p(d.getMonth()+1)+'.'+d.getFullYear();
+}
+// Endlos-Laufband: Inhalt klonen + kontinuierlich verschieben
+function Marquee(selector, speed){
+  const wrap=document.querySelector(selector); if(!wrap) return;
+  const first=wrap.children[0]; const html=wrap.innerHTML;
+  wrap.insertAdjacentHTML('beforeend', html);
+  wrap.insertAdjacentHTML('beforeend', html);
+  let i=0;
+  setInterval(()=>{ first.style.marginLeft = '-'+i+'px'; if(i>first.clientWidth){ i=0; } i+=speed; }, 16);
+}
+// ?text= überschreibt den Pause-Titel (Companion/OBS steuerbar)
+function applyTextParam(){
+  const t=new URLSearchParams(location.search).get('text');
+  if(t){ document.getElementById('pauseText').textContent=t; }
+}
+window.addEventListener('load', ()=>{
+  showDate(); showTime();
+  Marquee('.marquee', 1.1);
+  Marquee('.marqueefoot', 0.7);
+  applyTextParam();
+});
+</script>
+</body>
+</html>
