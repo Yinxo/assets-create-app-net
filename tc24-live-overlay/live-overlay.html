@@ -91,7 +91,7 @@
     <div class="ticker-wrap">
       <span class="ticker-label">Wirtschaftstermine <span class="stars">★★★</span></span>
       <div class="marquee" id="newsMarquee">
-        <span id="newsTrack">
+        <span id="newsTrack" data-track>
           <a class="divider"></a><a class="hl">27. Mai · 14:30</a><a class="impact">★★★</a><a class="sep">|</a><a><b>USA:</b> Auftragseingang langlebiger Güter</a>
           <a class="divider"></a><a class="hl">28. Mai · 20:00</a><a class="impact">★★★</a><a class="sep">|</a><a><b>USA:</b> FOMC-Sitzungsprotokoll</a>
           <a class="divider"></a><a class="hl">29. Mai · 14:30</a><a class="impact">★★★</a><a class="sep">|</a><a><b>USA:</b> BIP Q1 (2. Veröffentlichung)</a>
@@ -110,7 +110,7 @@
   <footer class="marketbar">
     <span class="ticker-label">Live-Kurse</span>
     <div class="marqueefoot" id="priceMarquee">
-      <span id="priceTrack">
+      <span id="priceTrack" data-track>
         <a class="divider"></a><a><span class="sym">DAX40</span> <span class="val">15.720</span> <span class="pos">+0,8 %</span></a>
         <a class="divider"></a><a><span class="sym">S&amp;P 500</span> <span class="val">4.377</span> <span class="pos">+0,5 %</span></a>
         <a class="divider"></a><a><span class="sym">NASDAQ</span> <span class="val">15.210</span> <span class="pos">+0,7 %</span></a>
@@ -124,16 +124,44 @@
   </footer>
 
 <script>
-function showTime(){ const d=new Date(),p=n=>String(n).padStart(2,'0');
-  document.getElementById('time').textContent=p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()); setTimeout(showTime,1000); }
-function showDate(){ const d=new Date(),p=n=>String(n).padStart(2,'0');
-  document.getElementById('date').textContent=d.toLocaleString('de-DE',{weekday:'long'})+', '+p(d.getDate())+'.'+p(d.getMonth()+1)+'.'+d.getFullYear(); }
-function Marquee(selector,speed){ const w=document.querySelector(selector); if(!w) return;
-  const first=w.children[0], html=w.innerHTML; w.insertAdjacentHTML('beforeend',html); w.insertAdjacentHTML('beforeend',html);
-  let i=0; setInterval(()=>{ first.style.marginLeft='-'+i+'px'; if(i>first.clientWidth){i=0;} i+=speed; },16); }
+const EC_ENDPOINT='https://tc24-wirtschaftskalender.vercel.app/api/economic-calendar';
+const pad=n=>String(n).padStart(2,'0');
+function showTime(){ const d=new Date();
+  document.getElementById('time').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds()); setTimeout(showTime,1000); }
+function showDate(){ const d=new Date();
+  document.getElementById('date').textContent=d.toLocaleString('de-DE',{weekday:'long'})+', '+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear(); }
+// Re-runbarer Marquee: klont den [data-track] + scrollt endlos; auf Refresh sauber neu.
+function runMarquee(wrap,speed){ if(!wrap) return; if(wrap._iv) clearInterval(wrap._iv);
+  wrap.querySelectorAll('[data-clone]').forEach(n=>n.remove());
+  const track=wrap.querySelector('[data-track]'); if(!track) return;
+  const c1=track.cloneNode(true),c2=track.cloneNode(true); c1.dataset.clone='1'; c2.dataset.clone='1';
+  wrap.appendChild(c1); wrap.appendChild(c2);
+  let i=0; wrap._iv=setInterval(()=>{ track.style.marginLeft='-'+i+'px'; if(i>track.clientWidth) i=0; i+=speed; },16); }
+function fmtBerlin(iso){ const d=new Date(iso), o={timeZone:'Europe/Berlin'};
+  return d.toLocaleString('de-DE',{weekday:'short',...o})+', '
+       + d.toLocaleString('de-DE',{day:'2-digit',month:'short',...o})+' · '
+       + d.toLocaleString('de-DE',{hour:'2-digit',minute:'2-digit',...o}); }
+// 3★-News live aus dem bestehenden tc24-market-data-Proxy (CORS offen), impact=high.
+async function loadNews(){
+  try{
+    const r=await fetch(EC_ENDPOINT,{cache:'no-store'}); const d=await r.json();
+    const now=Date.now();
+    const ev=(d.events||[]).filter(e=>e.impact==='high')
+      .filter(e=>new Date(e.dateUtc).getTime()>now-6*3600e3)
+      .sort((a,b)=>new Date(a.dateUtc)-new Date(b.dateUtc)).slice(0,24);
+    if(!ev.length) return;
+    document.getElementById('newsTrack').innerHTML=ev.map(e=>
+      '<a class="divider"></a><a class="hl">'+fmtBerlin(e.dateUtc)+'</a><a class="impact">★★★</a>'+
+      '<a class="sep">|</a><a><b>'+e.currency+':</b> '+(e.titleDe||e.title)+'</a>').join('');
+    runMarquee(document.getElementById('newsMarquee'),1.1);
+  }catch(err){ /* Netzfehler → Platzhalter bleibt */ }
+}
 window.addEventListener('load',()=>{
   if(new URLSearchParams(location.search).get('cam')) document.body.classList.add('cam');
-  showDate(); showTime(); Marquee('#newsMarquee',1.1); Marquee('#priceMarquee',0.7);
+  showDate(); showTime();
+  runMarquee(document.getElementById('newsMarquee'),1.1);
+  runMarquee(document.getElementById('priceMarquee'),0.7);
+  loadNews(); setInterval(loadNews,15*60*1000);
 });
 </script>
 </body>
