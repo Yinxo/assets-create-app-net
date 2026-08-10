@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>TC24 — Live Overlay</title>
+<link rel="icon" href="data:,">
+<!-- Brand-Fonts (Guideline 2026): Headline Lora Medium · Body Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep:  #0f232a;
+    --lime:  #c9e600;   /* Trader Green */
+    --teal:  #69dac9;
+    --white: #ffffff;
+    --muted: rgba(255,255,255,.56);
+    --line:  rgba(255,255,255,.10);
+    --bar:   #09161b;   /* Balken-Hintergrund voll deckend (nicht transparent) */
+    --pos:   #8fe36b;
+    --neg:   #ff6b6b;
+    --font-display:"Lora", Georgia, serif;
+    --font-ui:"Inter", system-ui, sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ width:1920px; height:1080px; overflow:hidden; }
+  /* OBS: transparenter Hintergrund → Mitte zeigt Kamera. */
+  body{ font-family:var(--font-ui); color:var(--white); background:transparent;
+        display:flex; flex-direction:column; }
+  /* Preview-Modus (?cam=1): zeigt einen Kamera-Platzhalter statt echter Transparenz */
+  body.cam{ background:
+      radial-gradient(1400px 900px at 50% 45%, #2a4a52 0%, #17343d 60%, #0d2028 100%); }
+  body.cam .stage::after{
+    content:"Mittelbereich transparent — hier läuft das Kamerabild";
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    color:rgba(255,255,255,.28); font-size:26px; letter-spacing:.04em;
+    border:2px dashed rgba(255,255,255,.18); border-radius:18px; padding:26px 40px;
+  }
+
+  /* ============ TOP-LAUFBAND (3-Sterne-News) ============ */
+  /* ===== KOMPAKT-VARIANTE: beide Balken 44px (Inhalt proportional verkleinert) ===== */
+  .topbar{ position:relative; z-index:2; height:44px; display:flex; align-items:stretch;
+    background:var(--bar); border-bottom:3px solid var(--lime); box-shadow:0 6px 24px rgba(0,0,0,.35); }
+  .brand{ display:flex; align-items:center; gap:11px; padding:0 18px; flex-shrink:0; }
+  .brand .logo{ height:17px; width:auto; display:block; }
+  .live{ display:flex; align-items:center; gap:6px; font-weight:700; font-size:12px; letter-spacing:.14em; color:var(--lime); }
+  .live .dot{ width:9px; height:9px; border-radius:50%; background:var(--lime); box-shadow:0 0 8px var(--lime); animation:pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
+  #time{ font-weight:600; font-size:15px; color:var(--white); font-variant-numeric:tabular-nums; }
+
+  /* News-Laufband: Text läuft an beiden Kanten weich aus (Mask) — symmetrisch zum unteren Kurs-Ticker */
+  .ticker-wrap{ flex:1 1 auto; display:flex; align-items:center; min-width:0; position:relative; overflow:hidden;
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 70px, #000 calc(100% - 70px), transparent);
+            mask-image:linear-gradient(to right, transparent, #000 70px, #000 calc(100% - 70px), transparent); }
+  .news-label{ flex-shrink:0; display:flex; align-items:center; gap:7px; white-space:nowrap;
+    font-family:var(--font-display); font-weight:700; font-size:14px; letter-spacing:.06em; color:var(--lime); }
+  .stars{ font-size:10px; letter-spacing:1px; }
+  .marquee{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; font-variant-numeric:tabular-nums; }
+  .marquee > span{ white-space:nowrap; display:inline-flex; align-items:center; }
+  .marquee a{ font-size:12px; padding:0 4px; color:rgba(255,255,255,.9); }
+  .marquee .divider{ margin:0 8px 0 18px; }
+  .marquee .hl{ color:var(--lime); font-weight:700; }
+  .marquee .impact{ color:var(--lime); letter-spacing:1px; margin:0 6px 0 2px; font-size:10px; }
+  .marquee .sep{ color:var(--muted); }
+  .right-cluster{ flex-shrink:0; display:flex; align-items:center; gap:12px; padding:0 18px; }
+  #date{ font-weight:600; font-size:12px; color:var(--white); }
+
+  /* ============ MITTE = FREI/TRANSPARENT ============ */
+  .stage{ position:relative; z-index:1; flex:1 1 auto; }
+
+  /* ============ BOTTOM-LAUFBAND (Live-Kurse) ============ */
+  .marketbar{ position:relative; z-index:2; height:44px; display:flex; align-items:stretch; padding:0 350px;
+    background:var(--bar); border-top:3px solid var(--lime); box-shadow:0 -6px 24px rgba(0,0,0,.35); }
+  /* Zahlen laufen an beiden Kanten weich aus (Content-Mask statt Overlay-Verlauf → keine harten Kanten, kein dunkler Kasten) */
+  .foot-wrap{ position:relative; flex:1 1 auto; min-width:0; display:flex; align-items:center; overflow:hidden;
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 70px, #000 calc(100% - 70px), transparent);
+            mask-image:linear-gradient(to right, transparent, #000 70px, #000 calc(100% - 70px), transparent); }
+  .marqueefoot{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; align-items:center; font-variant-numeric:tabular-nums; }
+  .marqueefoot > span{ white-space:nowrap; display:inline-flex; align-items:center; }
+  .marqueefoot a{ font-size:13px; padding:0 6px; color:rgba(255,255,255,.92); }
+  .marqueefoot .divider{ margin:0 10px 0 22px; }
+  .marqueefoot .sym{ font-weight:700; color:var(--white); }
+  .marqueefoot .val{ color:var(--muted); }
+  /* Gruppen-Trenner-Label (| Aktien: / | Indizes: / | Forex: …) vor jeder Kurs-Gruppe */
+  .marqueefoot .grp{ font-family:var(--font-display); font-weight:700; font-size:13px; letter-spacing:.02em;
+    color:var(--lime); padding:0 10px 0 2px; }
+  .marqueefoot .grp .gpipe{ color:var(--muted); font-weight:400; font-size:15px; margin-right:8px; }
+  .pos{ color:var(--pos); font-weight:700; }
+  .neg{ color:var(--neg); font-weight:700; }
+</style>
+</head>
+<body translate="no">
+  <!-- ======= TOP-LAUFBAND: 3-Sterne-News ======= -->
+  <header class="topbar">
+    <div class="brand">
+      <img class="logo" src="assets/logo-tc24.svg" alt="TradersClub24">
+      <span class="news-label">NEWS <span class="stars">★★★</span></span>
+    </div>
+    <div class="ticker-wrap">
+      <div class="marquee" id="newsMarquee">
+        <span id="newsTrack" data-track>
+          <a class="divider"></a><a class="hl">27. Mai · 14:30</a><a class="impact">★★★</a><a class="sep">|</a><a><b>USA:</b> Auftragseingang langlebiger Güter</a>
+          <a class="divider"></a><a class="hl">28. Mai · 20:00</a><a class="impact">★★★</a><a class="sep">|</a><a><b>USA:</b> FOMC-Sitzungsprotokoll</a>
+          <a class="divider"></a><a class="hl">29. Mai · 14:30</a><a class="impact">★★★</a><a class="sep">|</a><a><b>USA:</b> BIP Q1 (2. Veröffentlichung)</a>
+          <a class="divider"></a><a class="hl">30. Mai · 14:30</a><a class="impact">★★★</a><a class="sep">|</a><a><b>USA:</b> PCE-Kernrate</a>
+          <a class="divider"></a><a class="sep" style="opacity:.5">— Platzhalter, wird durch Live-3★-Feed ersetzt —</a>
+        </span>
+      </div>
+    </div>
+    <div class="right-cluster">
+      <span class="live"><span class="dot"></span>LIVE</span>
+      <span id="time">00:00:00</span>
+      <span id="date">Donnerstag, 24.08.2023</span>
+    </div>
+  </header>
+
+  <!-- ======= MITTE (transparent) ======= -->
+  <main class="stage"></main>
+
+  <!-- ======= BOTTOM-LAUFBAND: Live-Kurse (GBE) ======= -->
+  <footer class="marketbar">
+    <div class="foot-wrap"><div class="marqueefoot" id="priceMarquee">
+      <span id="priceTrack" data-track>
+        <a class="divider"></a><a><span class="sym">DAX40</span> <span class="val">15.720</span> <span class="pos">+0,8 %</span></a>
+        <a class="divider"></a><a><span class="sym">S&amp;P 500</span> <span class="val">4.377</span> <span class="pos">+0,5 %</span></a>
+        <a class="divider"></a><a><span class="sym">NASDAQ</span> <span class="val">15.210</span> <span class="pos">+0,7 %</span></a>
+        <a class="divider"></a><a><span class="sym">EUR/USD</span> <span class="val">1,1024</span> <span class="neg">−0,12 %</span></a>
+        <a class="divider"></a><a><span class="sym">GBP/USD</span> <span class="val">1,2624</span> <span class="neg">−0,32 %</span></a>
+        <a class="divider"></a><a><span class="sym">Gold</span> <span class="val">2.412</span> <span class="pos">+0,3 %</span></a>
+        <a class="divider"></a><a><span class="sym">BTC/USD</span> <span class="val">67.240</span> <span class="pos">+1,7 %</span></a>
+        <a class="divider"></a><a class="val" style="opacity:.55">— Live-Anbindung folgt (Feed) —</a>
+      </span>
+    </div></div>
+  </footer>
+
+<script>
+const EC_ENDPOINT='https://tc24-wirtschaftskalender.vercel.app/api/economic-calendar';
+const Q_ENDPOINT ='https://tc24-wirtschaftskalender.vercel.app/api/quotes';
+const pad=n=>String(n).padStart(2,'0');
+const esc=s=>String(s==null?'':s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+function showTime(){ const d=new Date();
+  document.getElementById('time').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds()); setTimeout(showTime,1000); }
+function showDate(){ const d=new Date();
+  document.getElementById('date').textContent=d.toLocaleString('de-DE',{weekday:'long'})+', '+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear(); }
+// Robustes Endlos-Laufband: Basis-Inhalt so oft duplizieren, dass er 2× Breite füllt, dann
+// translateX-Loop (bricht bei einer Kopie-Breite um → nahtlos, egal ob kurzer/langer Inhalt).
+// Baut die Kopien (füllt ≥2× Breite). Alles SYNCHRON (kein Zwischen-Paint) und BEHÄLT die aktuelle
+// Scroll-Position (wrap._x) → ein Live-Refresh tauscht nur den Inhalt, das Laufband springt nicht.
+function buildTrack(wrap){
+  const track=wrap.querySelector('[data-track]'); if(!track) return;
+  const base=(track._base!=null)?track._base:(track._base=track.innerHTML);
+  track.style.transform='none'; track.innerHTML=base;
+  const oneW=track.scrollWidth||1;
+  const reps=Math.max(2, Math.ceil((wrap.clientWidth*2)/oneW)+1);
+  track.innerHTML=new Array(reps).fill(base).join('');
+  wrap._copyW=(track.scrollWidth/reps)||1;
+  if(wrap._x==null) wrap._x=0;
+  wrap._x=wrap._x % wrap._copyW;
+  track.style.transform='translateX('+(-wrap._x)+'px)';
+}
+function runMarquee(wrap,speed){
+  if(!wrap) return;
+  wrap._speed=speed;
+  buildTrack(wrap);
+  if(!wrap._iv){
+    const track=wrap.querySelector('[data-track]');
+    wrap._iv=setInterval(()=>{ if(!wrap._copyW) return;
+      wrap._x+=wrap._speed; if(wrap._x>=wrap._copyW) wrap._x-=wrap._copyW;
+      track.style.transform='translateX('+(-wrap._x)+'px)'; },16);
+  }
+}
+// Live-Refresh: neuen Inhalt setzen ohne Positions-Reset (kein Sprung). Identischer Inhalt → No-Op.
+function setMarqueeData(wrap, baseHTML){
+  if(!wrap) return; const track=wrap.querySelector('[data-track]'); if(!track) return;
+  if(track._base===baseHTML) return;
+  track._base=baseHTML;
+  buildTrack(wrap);
+}
+function fmtBerlin(iso){ const d=new Date(iso), o={timeZone:'Europe/Berlin'};
+  return d.toLocaleString('de-DE',{weekday:'short',...o})+', '
+       + d.toLocaleString('de-DE',{day:'2-digit',month:'short',...o})+' · '
+       + d.toLocaleString('de-DE',{hour:'2-digit',minute:'2-digit',...o}); }
+// 3★-News live (impact=high), Auto-Refresh alle 15 min.
+async function loadNews(){
+  try{
+    const r=await fetch(EC_ENDPOINT,{cache:'no-store'}); if(!r.ok) return; const d=await r.json();
+    const now=Date.now();
+    // Nur die AKTUELLE Woche (Mo–So) — keine Termine aus zukünftigen Wochen.
+    const wd=new Date(); const dow=wd.getDay(); const daysToSun=(dow===0)?0:(7-dow);
+    wd.setDate(wd.getDate()+daysToSun); wd.setHours(23,59,59,999); const weekEnd=wd.getTime();
+    const ev=(d.events||[]).filter(e=>e.impact==='high')
+      .filter(e=>{ const t=new Date(e.dateUtc).getTime(); return t>now-6*3600e3 && t<=weekEnd; })
+      .sort((a,b)=>new Date(a.dateUtc)-new Date(b.dateUtc)).slice(0,24);
+    if(!ev.length) return;
+    const newsHTML=ev.map(e=>
+      '<a class="divider"></a><a class="hl">'+fmtBerlin(e.dateUtc)+'</a><a class="impact">★★★</a>'+
+      '<a class="sep">|</a><a><b>'+esc(e.currency)+':</b> '+esc(e.titleDe||e.title)+'</a>').join('');
+    setMarqueeData(document.getElementById('newsMarquee'), newsHTML);
+  }catch(err){}
+}
+// Live-Kurse aus /api/quotes (TradingView-Scanner via eigenem Proxy), Refresh alle 20 s.
+function fmtNum(v,dec){ return Number(v).toLocaleString('de-DE',{minimumFractionDigits:dec,maximumFractionDigits:dec}); }
+function fmtPct(p){ return (p>=0?'+':'−')+Math.abs(p).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' %'; }
+async function loadQuotes(){
+  try{
+    const r=await fetch(Q_ENDPOINT,{cache:'no-store'}); if(!r.ok) return; const d=await r.json();
+    const q=(d.quotes||[]).filter(x=>x.price!=null);
+    if(!q.length) return;
+    let lastGrp=null;
+    const priceHTML=q.map(x=>{
+      let pre='';
+      if(x.group && x.group!==lastGrp){ pre='<a class="divider"></a><span class="grp"><span class="gpipe">|</span> '+esc(x.group)+':</span>'; lastGrp=x.group; }
+      const cls=(x.changePct==null)?'val':(x.changePct>=0?'pos':'neg');
+      const chg=(x.changePct==null)?'':' <span class="'+cls+'">'+fmtPct(x.changePct)+'</span>';
+      const lead=pre?'':'<a class="divider"></a>';   // nach einem Gruppen-Label KEIN zusätzlicher Divider (sonst doppelter Abstand)
+      return pre+lead+'<a><span class="sym">'+esc(x.label)+'</span> '+
+             '<span class="val">'+fmtNum(x.price,x.decimals!=null?x.decimals:2)+'</span>'+chg+'</a>';
+    }).join('');
+    setMarqueeData(document.getElementById('priceMarquee'), priceHTML);
+  }catch(err){}
+}
+// Preview/Fallback: skaliert das 1920er-Overlay herunter, wenn das Fenster schmaler ist (OBS @1920 → scale 1, No-Op)
+function fitToWidth(){ const s=Math.min(1, window.innerWidth/1920); const h=document.documentElement;
+  h.style.width='100vw'; h.style.height='100vh'; h.style.overflow='hidden';
+  document.body.style.transformOrigin='top left'; document.body.style.transform='scale('+s+')'; }
+window.addEventListener('resize',fitToWidth);
+window.addEventListener('load',()=>{
+  fitToWidth();
+  if(new URLSearchParams(location.search).get('cam')) document.body.classList.add('cam');
+  showDate(); showTime();
+  runMarquee(document.getElementById('newsMarquee'),1.1);
+  runMarquee(document.getElementById('priceMarquee'),0.9);
+  loadNews();   setInterval(loadNews,   6*60*60*1000);
+  loadQuotes(); setInterval(loadQuotes, 15*1000);
+});
+</script>
+</body>
+</html>
