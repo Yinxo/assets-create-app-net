@@ -69,11 +69,10 @@
   /* ============ BOTTOM-LAUFBAND (Live-Kurse) ============ */
   .marketbar{ position:relative; z-index:2; height:60px; display:flex; align-items:stretch; padding:0 350px;
     background:var(--bar); border-top:3px solid var(--lime); box-shadow:0 -6px 24px rgba(0,0,0,.35); }
-  .foot-wrap{ position:relative; flex:1 1 auto; min-width:0; display:flex; align-items:center; overflow:hidden; }
-  /* Leichter Verlauf links + rechts: Kurse blenden an beiden Kanten weich in den Balken (≈350px Platz je Seite) */
-  .foot-wrap::before,.foot-wrap::after{ content:""; position:absolute; top:0; bottom:0; width:90px; z-index:3; pointer-events:none; }
-  .foot-wrap::before{ left:0;  background:linear-gradient(to right, var(--bar), rgba(9,22,27,0)); }
-  .foot-wrap::after{ right:0;  background:linear-gradient(to left,  var(--bar), rgba(9,22,27,0)); }
+  /* Zahlen laufen an beiden Kanten weich aus (Content-Mask statt Overlay-Verlauf → keine harten Kanten, kein dunkler Kasten) */
+  .foot-wrap{ position:relative; flex:1 1 auto; min-width:0; display:flex; align-items:center; overflow:hidden;
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 90px, #000 calc(100% - 90px), transparent);
+            mask-image:linear-gradient(to right, transparent, #000 90px, #000 calc(100% - 90px), transparent); }
   .marqueefoot{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; align-items:center; }
   .marqueefoot > span{ white-space:nowrap; display:inline-flex; align-items:center; }
   .marqueefoot a{ font-size:17px; padding:0 6px; color:rgba(255,255,255,.92); }
