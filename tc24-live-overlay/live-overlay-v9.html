@@ -54,7 +54,7 @@
   .news-label{ flex-shrink:0; display:flex; align-items:center; gap:9px; white-space:nowrap;
     font-family:var(--font-display); font-weight:700; font-size:18px; letter-spacing:.06em; color:var(--lime); }
   .stars{ font-size:12px; letter-spacing:1px; }
-  .marquee{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; }
+  .marquee{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; font-variant-numeric:tabular-nums; }
   .marquee > span{ white-space:nowrap; display:inline-flex; align-items:center; }
   .marquee a{ font-size:15px; padding:0 4px; color:rgba(255,255,255,.9); }
   .marquee .divider{ margin:0 10px 0 24px; }
@@ -74,7 +74,7 @@
   .foot-wrap{ position:relative; flex:1 1 auto; min-width:0; display:flex; align-items:center; overflow:hidden;
     -webkit-mask-image:linear-gradient(to right, transparent, #000 90px, #000 calc(100% - 90px), transparent);
             mask-image:linear-gradient(to right, transparent, #000 90px, #000 calc(100% - 90px), transparent); }
-  .marqueefoot{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; align-items:center; }
+  .marqueefoot{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; align-items:center; font-variant-numeric:tabular-nums; }
   .marqueefoot > span{ white-space:nowrap; display:inline-flex; align-items:center; }
   .marqueefoot a{ font-size:17px; padding:0 6px; color:rgba(255,255,255,.92); }
   .marqueefoot .divider{ margin:0 12px 0 30px; }
@@ -180,8 +180,11 @@ async function loadNews(){
   try{
     const r=await fetch(EC_ENDPOINT,{cache:'no-store'}); if(!r.ok) return; const d=await r.json();
     const now=Date.now();
+    // Nur die AKTUELLE Woche (Mo–So) — keine Termine aus zukünftigen Wochen.
+    const wd=new Date(); const dow=wd.getDay(); const daysToSun=(dow===0)?0:(7-dow);
+    wd.setDate(wd.getDate()+daysToSun); wd.setHours(23,59,59,999); const weekEnd=wd.getTime();
     const ev=(d.events||[]).filter(e=>e.impact==='high')
-      .filter(e=>new Date(e.dateUtc).getTime()>now-6*3600e3)
+      .filter(e=>{ const t=new Date(e.dateUtc).getTime(); return t>now-6*3600e3 && t<=weekEnd; })
       .sort((a,b)=>new Date(a.dateUtc)-new Date(b.dateUtc)).slice(0,24);
     if(!ev.length) return;
     const newsHTML=ev.map(e=>
@@ -218,8 +221,8 @@ window.addEventListener('load',()=>{
   showDate(); showTime();
   runMarquee(document.getElementById('newsMarquee'),1.1);
   runMarquee(document.getElementById('priceMarquee'),0.7);
-  loadNews();   setInterval(loadNews,   15*60*1000);
-  loadQuotes(); setInterval(loadQuotes, 20*1000);
+  loadNews();   setInterval(loadNews,   6*60*60*1000);
+  loadQuotes(); setInterval(loadQuotes, 15*1000);
 });
 </script>
 </body>
