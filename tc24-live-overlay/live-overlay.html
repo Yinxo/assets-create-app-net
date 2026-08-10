@@ -125,43 +125,68 @@
 
 <script>
 const EC_ENDPOINT='https://tc24-wirtschaftskalender.vercel.app/api/economic-calendar';
+const Q_ENDPOINT ='https://tc24-wirtschaftskalender.vercel.app/api/quotes';
 const pad=n=>String(n).padStart(2,'0');
+const esc=s=>String(s==null?'':s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
 function showTime(){ const d=new Date();
   document.getElementById('time').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds()); setTimeout(showTime,1000); }
 function showDate(){ const d=new Date();
   document.getElementById('date').textContent=d.toLocaleString('de-DE',{weekday:'long'})+', '+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear(); }
-// Re-runbarer Marquee: klont den [data-track] + scrollt endlos; auf Refresh sauber neu.
-function runMarquee(wrap,speed){ if(!wrap) return; if(wrap._iv) clearInterval(wrap._iv);
-  wrap.querySelectorAll('[data-clone]').forEach(n=>n.remove());
+// Robustes Endlos-Laufband: Basis-Inhalt so oft duplizieren, dass er 2× Breite füllt, dann
+// translateX-Loop (bricht bei einer Kopie-Breite um → nahtlos, egal ob kurzer/langer Inhalt).
+function runMarquee(wrap,speed){
+  if(!wrap) return; if(wrap._iv){ clearInterval(wrap._iv); }
   const track=wrap.querySelector('[data-track]'); if(!track) return;
-  const c1=track.cloneNode(true),c2=track.cloneNode(true); c1.dataset.clone='1'; c2.dataset.clone='1';
-  wrap.appendChild(c1); wrap.appendChild(c2);
-  let i=0; wrap._iv=setInterval(()=>{ track.style.marginLeft='-'+i+'px'; if(i>track.clientWidth) i=0; i+=speed; },16); }
+  const base=(track._base!=null)?track._base:(track._base=track.innerHTML);
+  track.style.transform='none'; track.innerHTML=base;
+  const oneW=track.scrollWidth||1;
+  const reps=Math.max(2, Math.ceil((wrap.clientWidth*2)/oneW)+1);
+  track.innerHTML=new Array(reps).fill(base).join('');
+  const copyW=track.scrollWidth/reps;
+  let x=0; wrap._iv=setInterval(()=>{ x+=speed; if(x>=copyW) x-=copyW; track.style.transform='translateX('+(-x)+'px)'; },16); }
 function fmtBerlin(iso){ const d=new Date(iso), o={timeZone:'Europe/Berlin'};
   return d.toLocaleString('de-DE',{weekday:'short',...o})+', '
        + d.toLocaleString('de-DE',{day:'2-digit',month:'short',...o})+' · '
        + d.toLocaleString('de-DE',{hour:'2-digit',minute:'2-digit',...o}); }
-// 3★-News live aus dem bestehenden tc24-market-data-Proxy (CORS offen), impact=high.
+// 3★-News live (impact=high), Auto-Refresh alle 15 min.
 async function loadNews(){
   try{
-    const r=await fetch(EC_ENDPOINT,{cache:'no-store'}); const d=await r.json();
+    const r=await fetch(EC_ENDPOINT,{cache:'no-store'}); if(!r.ok) return; const d=await r.json();
     const now=Date.now();
     const ev=(d.events||[]).filter(e=>e.impact==='high')
       .filter(e=>new Date(e.dateUtc).getTime()>now-6*3600e3)
       .sort((a,b)=>new Date(a.dateUtc)-new Date(b.dateUtc)).slice(0,24);
     if(!ev.length) return;
-    document.getElementById('newsTrack').innerHTML=ev.map(e=>
+    document.getElementById('newsTrack')._base=ev.map(e=>
       '<a class="divider"></a><a class="hl">'+fmtBerlin(e.dateUtc)+'</a><a class="impact">★★★</a>'+
-      '<a class="sep">|</a><a><b>'+e.currency+':</b> '+(e.titleDe||e.title)+'</a>').join('');
+      '<a class="sep">|</a><a><b>'+esc(e.currency)+':</b> '+esc(e.titleDe||e.title)+'</a>').join('');
     runMarquee(document.getElementById('newsMarquee'),1.1);
-  }catch(err){ /* Netzfehler → Platzhalter bleibt */ }
+  }catch(err){}
+}
+// Live-Kurse aus /api/quotes (TradingView-Scanner via eigenem Proxy), Refresh alle 20 s.
+function fmtNum(v,dec){ return Number(v).toLocaleString('de-DE',{minimumFractionDigits:dec,maximumFractionDigits:dec}); }
+function fmtPct(p){ return (p>=0?'+':'−')+Math.abs(p).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' %'; }
+async function loadQuotes(){
+  try{
+    const r=await fetch(Q_ENDPOINT,{cache:'no-store'}); if(!r.ok) return; const d=await r.json();
+    const q=(d.quotes||[]).filter(x=>x.price!=null);
+    if(!q.length) return;
+    document.getElementById('priceTrack')._base=q.map(x=>{
+      const cls=(x.changePct==null)?'val':(x.changePct>=0?'pos':'neg');
+      const chg=(x.changePct==null)?'':' <span class="'+cls+'">'+fmtPct(x.changePct)+'</span>';
+      return '<a class="divider"></a><a><span class="sym">'+esc(x.label)+'</span> '+
+             '<span class="val">'+fmtNum(x.price,x.decimals!=null?x.decimals:2)+'</span>'+chg+'</a>';
+    }).join('');
+    runMarquee(document.getElementById('priceMarquee'),0.7);
+  }catch(err){}
 }
 window.addEventListener('load',()=>{
   if(new URLSearchParams(location.search).get('cam')) document.body.classList.add('cam');
   showDate(); showTime();
   runMarquee(document.getElementById('newsMarquee'),1.1);
   runMarquee(document.getElementById('priceMarquee'),0.7);
-  loadNews(); setInterval(loadNews,15*60*1000);
+  loadNews();   setInterval(loadNews,   15*60*1000);
+  loadQuotes(); setInterval(loadQuotes, 20*1000);
 });
 </script>
 </body>
