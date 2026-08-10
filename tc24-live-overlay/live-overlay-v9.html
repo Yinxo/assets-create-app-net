@@ -40,16 +40,19 @@
   /* ============ TOP-LAUFBAND (3-Sterne-News) ============ */
   .topbar{ position:relative; z-index:2; height:68px; display:flex; align-items:stretch;
     background:var(--bar); border-bottom:3px solid var(--lime); box-shadow:0 6px 24px rgba(0,0,0,.35); }
-  .brand{ display:flex; align-items:center; gap:16px; padding:0 22px 0 26px; flex-shrink:0; border-right:1px solid var(--line); }
+  .brand{ display:flex; align-items:center; gap:18px; padding:0 26px; flex-shrink:0; }
   .brand .logo{ height:30px; width:auto; display:block; }
   .live{ display:flex; align-items:center; gap:7px; font-weight:700; font-size:15px; letter-spacing:.14em; color:var(--lime); }
   .live .dot{ width:11px; height:11px; border-radius:50%; background:var(--lime); box-shadow:0 0 10px var(--lime); animation:pulse 2.4s ease-in-out infinite; }
   @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.35} }
   #time{ font-weight:600; font-size:20px; color:var(--white); font-variant-numeric:tabular-nums; }
 
-  .ticker-wrap{ flex:1 1 auto; display:flex; align-items:center; min-width:0; position:relative; }
-  .ticker-label{ flex-shrink:0; align-self:stretch; display:flex; align-items:center; gap:8px; padding:0 16px;
-    font-family:var(--font-display); font-weight:600; font-size:16px; color:var(--deep); background:var(--lime); white-space:nowrap; }
+  /* News-Laufband: Text läuft an beiden Kanten weich aus (Mask) — symmetrisch zum unteren Kurs-Ticker; das ist der „Trenner mit leichtem Verlauf" */
+  .ticker-wrap{ flex:1 1 auto; display:flex; align-items:center; min-width:0; position:relative; overflow:hidden;
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 90px, #000 calc(100% - 90px), transparent);
+            mask-image:linear-gradient(to right, transparent, #000 90px, #000 calc(100% - 90px), transparent); }
+  .news-label{ flex-shrink:0; display:flex; align-items:center; gap:9px; white-space:nowrap;
+    font-family:var(--font-display); font-weight:700; font-size:18px; letter-spacing:.06em; color:var(--lime); }
   .stars{ font-size:12px; letter-spacing:1px; }
   .marquee{ overflow:hidden; display:flex; flex:1 1 auto; min-width:0; }
   .marquee > span{ white-space:nowrap; display:inline-flex; align-items:center; }
@@ -58,9 +61,7 @@
   .marquee .hl{ color:var(--lime); font-weight:700; }
   .marquee .impact{ color:var(--lime); letter-spacing:1px; margin:0 6px 0 2px; font-size:12px; }
   .marquee .sep{ color:var(--muted); }
-  /* Wirtschaftstermine-Label mit Gradient-Übergang nach rechts: Lime blendet in den News-Ticker über (wie unten „Live-Kurse") */
-  .topbar .ticker-label{ background:linear-gradient(to right, var(--lime) 58%, rgba(201,230,0,0)); padding-right:40px; }
-  .right-cluster{ flex-shrink:0; display:flex; align-items:center; gap:16px; padding:0 26px; border-left:1px solid var(--line); }
+  .right-cluster{ flex-shrink:0; display:flex; align-items:center; gap:16px; padding:0 26px; }
   #date{ font-weight:600; font-size:16px; color:var(--white); }
 
   /* ============ MITTE = FREI/TRANSPARENT ============ */
@@ -88,9 +89,9 @@
   <header class="topbar">
     <div class="brand">
       <img class="logo" src="assets/logo-tc24.svg" alt="TradersClub24">
+      <span class="news-label">NEWS <span class="stars">★★★</span></span>
     </div>
     <div class="ticker-wrap">
-      <span class="ticker-label">Wirtschaftstermine <span class="stars">★★★</span></span>
       <div class="marquee" id="newsMarquee">
         <span id="newsTrack" data-track>
           <a class="divider"></a><a class="hl">27. Mai · 14:30</a><a class="impact">★★★</a><a class="sep">|</a><a><b>USA:</b> Auftragseingang langlebiger Güter</a>
@@ -138,16 +139,38 @@ function showDate(){ const d=new Date();
   document.getElementById('date').textContent=d.toLocaleString('de-DE',{weekday:'long'})+', '+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear(); }
 // Robustes Endlos-Laufband: Basis-Inhalt so oft duplizieren, dass er 2× Breite füllt, dann
 // translateX-Loop (bricht bei einer Kopie-Breite um → nahtlos, egal ob kurzer/langer Inhalt).
-function runMarquee(wrap,speed){
-  if(!wrap) return; if(wrap._iv){ clearInterval(wrap._iv); }
+// Baut die Kopien (füllt ≥2× Breite). Alles SYNCHRON (kein Zwischen-Paint) und BEHÄLT die aktuelle
+// Scroll-Position (wrap._x) → ein Live-Refresh tauscht nur den Inhalt, das Laufband springt nicht.
+function buildTrack(wrap){
   const track=wrap.querySelector('[data-track]'); if(!track) return;
   const base=(track._base!=null)?track._base:(track._base=track.innerHTML);
   track.style.transform='none'; track.innerHTML=base;
   const oneW=track.scrollWidth||1;
   const reps=Math.max(2, Math.ceil((wrap.clientWidth*2)/oneW)+1);
   track.innerHTML=new Array(reps).fill(base).join('');
-  const copyW=track.scrollWidth/reps;
-  let x=0; wrap._iv=setInterval(()=>{ x+=speed; if(x>=copyW) x-=copyW; track.style.transform='translateX('+(-x)+'px)'; },16); }
+  wrap._copyW=(track.scrollWidth/reps)||1;
+  if(wrap._x==null) wrap._x=0;
+  wrap._x=wrap._x % wrap._copyW;
+  track.style.transform='translateX('+(-wrap._x)+'px)';
+}
+function runMarquee(wrap,speed){
+  if(!wrap) return;
+  wrap._speed=speed;
+  buildTrack(wrap);
+  if(!wrap._iv){
+    const track=wrap.querySelector('[data-track]');
+    wrap._iv=setInterval(()=>{ if(!wrap._copyW) return;
+      wrap._x+=wrap._speed; if(wrap._x>=wrap._copyW) wrap._x-=wrap._copyW;
+      track.style.transform='translateX('+(-wrap._x)+'px)'; },16);
+  }
+}
+// Live-Refresh: neuen Inhalt setzen ohne Positions-Reset (kein Sprung). Identischer Inhalt → No-Op.
+function setMarqueeData(wrap, baseHTML){
+  if(!wrap) return; const track=wrap.querySelector('[data-track]'); if(!track) return;
+  if(track._base===baseHTML) return;
+  track._base=baseHTML;
+  buildTrack(wrap);
+}
 function fmtBerlin(iso){ const d=new Date(iso), o={timeZone:'Europe/Berlin'};
   return d.toLocaleString('de-DE',{weekday:'short',...o})+', '
        + d.toLocaleString('de-DE',{day:'2-digit',month:'short',...o})+' · '
@@ -161,10 +184,10 @@ async function loadNews(){
       .filter(e=>new Date(e.dateUtc).getTime()>now-6*3600e3)
       .sort((a,b)=>new Date(a.dateUtc)-new Date(b.dateUtc)).slice(0,24);
     if(!ev.length) return;
-    document.getElementById('newsTrack')._base=ev.map(e=>
+    const newsHTML=ev.map(e=>
       '<a class="divider"></a><a class="hl">'+fmtBerlin(e.dateUtc)+'</a><a class="impact">★★★</a>'+
       '<a class="sep">|</a><a><b>'+esc(e.currency)+':</b> '+esc(e.titleDe||e.title)+'</a>').join('');
-    runMarquee(document.getElementById('newsMarquee'),1.1);
+    setMarqueeData(document.getElementById('newsMarquee'), newsHTML);
   }catch(err){}
 }
 // Live-Kurse aus /api/quotes (TradingView-Scanner via eigenem Proxy), Refresh alle 20 s.
@@ -175,13 +198,13 @@ async function loadQuotes(){
     const r=await fetch(Q_ENDPOINT,{cache:'no-store'}); if(!r.ok) return; const d=await r.json();
     const q=(d.quotes||[]).filter(x=>x.price!=null);
     if(!q.length) return;
-    document.getElementById('priceTrack')._base=q.map(x=>{
+    const priceHTML=q.map(x=>{
       const cls=(x.changePct==null)?'val':(x.changePct>=0?'pos':'neg');
       const chg=(x.changePct==null)?'':' <span class="'+cls+'">'+fmtPct(x.changePct)+'</span>';
       return '<a class="divider"></a><a><span class="sym">'+esc(x.label)+'</span> '+
              '<span class="val">'+fmtNum(x.price,x.decimals!=null?x.decimals:2)+'</span>'+chg+'</a>';
     }).join('');
-    runMarquee(document.getElementById('priceMarquee'),0.7);
+    setMarqueeData(document.getElementById('priceMarquee'), priceHTML);
   }catch(err){}
 }
 // Preview/Fallback: skaliert das 1920er-Overlay herunter, wenn das Fenster schmaler ist (OBS @1920 → scale 1, No-Op)
