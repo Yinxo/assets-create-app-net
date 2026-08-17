@@ -1,5 +1,5 @@
 {
-  "version": 24,
+  "version": 25,
   "app": 6,
   "updated": "2026-08-17",
   "houses": [
@@ -94,7 +94,7 @@
         {
           "id": "aussen",
           "title": "Außenansicht (Nachher)",
-          "note": "Modernisiert: dunkler Holzgiebel, Greige-Putz, neue Treppe schräg vom Keller-Niveau, rechts eingeebnet",
+          "note": "Modernisiert: dunkler Holzgiebel, Greige-Putz, anthrazit Fenster, Stehfalzdach — Original-Perspektive + Umgebung",
           "kind": "foto",
           "brief": [
             { "q": "Objekt", "a": "1969er Einfamilienhaus, 99,69 m², renovierungsbedürftig — energetisch saniert + modernisiert (Struktur/Form unverändert, Keller bleibt Keller)" },
@@ -102,7 +102,7 @@
             { "q": "Außen", "a": "Neue schräge Treppe vom Keller-Niveau hoch, rechte Seite eingeebnet (Büsche weg), sauberer moderner Vorgarten" }
           ],
           "variants": [
-            { "id": "final", "label": "Außenansicht (Nachher)", "src": "img/haus-2-aussen-b3.png" }
+            { "id": "final", "label": "Außenansicht (Nachher)", "src": "img/haus-2-aussen-b-restored.png" }
           ]
         }
       ]
