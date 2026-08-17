@@ -1,5 +1,5 @@
 {
-  "version": 21,
+  "version": 24,
   "app": 6,
   "updated": "2026-08-17",
   "houses": [
@@ -82,6 +82,27 @@
           ],
           "variants": [
             { "id": "final", "label": "Master-Bad", "src": "img/haus-1-bad-final.png" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "haus-2",
+      "name": "Sanierung Großhansdorf",
+      "subtitle": "Beimoorweg 11a · Bj. 1969 · energetische Sanierung + Modernisierung",
+      "sets": [
+        {
+          "id": "aussen",
+          "title": "Außenansicht (Nachher)",
+          "note": "Modernisiert: dunkler Holzgiebel, Greige-Putz, neue Treppe schräg vom Keller-Niveau, rechts eingeebnet",
+          "kind": "foto",
+          "brief": [
+            { "q": "Objekt", "a": "1969er Einfamilienhaus, 99,69 m², renovierungsbedürftig — energetisch saniert + modernisiert (Struktur/Form unverändert, Keller bleibt Keller)" },
+            { "q": "Fassade", "a": "Greige-Putz, dunkler verkohlter Holzgiebel, anthrazit Fenster, dunkles Stehfalzdach" },
+            { "q": "Außen", "a": "Neue schräge Treppe vom Keller-Niveau hoch, rechte Seite eingeebnet (Büsche weg), sauberer moderner Vorgarten" }
+          ],
+          "variants": [
+            { "id": "final", "label": "Außenansicht (Nachher)", "src": "img/haus-2-aussen-b3.png" }
           ]
         }
       ]
