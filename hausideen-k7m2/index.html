@@ -221,7 +221,7 @@
   // Wird mit "app" in data.json verglichen. Weicht es ab, hat sich die App
   // selbst geaendert -> die Seite laedt sich EINMAL selbst neu. Damit muss
   // am TV nie wieder von Hand aktualisiert werden.
-  var APP_VERSION = 5;
+  var APP_VERSION = 6;
   var DATA = {houses:[]}, VERSION = null;
   var seen = null, pendingRender = false;
   var autoShow = true;
@@ -703,10 +703,13 @@
         if(first){ route(); return; }
         if(!changed) return;
 
-        if(fresh.length && autoShow){
-          // Neues Motiv poppt auf — alle Varianten nebeneinander.
-          // Wichtig: die VOLLE Motivliste des Hauses mitgeben, damit man
-          // von hier aus direkt weiterklicken kann (Leiste unten + Pfeile).
+        if(fresh.length){
+          // Neue/ersetzte Bilder poppen IMMER auf — bedingungslos, egal ob
+          // gerade ein Popup offen ist oder ein Einzelbild angeschaut wird
+          // (openLb ersetzt die offene Ansicht). Absicht des Users: neue
+          // Varianten sollen sich immer ueber alles legen. Kein autoShow-Gate.
+          // Die VOLLE Motivliste des Hauses mitgeben, damit man von hier aus
+          // direkt weiterklicken kann (Leiste unten + Pfeile).
           pendingRender = true;
           var nh = fresh[0].house, nsets = nh.sets || [], nidx = 0;
           for(i=0;i<nsets.length;i++){ if(nsets[i].id === fresh[0].set.id){ nidx = i; break; } }
