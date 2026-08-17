@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backdrop v2f — Standard-Modell, nah am Original + deine 2 Änderungen</title>
+<style>
+  :root { --bg:#05100f; --panel:#0d1f1e; --lime:#b6e84a; --text:#e8f0ee; --muted:#8fa8a3; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; padding:24px; }
+  h1 { font-size:20px; font-weight:650; margin:0 0 4px; }
+  h2 { font-size:15px; color:var(--lime); margin:22px 0 10px; }
+  p.sub { color:var(--muted); margin:0 0 8px; font-size:14px; line-height:1.45; }
+  .grid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(440px,1fr)); }
+  @media (max-width:520px){ .grid{ grid-template-columns:1fr; } body{ padding:14px; } }
+  figure { margin:0; background:var(--panel); border:1px solid #1c3230; border-radius:14px; overflow:hidden; }
+  figure img { display:block; width:100%; height:auto; }
+  figcaption { padding:10px 14px; font-size:14px; line-height:1.4; }
+  figcaption b { color:var(--lime); font-weight:650; }
+</style>
+</head>
+<body>
+  <h1>Backdrop v2f — Standard-Modell, nah am Original</h1>
+  <p class="sub">a-2 (Uhr wie v2b-1 über Kerzen, Kerzen tiefer) &amp; b-2 (Bücher rechts). Pick pro Stil deinen Favoriten.<br>
+  <i>(Zertifikat hat leicht lesbaren Fake-Text — mache ich beim finalen unleserlich-dezent.)</i></p>
+
+  <h2>a-2 (glatt Petrol) — Uhr über Kerzen</h2>
+  <div class="grid">
+    <figure><a href="v2f-a2c-1.png"><img src="v2f-a2c-1.png" alt="a2c-1"></a>
+      <figcaption><b>a2c-1</b> — Wand am cleansten (wie Original). Kerzen noch nicht ganz tief.</figcaption></figure>
+    <figure><a href="v2f-a2c-2.png"><img src="v2f-a2c-2.png" alt="a2c-2"></a>
+      <figcaption><b>a2c-2</b> — <b>Kerzen tief, Abstand halbiert</b> ✓. Dafür ein paar mehr Holzstreifen.</figcaption></figure>
+  </div>
+
+  <h2>b-2 (geriffelt) — Bücher rechts</h2>
+  <div class="grid">
+    <figure><a href="v2f-b2c-1.png"><img src="v2f-b2c-1.png" alt="b2c-1"></a>
+      <figcaption><b>b2c-1</b> ⭐ — <b>bester Match</b>: freie Kerzen wie Original + Bücher rechts.</figcaption></figure>
+    <figure><a href="v2f-b2c-2.png"><img src="v2f-b2c-2.png" alt="b2c-2"></a>
+      <figcaption><b>b2c-2</b> — Kerzen als gerahmtes Panel (weiter weg vom Original).</figcaption></figure>
+  </div>
+</body>
+</html>
