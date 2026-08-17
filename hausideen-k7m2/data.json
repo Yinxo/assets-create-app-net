@@ -1,5 +1,5 @@
 {
-  "version": 25,
+  "version": 27,
   "app": 6,
   "updated": "2026-08-17",
   "houses": [
@@ -91,6 +91,21 @@
       "name": "Sanierung Großhansdorf",
       "subtitle": "Beimoorweg 11a · Bj. 1969 · energetische Sanierung + Modernisierung",
       "sets": [
+        {
+          "id": "grundriss-eg",
+          "title": "Grundriss EG (Nachher)",
+          "note": "Modernisiert: EG offen (Wohnen+Essen+Küche mit Kochinsel), alte Küche wird Arbeitszimmer — Außenmauern/Fenster/Eingang/Treppe wie Bestand",
+          "kind": "grundriss",
+          "brief": [
+            { "q": "Umbau", "a": "Wohnraum + Essdiele werden ein offener Raum; die alte Küche (unten-links) wird geschlossenes Arbeitszimmer" },
+            { "q": "Küche", "a": "Offene Küche mit Kochinsel, integriert in den Wohn-Ess-Bereich (Zeile an der Wand zum Arbeitszimmer)" },
+            { "q": "Fix (Bestand)", "a": "Außenmauern, Fensterpositionen, Hauseingang rechts + Treppe bleiben unverändert — nur Innenwände neu" },
+            { "q": "Garten", "a": "Neue bodentiefe Glas-Schiebetür zum Garten aus dem Wohnbereich (links)" }
+          ],
+          "variants": [
+            { "id": "final", "label": "Grundriss EG", "src": "img/haus-2-grundriss-eg-a.png" }
+          ]
+        },
         {
           "id": "aussen",
           "title": "Außenansicht (Nachher)",
