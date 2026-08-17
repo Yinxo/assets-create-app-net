@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backdrop v2b — 1/3/6 verfeinert (volle Wand, dezentes Holz)</title>
+<style>
+  :root { --bg:#05100f; --panel:#0d1f1e; --lime:#b6e84a; --text:#e8f0ee; --muted:#8fa8a3; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; padding:24px; }
+  h1 { font-size:20px; font-weight:650; margin:0 0 4px; }
+  p.sub { color:var(--muted); margin:0 0 16px; font-size:14px; line-height:1.45; }
+  .grid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(440px,1fr)); }
+  @media (max-width:520px){ .grid{ grid-template-columns:1fr; } body{ padding:14px; } }
+  figure { margin:0; background:var(--panel); border:1px solid #1c3230; border-radius:14px; overflow:hidden; }
+  figure img { display:block; width:100%; height:auto; }
+  figcaption { padding:10px 14px; font-size:14px; line-height:1.4; }
+  figcaption b { color:var(--lime); font-weight:650; }
+</style>
+</head>
+<body>
+  <h1>Backdrop v2b — deine Favoriten 1 / 3 / 6 verfeinert</h1>
+  <p class="sub">Fixes: Wand geht <b>durchgehend über die volle Breite</b> (keine tieferen Räume/Bokeh an den Seiten), <b>Holz nur dezent</b> (nicht mehr prägnant). Deko flankiert weiter die Mitte (frei hinterm Kopf).<br>
+  👉 Sag mir deine <b>2 finalen</b> (einer für P1, einer für P2) + Feinschliff — dann 1920×1080 + NAS-Deploy.</p>
+  <div class="grid">
+    <figure><a href="v2b-1.png"><img src="v2b-1.png" alt="v2b-1"></a>
+      <figcaption><b>1 · verfeinert</b> — mattes Petrol über volle Breite, dünne Walnuss-Akzentstreifen, Bulle links · Uhr mittig · Zertifikat rechts.</figcaption></figure>
+    <figure><a href="v2b-3.png"><img src="v2b-3.png" alt="v2b-3"></a>
+      <figcaption><b>3 · verfeinert</b> — geriffelte Petrol-Wand über volle Breite mit warmen Holz-Rippen (dezent), Bulle+Zertifikat links · Globus rechts.</figcaption></figure>
+    <figure><a href="v2b-6.png"><img src="v2b-6.png" alt="v2b-6"></a>
+      <figcaption><b>6 · verfeinert</b> — Petrol-Wand über volle Breite mit breiter beleuchteter Nische + schmalem Walnuss-Regal, Bulle links · Uhr/Zertifikat/Bücher rechts.</figcaption></figure>
+  </div>
+</body>
+</html>
