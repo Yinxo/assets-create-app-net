@@ -1,6 +1,77 @@
 {
-  "version": 7,
-  "app": 3,
+  "version": 18,
+  "app": 5,
   "updated": "2026-08-17",
-  "houses": []
+  "houses": [
+    {
+      "id": "haus-1",
+      "name": "Unser Bungalow",
+      "subtitle": "Skandinavischer Ebenerdig-Bungalow · ~115 m²",
+      "sets": [
+        {
+          "id": "grundriss",
+          "title": "Grundriss",
+          "note": "Gewählte Aufteilung — verbindliche Referenz für alle Raumbilder",
+          "kind": "grundriss",
+          "brief": [
+            { "q": "Stil", "a": "Länglicher Bungalow, ebenerdig, skandinavisch/schwedisch, hohe Decken, dunkle Holzlattung + dunkles Metalldach (Satteldach), anthrazit Rahmen" },
+            { "q": "Charakter", "a": "Hell & offen innen, große bodentiefe Fensterfronten, gemütlich-warm, ruhig, modern, edel-markant außen" },
+            { "q": "Wohnfläche", "a": "~115–120 m²" },
+            { "q": "Wohnbereich", "a": "Offen Wohnen + Essen + Küche ~42 m², kleine Kochinsel, L-förmige Eck-Glasfront zur Terrasse" },
+            { "q": "Master", "a": "Schlafzimmer ~16 m² mit Ankleide ~6 m² und eigenem Master-Bad ~9 m²" },
+            { "q": "Weitere Zimmer", "a": "Kinderzimmer ~14 m², Arbeits-/Hobbyraum ~12 m²" },
+            { "q": "Bäder", "a": "Master-Bad ~9 m² + Gäste-WC ~3 m² — bewusst kein kleines Bad mehr" },
+            { "q": "Service", "a": "Diele/Flur ~3 m², Hauswirtschaftsraum + Haustechnik ~6 m²" },
+            { "q": "Garage", "a": "Direkt ans Haus angebaut ~18 m² (rechte Seite, nach hinten/Nord abgesetzt, kein Innenzugang nötig)" },
+            { "q": "Terrasse", "a": "Süd-West, breit frontal vor dem Wohnbereich, fest überdacht mit sichtbaren Holzbalken (Verlängerung des Satteldachs)" },
+            { "q": "Anordnung", "a": "Schlaftrakt links (2 Reihen), Diele/Gäste-WC mittig, offener Wohnbereich rechts, überdachte Terrasse frontal davor, Garage ganz rechts hinten angebaut" }
+          ],
+          "variants": [
+            { "id": "b", "label": "Grundriss", "src": "img/haus-1-grundriss-b.png" }
+          ]
+        },
+        {
+          "id": "aussen",
+          "title": "Außenansicht",
+          "note": "Finale Außenansicht — dunkle Lattung, Metall-Satteldach, überdachte Terrasse",
+          "kind": "foto",
+          "brief": [
+            { "q": "Ansicht", "a": "Süd-West-Terrassenseite, Blick auf Wohnbereich mit Glasfront, Schlaftrakt links, Garage rechts hinten" },
+            { "q": "Fassade", "a": "Dunkle verkohlte Holzlattung, dunkles Stehfalz-Metalldach, anthrazit Rahmen" },
+            { "q": "Terrasse", "a": "Breit frontal vor dem Wohnbereich, fest überdacht mit sichtbaren Holzbalken + Lichterkette" }
+          ],
+          "variants": [
+            { "id": "final", "label": "Außenansicht", "src": "img/haus-1-aussen-final-v3.png" }
+          ]
+        },
+        {
+          "id": "wohnen",
+          "title": "Wohn-Ess-Koch",
+          "note": "Offener Wohnbereich innen — hell skandinavisch, helles Eichenholz",
+          "kind": "foto",
+          "brief": [
+            { "q": "Blick", "a": "Aus dem offenen Wohnbereich durch die Eck-Glasfront auf die überdachte Terrasse (dunkle Fassade sichtbar)" },
+            { "q": "Stil", "a": "Hell & skandinavisch, helles Eichenholz (kein dunkles Buchenholz), weiße Küche mit Holz-Insel, helle Deckenbalken, hohe Decke" }
+          ],
+          "variants": [
+            { "id": "final", "label": "Wohn-Ess-Koch", "src": "img/haus-1-wohnen-final.png" }
+          ]
+        },
+        {
+          "id": "schlafen",
+          "title": "Master-Schlafzimmer",
+          "note": "Ruhig-hell (Greige/Leinen), Aufbau nach Grundriss: Ankleide links, Tür zum Bad dahinter",
+          "kind": "foto",
+          "brief": [
+            { "q": "Fenster", "a": "Bodentiefe Eck-Fensterfront mit Gartenblick, Bett rechts an der Wand" },
+            { "q": "Ankleide/Bad", "a": "Offene Ankleide links vom Bett; Master-Bad wird durch die Ankleide erreicht (geschlossene Tür dahinter)" },
+            { "q": "Stil", "a": "Hell & ruhig, helles Eichenholz, Greige/Leinen, helle Deckenbalken" }
+          ],
+          "variants": [
+            { "id": "final", "label": "Master-Schlafzimmer", "src": "img/haus-1-schlafen-final.png" }
+          ]
+        }
+      ]
+    }
+  ]
 }

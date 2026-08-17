@@ -221,7 +221,7 @@
   // Wird mit "app" in data.json verglichen. Weicht es ab, hat sich die App
   // selbst geaendert -> die Seite laedt sich EINMAL selbst neu. Damit muss
   // am TV nie wieder von Hand aktualisiert werden.
-  var APP_VERSION = 4;
+  var APP_VERSION = 5;
   var DATA = {houses:[]}, VERSION = null;
   var seen = null, pendingRender = false;
   var autoShow = true;
@@ -674,7 +674,10 @@
           try { already = sessionStorage.getItem(key) === '1'; } catch(e){}
           if(!already){
             try { sessionStorage.setItem(key, '1'); } catch(e){}
-            location.reload();
+            // Cache-Busting: eine NEUE URL erzwingt frisches index.html — ein
+            // reiner location.reload() nimmt am TV-Browser sonst die Datei aus
+            // dem Cache und der App-Update greift nicht. Hash bleibt erhalten.
+            location.replace(location.pathname + '?v=' + d.app + location.hash);
             return;
           }
         }
