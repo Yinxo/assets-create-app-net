@@ -1,5 +1,5 @@
 {
-  "version": 20,
+  "version": 21,
   "app": 6,
   "updated": "2026-08-17",
   "houses": [
@@ -74,15 +74,14 @@
         {
           "id": "bad",
           "title": "Master-Bad",
-          "note": "Dunkel aber nicht zu dunkel, fugenlos (Mikrozement). Welcher Ton?",
+          "note": "Warmes Greige, fugenloser Mikrozement, Regendusche UND freistehende Wanne",
           "kind": "foto",
           "brief": [
-            { "q": "Look", "a": "Fugenlos/nahtloser Mikrozement (keine Fliesen/Fugen), begehbare Regendusche, Eichen-Waschtisch" },
-            { "q": "Frage", "a": "Warmes Greige/Taupe, mittel-dunkel (A) oder Anthrazit/Charcoal mit freistehender Wanne (B)?" }
+            { "q": "Look", "a": "Fugenlos/nahtloser Mikrozement in warmem Greige/Taupe (keine Fliesen/Fugen), Eichen-Waschtisch, Messing" },
+            { "q": "Ausstattung", "a": "Begehbare Regendusche + freistehende Badewanne, beides im Raum" }
           ],
           "variants": [
-            { "id": "a", "label": "A — warmes Greige, spa-warm", "src": "img/haus-1-bad-a.png" },
-            { "id": "b", "label": "B — Anthrazit + freistehende Wanne", "src": "img/haus-1-bad-b.png" }
+            { "id": "final", "label": "Master-Bad", "src": "img/haus-1-bad-final.png" }
           ]
         }
       ]
