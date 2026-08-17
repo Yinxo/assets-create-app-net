@@ -221,7 +221,7 @@
   // Wird mit "app" in data.json verglichen. Weicht es ab, hat sich die App
   // selbst geaendert -> die Seite laedt sich EINMAL selbst neu. Damit muss
   // am TV nie wieder von Hand aktualisiert werden.
-  var APP_VERSION = 3;
+  var APP_VERSION = 4;
   var DATA = {houses:[]}, VERSION = null;
   var seen = null, pendingRender = false;
   var autoShow = true;
@@ -679,11 +679,18 @@
           }
         }
 
-        var all = flatSets(d), fresh = [], map = {}, i;
+        // "Neu" = ein Motiv mit mindestens einem BILD, das vorher nicht da war
+        // (neue Quelle/Datei). So poppt auch ein Varianten-Austausch im selben
+        // Motiv nach einer Auswahl auf; reines Entfernen einer abgelehnten
+        // Variante loest KEIN erneutes Popup aus. seen merkt sich Bild-Quellen.
+        var all = flatSets(d), fresh = [], map = {}, i, k;
         for(i=0;i<all.length;i++){
-          var sid = all[i].set.id;
-          if(seen && !seen[sid]) fresh.push(all[i]);
-          map[sid] = 1;
+          var vs = varsOf(all[i].set), isNew = false;
+          for(k=0;k<vs.length;k++){
+            if(seen && !seen[vs[k].src]) isNew = true;
+            map[vs[k].src] = 1;
+          }
+          if(seen && isNew) fresh.push(all[i]);
         }
         seen = map;
 
