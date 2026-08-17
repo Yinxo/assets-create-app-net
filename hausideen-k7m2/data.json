@@ -1,5 +1,5 @@
 {
-  "version": 27,
+  "version": 30,
   "app": 6,
   "updated": "2026-08-17",
   "houses": [
@@ -104,6 +104,21 @@
           ],
           "variants": [
             { "id": "final", "label": "Grundriss EG", "src": "img/haus-2-grundriss-eg-a.png" }
+          ]
+        },
+        {
+          "id": "grundriss-og",
+          "title": "Grundriss OG (Nachher)",
+          "note": "Kind 1 + Kind 2 → Elternschlafzimmer mit Ankleide, Bad vergrößert, großes Zimmer unten wird Jugendzimmer — Außenmauern/Fenster/Treppe wie Bestand",
+          "kind": "grundriss",
+          "brief": [
+            { "q": "Umbau", "a": "Kind 1 + Kind 2 (oben) werden ein Elternschlafzimmer mit Ankleide; das große Zimmer unten (ehem. Elternschlafzimmer) wird Jugendzimmer" },
+            { "q": "Bad", "a": "Vergrößertes Familienbad — begehbare Dusche + freistehende Wanne + Doppelwaschtisch" },
+            { "q": "Fix (Bestand)", "a": "Außenmauern, Fensterpositionen + Treppe bleiben unverändert — nur Innenwände neu" },
+            { "q": "Abstellraum", "a": "Abseite bleibt erhalten" }
+          ],
+          "variants": [
+            { "id": "final", "label": "Grundriss OG", "src": "img/haus-2-grundriss-og-b2.png" }
           ]
         },
         {
