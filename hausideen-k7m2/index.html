@@ -135,11 +135,17 @@
   .vcard.solo .lbl{color:var(--fg)}
 
   .nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
-       width:clamp(50px,3.4vw,70px);height:clamp(50px,3.4vw,70px);border-radius:50%;
-       background:rgba(34,39,43,.92);border:1px solid var(--line);
-       font-size:clamp(22px,1.8vw,32px);display:flex;align-items:center;justify-content:center}
+       width:clamp(58px,4vw,84px);height:clamp(58px,4vw,84px);border-radius:50%;
+       background:rgba(28,32,35,.42);border:1px solid rgba(242,232,216,.22);
+       color:rgba(242,232,216,.85);
+       -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+       font-size:clamp(26px,2.1vw,38px);line-height:1;
+       display:flex;align-items:center;justify-content:center;
+       transition:background .18s,color .18s,border-color .18s}
   .nav:hover,.nav:focus-visible{background:var(--accent);color:var(--ink);border-color:var(--accent)}
-  .nav.prev{left:-6px}.nav.next{right:-6px}
+  /* deutlich vom Rand weg — am Handy waren sie sonst angeschnitten */
+  .nav.prev{left:clamp(10px,1.8vw,30px)}
+  .nav.next{right:clamp(10px,1.8vw,30px)}
 
   /* Motiv-Leiste unten: direkt durchklicken */
   .rail{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 2px;flex:none;scrollbar-width:thin}
@@ -212,6 +218,10 @@
   "use strict";
 
   var POLL_MS = 6000;
+  // Wird mit "app" in data.json verglichen. Weicht es ab, hat sich die App
+  // selbst geaendert -> die Seite laedt sich EINMAL selbst neu. Damit muss
+  // am TV nie wieder von Hand aktualisiert werden.
+  var APP_VERSION = 3;
   var DATA = {houses:[]}, VERSION = null;
   var seen = null, pendingRender = false;
   var autoShow = true;
@@ -239,6 +249,47 @@
   function esc(s){
     return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* Netz 1 — Bild laedt nicht (CDN-Knoten hat die Datei noch nicht):
+     automatisch erneut versuchen, statt als kaputtes Icon stehen zu bleiben.
+     'error' steigt nicht auf, darum in der Capture-Phase am document. */
+  document.addEventListener('error', function(e){
+    var el = e.target;
+    if(!el || el.tagName !== 'IMG') return;
+    var t = parseInt(el.getAttribute('data-try') || '0', 10);
+    if(t >= 8) return;
+    el.setAttribute('data-try', String(t+1));
+    var base = (el.getAttribute('src') || '').split('?')[0];
+    if(!base) return;
+    // wachsende Abstaende, gedeckelt: deckt ~70s ab statt nur 10s
+    var wait = Math.min(800 * Math.pow(2, t), 15000);
+    setTimeout(function(){ el.src = base + '?r=' + Date.now(); }, wait);
+  }, true);
+
+  /* Netz 2 — vor dem Aufploppen die neuen Bilder vorladen, damit das
+     Popup erst erscheint, wenn wirklich etwas zu sehen ist.
+     Bricht nach spaetestens 12s ab, damit es nie haengen bleibt. */
+  function preload(srcs, cb){
+    var left = srcs.length, done = false, timer;
+    if(!left) return cb();
+    function finish(){ if(done) return; done = true; clearTimeout(timer); cb(); }
+    timer = setTimeout(finish, 12000);
+    for(var i=0;i<srcs.length;i++){
+      (function(src){
+        var im = new Image(), retried = false;
+        im.onload = function(){ if(--left <= 0) finish(); };
+        im.onerror = function(){
+          if(!retried){                       // ein zweiter Versuch am CDN vorbei
+            retried = true;
+            setTimeout(function(){ im.src = src + '?r=' + Date.now(); }, 900);
+            return;
+          }
+          if(--left <= 0) finish();
+        };
+        im.src = src;
+      })(srcs[i]);
+    }
   }
   function houseById(id){
     for(var i=0;i<DATA.houses.length;i++) if(DATA.houses[i].id===id) return DATA.houses[i];
@@ -549,6 +600,24 @@
     drawLb();
   });
 
+  /* Wischen wie in einer Galerie: nach links = naechstes Bild, nach rechts = zurueck */
+  (function(){
+    var sx = 0, sy = 0, active = false;
+    lbVariants.addEventListener('touchstart', function(e){
+      if(e.touches.length !== 1){ active = false; return; }
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY; active = true;
+    }, {passive:true});
+    lbVariants.addEventListener('touchend', function(e){
+      if(!active) return;
+      active = false;
+      var t = e.changedTouches && e.changedTouches[0];
+      if(!t) return;
+      var dx = t.clientX - sx, dy = t.clientY - sy;
+      // nur horizontal, und deutlich genug — sonst scrollt/tippt man nur
+      if(Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
+    }, {passive:true});
+  })();
+
   document.addEventListener('keydown', function(e){
     if(lb.classList.contains('on')){
       if(e.key === 'Escape' || e.key === 'Backspace'){
@@ -598,6 +667,18 @@
     fetch('data.json?t=' + Date.now(), {cache:'no-store'})
       .then(function(r){ return r.json(); })
       .then(function(d){
+        // App-Update erkannt -> einmalig selbst neu laden (Guard gegen Schleife)
+        if(d && d.app && d.app !== APP_VERSION){
+          var key = 'hausideen-reload-' + d.app;
+          var already = false;
+          try { already = sessionStorage.getItem(key) === '1'; } catch(e){}
+          if(!already){
+            try { sessionStorage.setItem(key, '1'); } catch(e){}
+            location.reload();
+            return;
+          }
+        }
+
         var all = flatSets(d), fresh = [], map = {}, i;
         for(i=0;i<all.length;i++){
           var sid = all[i].set.id;
@@ -619,9 +700,16 @@
           pendingRender = true;
           var nh = fresh[0].house, nsets = nh.sets || [], nidx = 0;
           for(i=0;i<nsets.length;i++){ if(nsets[i].id === fresh[0].set.id){ nidx = i; break; } }
-          openLb(nh, nsets, nidx, 'compare');   // frisch generiert -> A/B nebeneinander
-          toast(fresh.length === 1 ? 'Neu: ' + fresh[0].set.title
-                                   : fresh.length + ' neue Motive sind da');
+
+          // Erst laden, dann zeigen — sonst poppt es mit leeren Rahmen auf,
+          // wenn der CDN-Knoten die Bilder noch nicht ausliefert.
+          var nsrc = [], nv = varsOf(nsets[nidx]);
+          for(i=0;i<nv.length;i++) nsrc.push(nv[i].src);
+          preload(nsrc, function(){
+            openLb(nh, nsets, nidx, 'compare');   // frisch generiert -> A/B nebeneinander
+            toast(fresh.length === 1 ? 'Neu: ' + fresh[0].set.title
+                                     : fresh.length + ' neue Motive sind da');
+          });
           return;
         }
         if(lb.classList.contains('on')){
