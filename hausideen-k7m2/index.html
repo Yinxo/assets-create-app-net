@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hausideen</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+<style>
+  :root{
+    /* Basis: dunkles Anthrazit — Akzente in Antikweiss / Beige */
+    --bg:#15181a; --bg-soft:#1c2023; --card:#22272b; --card-hover:#2b3136;
+    --line:#3b424a; --fg:#f2e8d8; --fg-dim:#a79d8f;
+    --accent:#e6d5b8; --accent-soft:#302c26;
+    --ink:#181a1c;              /* dunkle Schrift auf hellem Akzent */
+    --sage:#8fa389;             /* dezentes Live-Signal */
+    --radius:20px; --pad:clamp(20px,2.6vw,52px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:clamp(17px,1.15vw,22px);line-height:1.5;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  img{display:block;max-width:100%}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+  :focus{outline:none}
+  :focus-visible{outline:4px solid var(--accent);outline-offset:4px;border-radius:14px}
+
+  .wrap{max-width:1900px;margin:0 auto;padding:var(--pad)}
+
+  header.top{
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+    padding-bottom:clamp(14px,1.6vw,26px);border-bottom:1px solid var(--line);
+    margin-bottom:clamp(22px,2.6vw,42px);
+  }
+  header.top .titles{flex:1;min-width:240px}
+  h1{font-size:clamp(28px,3.1vw,54px);font-weight:700;letter-spacing:-.02em}
+  h1 .dot{color:var(--accent)}
+  .sub{color:var(--fg-dim);font-size:clamp(14px,1.05vw,20px);margin-top:4px}
+  .tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .live{display:flex;align-items:center;gap:9px;color:var(--fg-dim);
+        font-size:clamp(13px,.95vw,17px);white-space:nowrap}
+  .pulse{width:10px;height:10px;border-radius:50%;background:var(--sage);
+         box-shadow:0 0 0 0 rgba(143,163,137,.6);animation:p 2.4s infinite}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(143,163,137,.55)}70%{box-shadow:0 0 0 14px rgba(143,163,137,0)}100%{box-shadow:0 0 0 0 rgba(143,163,137,0)}}
+  .toggle{
+    display:inline-flex;align-items:center;gap:9px;padding:10px 18px;
+    border:1px solid var(--line);border-radius:999px;background:var(--card);
+    color:var(--fg-dim);font-size:clamp(13px,.95vw,17px);white-space:nowrap;
+  }
+  .toggle:hover,.toggle:focus-visible{border-color:var(--accent);color:var(--fg)}
+  .toggle .sw{width:15px;height:15px;border-radius:50%;background:var(--line);flex:none;transition:background .2s}
+  .toggle.on{color:var(--fg)}
+  .toggle.on .sw{background:var(--accent);box-shadow:0 0 12px rgba(230,213,184,.65)}
+
+  /* Haus-Karten */
+  .cards{display:grid;gap:clamp(18px,1.9vw,34px);
+         grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr))}
+  .card{display:block;width:100%;text-align:left;background:var(--card);
+        border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+        transition:transform .18s,background .18s,border-color .18s}
+  .card:hover,.card:focus-visible{transform:translateY(-5px);background:var(--card-hover);border-color:var(--accent)}
+  .card .shot{aspect-ratio:16/9;background:var(--bg-soft);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .card .shot img{width:100%;height:100%;object-fit:cover}
+  .card .shot .ph{font-size:clamp(38px,3.6vw,62px);opacity:.3}
+  .card .meta{padding:clamp(16px,1.3vw,26px)}
+  .card .meta h2{font-size:clamp(21px,1.65vw,32px);font-weight:650}
+  .card .meta p{color:var(--fg-dim);margin-top:6px;font-size:clamp(14px,1vw,19px)}
+  .badge{display:inline-block;margin-top:14px;padding:5px 13px;border-radius:999px;
+         background:var(--accent-soft);color:var(--accent);font-size:clamp(13px,.9vw,16px);font-weight:600}
+
+  /* Motiv-Kacheln (ein Motiv = mehrere Varianten) */
+  .back{display:inline-flex;align-items:center;gap:10px;color:var(--fg-dim);
+        padding:11px 18px;border-radius:12px;margin-bottom:18px;font-size:clamp(15px,1.05vw,20px)}
+  .back:hover,.back:focus-visible{color:var(--fg);background:var(--card)}
+  .sets{display:grid;gap:clamp(18px,1.9vw,34px);
+        grid-template-columns:repeat(auto-fill,minmax(min(100%,460px),1fr))}
+  .set{display:block;width:100%;text-align:left;background:var(--card);
+       border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+       transition:transform .18s,border-color .18s}
+  .set:hover,.set:focus-visible{transform:translateY(-5px);border-color:var(--accent)}
+  .set .strip{display:flex;gap:3px;background:var(--bg-soft)}
+  .set .strip .cell{flex:1;aspect-ratio:16/10;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .set .strip img{width:100%;height:100%;object-fit:cover}
+  .set .strip img.plan{object-fit:contain;background:#f6f2ec;padding:5px}
+  .set .cap{padding:clamp(14px,1.1vw,22px)}
+  .set .cap b{display:block;font-size:clamp(17px,1.25vw,25px);font-weight:600}
+  .set .cap span{color:var(--fg-dim);font-size:clamp(13px,.92vw,17px)}
+  .tag{display:inline-block;margin-top:11px;padding:4px 11px;border-radius:999px;
+       background:var(--accent-soft);color:var(--accent);font-size:clamp(12px,.85vw,15px);font-weight:600}
+
+  .empty-state{text-align:center;padding:clamp(50px,7vw,110px) 20px;color:var(--fg-dim);
+               border:2px dashed var(--line);border-radius:var(--radius)}
+  .empty-state .big{font-size:clamp(44px,4.6vw,76px);margin-bottom:16px}
+  .empty-state p{font-size:clamp(16px,1.2vw,22px)}
+
+  /* ---------- Lightbox ---------- */
+  .lb{position:fixed;inset:0;z-index:50;background:rgba(16,18,20,.985);
+      display:none;flex-direction:column;padding:clamp(12px,1.3vw,26px)}
+  .lb.on{display:flex}
+  .lb-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+  .lb-bar .who{flex:1;min-width:220px}
+  .lb-bar h3{font-size:clamp(19px,1.55vw,30px);font-weight:600}
+  .lb-bar .whos{color:var(--fg-dim);font-size:clamp(13px,.95vw,18px)}
+  .lb-btn{padding:11px 20px;border-radius:12px;background:var(--card);
+          border:1px solid var(--line);font-size:clamp(14px,1vw,19px);white-space:nowrap}
+  .lb-btn:hover,.lb-btn:focus-visible{background:var(--card-hover);border-color:var(--accent)}
+  .lb-btn.active{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+  .houses{display:flex;gap:8px;flex-wrap:wrap}
+  .houses button{padding:10px 18px;border-radius:999px;border:1px solid var(--line);
+                 background:var(--card);color:var(--fg-dim);font-size:clamp(13px,.95vw,18px);white-space:nowrap}
+  .houses button:hover,.houses button:focus-visible{border-color:var(--accent);color:var(--fg)}
+  .houses button.cur{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+
+  .lb-body{flex:1;display:flex;gap:clamp(12px,1.3vw,26px);min-height:0}
+  .stage{flex:1;position:relative;min-width:0;display:flex;flex-direction:column;gap:12px}
+
+  /* Varianten nebeneinander */
+  .variants{flex:1;display:flex;gap:clamp(10px,1vw,20px);min-height:0;align-items:stretch;justify-content:center}
+  .variants.grid2x2{flex-wrap:wrap}
+  .vcard{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:9px;
+         background:var(--bg-soft);border:2px solid transparent;border-radius:16px;
+         padding:10px;transition:border-color .18s,transform .18s;cursor:zoom-in}
+  .variants.grid2x2 .vcard{flex:1 1 calc(50% - 12px)}
+  .vcard:hover,.vcard:focus-visible{border-color:var(--accent);transform:translateY(-3px)}
+  .vcard .frame{flex:1;min-height:0;position:relative;overflow:hidden;border-radius:10px}
+  .vcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px}
+  .vcard img.plan{background:#f6f2ec}
+  .vcard .lbl{text-align:center;color:var(--fg-dim);font-size:clamp(13px,.95vw,18px);
+              white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vcard.solo{cursor:default;flex:1 1 100%;border-color:transparent}
+  .vcard.solo:hover{transform:none;border-color:transparent}
+  .vcard.solo .lbl{color:var(--fg)}
+
+  .nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+       width:clamp(50px,3.4vw,70px);height:clamp(50px,3.4vw,70px);border-radius:50%;
+       background:rgba(34,39,43,.92);border:1px solid var(--line);
+       font-size:clamp(22px,1.8vw,32px);display:flex;align-items:center;justify-content:center}
+  .nav:hover,.nav:focus-visible{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+  .nav.prev{left:-6px}.nav.next{right:-6px}
+
+  /* Motiv-Leiste unten: direkt durchklicken */
+  .rail{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 2px;flex:none;scrollbar-width:thin}
+  .rail button{flex:none;width:clamp(96px,7.5vw,150px);border-radius:12px;overflow:hidden;
+               border:2px solid var(--line);background:var(--card);opacity:.62;transition:opacity .18s,border-color .18s}
+  .rail button:hover,.rail button:focus-visible{opacity:1;border-color:var(--accent)}
+  .rail button.cur{opacity:1;border-color:var(--accent)}
+  .rail img{width:100%;aspect-ratio:16/10;object-fit:cover}
+  .rail img.plan{object-fit:contain;background:#f6f2ec}
+  .rail .rl{display:block;padding:6px 8px;font-size:clamp(11px,.75vw,14px);color:var(--fg-dim);
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .brief{width:min(34vw,500px);background:var(--bg-soft);border:1px solid var(--line);
+         border-radius:var(--radius);padding:clamp(16px,1.3vw,28px);overflow-y:auto;display:none}
+  .brief.on{display:block}
+  .brief h4{font-size:clamp(12px,.85vw,15px);text-transform:uppercase;letter-spacing:.09em;
+            color:var(--accent);margin-bottom:16px}
+  .qa{padding:13px 0;border-bottom:1px solid var(--line)}
+  .qa:last-child{border-bottom:none}
+  .qa .q{color:var(--fg-dim);font-size:clamp(13px,.9vw,16px);margin-bottom:3px}
+  .qa .a{font-size:clamp(15px,1.02vw,19px)}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,140%);
+         background:var(--accent);color:var(--ink);font-weight:650;padding:13px 28px;
+         border-radius:999px;z-index:60;font-size:clamp(15px,1.05vw,19px);
+         transition:transform .4s cubic-bezier(.2,.9,.3,1.2);box-shadow:0 10px 34px rgba(0,0,0,.5)}
+  .toast.on{transform:translate(-50%,0)}
+
+  @media (max-width:1000px){
+    .lb-body{flex-direction:column}
+    .brief{width:100%;max-height:40vh}
+    .variants{flex-wrap:wrap}
+    .vcard{flex:1 1 calc(50% - 10px)}
+  }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Bildansicht">
+  <div class="lb-bar">
+    <div class="who">
+      <h3 id="lbTitle"></h3>
+      <div class="whos" id="lbSubtitle"></div>
+    </div>
+    <div class="houses" id="lbHouses"></div>
+    <button class="lb-btn" id="lbCompare">A/B vergleichen</button>
+    <button class="lb-btn" id="lbBrief">Steckbrief</button>
+    <button class="lb-btn" id="lbClose">Schliessen &nbsp;✕</button>
+  </div>
+  <div class="lb-body">
+    <div class="stage">
+      <button class="nav prev" id="lbPrev" aria-label="Vorheriges Motiv">‹</button>
+      <div class="variants" id="lbVariants"></div>
+      <button class="nav next" id="lbNext" aria-label="Naechstes Motiv">›</button>
+      <div class="rail" id="lbRail"></div>
+    </div>
+    <aside class="brief" id="lbBriefBox">
+      <h4>Steckbrief — was in dieses Motiv eingeflossen ist</h4>
+      <div id="lbQA"></div>
+    </aside>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var POLL_MS = 6000;
+  var DATA = {houses:[]}, VERSION = null;
+  var seen = null, pendingRender = false;
+  var autoShow = true;
+  try { autoShow = localStorage.getItem('autoShow') !== '0'; } catch(e){}
+
+  var app       = document.getElementById('app');
+  var lb        = document.getElementById('lb');
+  var lbTitle   = document.getElementById('lbTitle');
+  var lbSubtitle= document.getElementById('lbSubtitle');
+  var lbVariants= document.getElementById('lbVariants');
+  var lbRail    = document.getElementById('lbRail');
+  var lbHouses  = document.getElementById('lbHouses');
+  var lbQA      = document.getElementById('lbQA');
+  var lbBriefBox= document.getElementById('lbBriefBox');
+  var toastEl   = document.getElementById('toast');
+
+  var curSets = [];   // Motive, durch die geblättert wird
+  var curIdx  = 0;
+  var suppressRoute = false;
+  var curHouse = null;
+  var curFlat = [];        // alle Einzelbilder des Hauses (Filmstreifen)
+  var flatIdx = 0;         // Position darin (Einzelansicht)
+  var mode = 'single';     // 'single' = ein Bild gross | 'compare' = Varianten nebeneinander
+
+  function esc(s){
+    return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function houseById(id){
+    for(var i=0;i<DATA.houses.length;i++) if(DATA.houses[i].id===id) return DATA.houses[i];
+    return null;
+  }
+  function setsOf(h){ return (h && h.sets) || []; }
+  function varsOf(s){ return (s && s.variants) || []; }
+  function planCls(s){ return s && s.kind === 'grundriss' ? ' class="plan"' : ''; }
+  function countImgs(h){
+    var n=0, ss=setsOf(h); for(var i=0;i<ss.length;i++) n += varsOf(ss[i]).length; return n;
+  }
+  // Vorschaubild der Haus-Karte: neuestes FOTO bevorzugt (ein Grundriss
+  // als Kartenbild zeigt nicht das Haus). Nur wenn es kein Foto gibt,
+  // wird auf das neueste Motiv beliebiger Art zurueckgefallen.
+  function coverOf(h){
+    var ss = setsOf(h), i, vs;
+    for(i=ss.length-1;i>=0;i--){
+      vs = varsOf(ss[i]);
+      if(vs.length && ss[i].kind !== 'grundriss') return {src: vs[0].src, plan: false};
+    }
+    for(i=ss.length-1;i>=0;i--){
+      vs = varsOf(ss[i]);
+      if(vs.length) return {src: vs[0].src, plan: ss[i].kind === 'grundriss'};
+    }
+    return null;
+  }
+
+  function autoToggleHTML(){
+    return '<button class="toggle' + (autoShow?' on':'') + '" id="autoTgl" '
+         + 'title="Neue Bilder erscheinen automatisch gross">'
+         + '<span class="sw"></span>' + (autoShow ? 'Neues poppt auf' : 'Neues nur einsortieren')
+         + '</button>';
+  }
+  document.addEventListener('click', function(e){
+    var t = e.target.closest ? e.target.closest('#autoTgl') : null;
+    if(!t) return;
+    autoShow = !autoShow;
+    try { localStorage.setItem('autoShow', autoShow ? '1' : '0'); } catch(err){}
+    t.classList.toggle('on', autoShow);
+    t.lastChild.nodeValue = autoShow ? 'Neues poppt auf' : 'Neues nur einsortieren';
+  });
+
+  /* ---------------- Startseite ---------------- */
+  function renderHome(){
+    var html = '<div class="wrap"><header class="top">'
+      + '<div class="titles"><h1>Unsere Hausideen<span class="dot">.</span></h1>'
+      + '<p class="sub">Haus anklicken — mit Maus oder Fernbedienung (Pfeiltasten + OK)</p></div>'
+      + '<div class="tools"><div class="live"><span class="pulse"></span>live</div>'
+      + autoToggleHTML() + '</div></header>';
+
+    if(!DATA.houses.length){
+      html += '<div class="empty-state"><div class="big">🏡</div><p>Noch keine Haeuser angelegt.</p></div>';
+    } else {
+      html += '<div class="cards">';
+      for(var i=0;i<DATA.houses.length;i++){
+        var h = DATA.houses[i], cov = coverOf(h), n = countImgs(h), ns = setsOf(h).length;
+        html += '<button class="card" data-house="'+esc(h.id)+'"><div class="shot">'
+             + (cov ? '<img src="'+esc(cov.src)+'"'+(cov.plan?' class="plan"':'')+' alt="" loading="lazy">'
+                    : '<div class="ph">🏡</div>')
+             + '</div><div class="meta"><h2>'+esc(h.name)+'</h2>'
+             + (h.subtitle ? '<p>'+esc(h.subtitle)+'</p>' : '')
+             + '<span class="badge">' + (ns ? ns + (ns===1?' Motiv':' Motive') + ' · ' + n + (n===1?' Bild':' Bilder')
+                                            : 'noch leer') + '</span>'
+             + '</div></button>';
+      }
+      html += '</div>';
+    }
+    app.innerHTML = html + '</div>';
+
+    var cards = app.querySelectorAll('.card');
+    for(var k=0;k<cards.length;k++){
+      cards[k].addEventListener('click', function(){ location.hash = '#/' + this.getAttribute('data-house'); });
+    }
+    if(cards.length) cards[0].focus();
+  }
+
+  /* ---------------- Haus-Ansicht ---------------- */
+  function renderHouse(id){
+    var h = houseById(id);
+    if(!h){ location.hash = ''; return; }
+    var ss = setsOf(h);
+
+    var html = '<div class="wrap"><button class="back" id="backBtn">‹ Alle Haeuser</button>'
+      + '<header class="top"><div class="titles"><h1>'+esc(h.name)+'</h1>'
+      + (h.subtitle ? '<p class="sub">'+esc(h.subtitle)+'</p>' : '') + '</div>'
+      + '<div class="tools"><div class="live"><span class="pulse"></span>'
+      + (ss.length ? ss.length + (ss.length===1?' Motiv':' Motive') : 'leer') + '</div>'
+      + autoToggleHTML() + '</div></header>';
+
+    if(!ss.length){
+      html += '<div class="empty-state"><div class="big">🎨</div>'
+           +  '<p>Fuer dieses Haus gibt es noch keine Bilder.<br>Die naechste Idee landet automatisch hier.</p></div>';
+    } else {
+      html += '<div class="sets">';
+      for(var i=0;i<ss.length;i++){
+        var s = ss[i], vs = varsOf(s);
+        html += '<button class="set" data-idx="'+i+'"><div class="strip">';
+        for(var v=0; v<Math.min(vs.length,3); v++){
+          html += '<div class="cell"><img src="'+esc(vs[v].src)+'"'+planCls(s)+' alt="" loading="lazy"></div>';
+        }
+        html += '</div><div class="cap"><b>'+esc(s.title)+'</b>'
+             + (s.note ? '<span>'+esc(s.note)+'</span>' : '')
+             + '<span class="tag">' + (s.kind === 'grundriss' ? 'Grundriss · ' : '')
+             + vs.length + (vs.length===1?' Variante':' Varianten') + '</span>'
+             + '</div></button>';
+      }
+      html += '</div>';
+    }
+    app.innerHTML = html + '</div>';
+
+    document.getElementById('backBtn').addEventListener('click', function(){ location.hash = ''; });
+    var tiles = app.querySelectorAll('.set');
+    for(var k=0;k<tiles.length;k++){
+      tiles[k].addEventListener('click', function(){
+        openLb(h, ss, parseInt(this.getAttribute('data-idx'),10));
+      });
+    }
+    (tiles.length ? tiles[0] : document.getElementById('backBtn')).focus();
+  }
+
+  /* ---------------- Lightbox ----------------
+     Zwei Modi:
+       'single'  = Normalfall. EIN Bild gross, durch alle Bilder des Hauses blaettern.
+       'compare' = nur wenn frisch generierte Varianten aufploppen: A und B nebeneinander,
+                   damit man sagen kann "nimm A, aber aendere X".
+  */
+  function buildFlat(house){
+    var out = [], ss = setsOf(house);
+    for(var i=0;i<ss.length;i++){
+      var vs = varsOf(ss[i]);
+      for(var j=0;j<vs.length;j++) out.push({setIdx:i, vIdx:j, set:ss[i], v:vs[j]});
+    }
+    return out;
+  }
+  function findFlat(setIdx, vIdx){
+    for(var i=0;i<curFlat.length;i++){
+      if(curFlat[i].setIdx === setIdx && curFlat[i].vIdx === (vIdx||0)) return i;
+    }
+    return 0;
+  }
+
+  function openLb(house, sets, setIdx, wantMode, vIdx){
+    curHouse = house; curSets = sets; curIdx = setIdx;
+    curFlat = buildFlat(house);
+    mode = wantMode === 'compare' ? 'compare' : 'single';
+    flatIdx = findFlat(setIdx, vIdx);
+    drawLb();
+    lb.classList.add('on');
+    document.getElementById('lbClose').focus();
+  }
+
+  function drawLb(){
+    var s, vs, item = null;
+    if(mode === 'compare'){
+      s = curSets[curIdx];
+      if(!s) return;
+      vs = varsOf(s);
+    } else {
+      item = curFlat[flatIdx];
+      if(!item) return;
+      s = item.set; curIdx = item.setIdx; vs = [item.v];
+    }
+
+    lbTitle.textContent = s.title || '';
+    lbSubtitle.textContent = (curHouse ? curHouse.name + ' · ' : '')
+      + (mode === 'compare'
+          ? 'Varianten im Vergleich' + (s.note ? ' · ' + s.note : '')
+          : 'Bild ' + (flatIdx+1) + ' von ' + curFlat.length
+            + (item && item.v.label ? ' · ' + item.v.label : ''));
+
+    // Stage
+    lbVariants.className = 'variants' + (mode === 'compare' && vs.length > 2 ? ' grid2x2' : '');
+    var html = '', i;
+    for(i=0;i<vs.length;i++){
+      var single = (mode === 'single');
+      html += '<div class="vcard'+(single?' solo':'')+'" data-v="'+(single ? item.vIdx : i)+'"'
+           +    (single ? '' : ' tabindex="0" role="button"')+'>'
+           +    '<div class="frame"><img src="'+esc(vs[i].src)+'"'+planCls(s)+' alt="'+esc(vs[i].label||'')+'"></div>'
+           +    '<div class="lbl">'+esc(vs[i].label || ('Variante ' + (i+1)))
+           +      (single ? '' : '  ·  klicken zum Vergroessern') + '</div>'
+           +  '</div>';
+    }
+    lbVariants.innerHTML = html || '<div class="lbl">Keine Bilder</div>';
+
+    // Im Vergleich: Klick auf eine Variante zeigt genau die gross
+    if(mode === 'compare'){
+      var vcs = lbVariants.querySelectorAll('.vcard');
+      for(var k=0;k<vcs.length;k++){
+        vcs[k].addEventListener('click', function(){
+          mode = 'single';
+          flatIdx = findFlat(curIdx, parseInt(this.getAttribute('data-v'),10));
+          drawLb();
+        });
+        vcs[k].addEventListener('keydown', function(ev){
+          if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); this.click(); }
+        });
+      }
+    }
+
+    // Filmstreifen unten: ALLE Einzelbilder des Hauses zum Durchklicken
+    var rail = '';
+    for(var r=0;r<curFlat.length;r++){
+      var it = curFlat[r];
+      var isCur = (mode === 'single') ? (r === flatIdx) : (it.setIdx === curIdx);
+      rail += '<button data-flat="'+r+'"'+(isCur?' class="cur"':'')+'>'
+           +   '<img src="'+esc(it.v.src)+'"'+planCls(it.set)+' alt="" loading="lazy">'
+           +   '<span class="rl">'+esc(it.set.title)
+           +     (varsOf(it.set).length > 1 ? ' · ' + String.fromCharCode(65 + it.vIdx) : '')
+           +   '</span></button>';
+    }
+    lbRail.innerHTML = rail;
+    var rbs = lbRail.querySelectorAll('button');
+    for(var m=0;m<rbs.length;m++){
+      rbs[m].addEventListener('click', function(){
+        mode = 'single';
+        flatIdx = parseInt(this.getAttribute('data-flat'),10);
+        drawLb();
+      });
+    }
+    var cur = lbRail.querySelector('.cur');
+    if(cur && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
+
+    // Vergleichs-Umschalter: nur sinnvoll wenn das Motiv mehrere Varianten hat
+    var cmp = document.getElementById('lbCompare');
+    if(mode === 'compare'){
+      cmp.style.display = ''; cmp.textContent = 'Einzeln ansehen';
+    } else if(varsOf(s).length > 1){
+      cmp.style.display = ''; cmp.textContent = 'A/B vergleichen';
+    } else {
+      cmp.style.display = 'none';
+    }
+
+    // Haus-Umschalter: direkt aus der Ansicht heraus das Haus wechseln
+    var hh = '';
+    for(var q=0;q<DATA.houses.length;q++){
+      var oh = DATA.houses[q];
+      hh += '<button data-house="'+esc(oh.id)+'"'
+         +  (curHouse && oh.id === curHouse.id ? ' class="cur"' : '') + '>'
+         +  esc(oh.name) + '</button>';
+    }
+    lbHouses.innerHTML = DATA.houses.length > 1 ? hh : '';
+    var hbs = lbHouses.querySelectorAll('button');
+    for(var z=0;z<hbs.length;z++){
+      hbs[z].addEventListener('click', function(){ switchHouse(this.getAttribute('data-house')); });
+    }
+
+    // Steckbrief
+    var qa = s.brief || [];
+    var q = '';
+    for(var b=0;b<qa.length;b++){
+      q += '<div class="qa"><div class="q">'+esc(qa[b].q)+'</div><div class="a">'+esc(qa[b].a)+'</div></div>';
+    }
+    lbQA.innerHTML = q || '<div class="qa"><div class="a">Kein Steckbrief hinterlegt.</div></div>';
+
+    var multi = (mode === 'compare') ? curSets.length > 1 : curFlat.length > 1;
+    document.getElementById('lbPrev').style.display = multi ? '' : 'none';
+    document.getElementById('lbNext').style.display = multi ? '' : 'none';
+  }
+
+  // Haus wechseln, ohne die offene Ansicht zu verlieren
+  function switchHouse(id){
+    var nh = houseById(id);
+    if(!nh || (curHouse && nh.id === curHouse.id)) return;
+    var ns = setsOf(nh);
+    if(!ns.length){
+      pendingRender = false;
+      closeLb();
+      location.hash = '#/' + nh.id;
+      return;
+    }
+    if(location.hash !== '#/' + nh.id){ suppressRoute = true; location.hash = '#/' + nh.id; }
+    curHouse = nh; curSets = ns; curIdx = 0;
+    curFlat = buildFlat(nh); flatIdx = 0; mode = 'single';
+    pendingRender = true;
+    drawLb();
+  }
+
+  function closeLb(){
+    lb.classList.remove('on');
+    lbBriefBox.classList.remove('on');
+    document.getElementById('lbBrief').classList.remove('active');
+    lbVariants.innerHTML = '';
+    if(pendingRender){ pendingRender = false; route(); return; }
+    var t = app.querySelector('.set');
+    if(t) t.focus();
+  }
+  function step(d){
+    if(mode === 'compare'){
+      if(curSets.length < 2) return;
+      curIdx = (curIdx + d + curSets.length) % curSets.length;
+    } else {
+      if(curFlat.length < 2) return;
+      flatIdx = (flatIdx + d + curFlat.length) % curFlat.length;
+    }
+    drawLb();
+  }
+
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lbPrev').addEventListener('click', function(){ step(-1); });
+  document.getElementById('lbNext').addEventListener('click', function(){ step(1); });
+  document.getElementById('lbBrief').addEventListener('click', function(){
+    lbBriefBox.classList.toggle('on');
+    this.classList.toggle('active');
+  });
+  document.getElementById('lbCompare').addEventListener('click', function(){
+    mode = (mode === 'compare') ? 'single' : 'compare';
+    if(mode === 'single') flatIdx = findFlat(curIdx, 0);
+    drawLb();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(lb.classList.contains('on')){
+      if(e.key === 'Escape' || e.key === 'Backspace'){
+        e.preventDefault();
+        if(mode === 'compare'){ mode = 'single'; drawLb(); } else closeLb();
+      }
+      else if(e.key === 'ArrowLeft'){ e.preventDefault(); step(-1); }
+      else if(e.key === 'ArrowRight'){ e.preventDefault(); step(1); }
+      return;
+    }
+    if((e.key === 'Escape' || e.key === 'Backspace') && location.hash){
+      e.preventDefault(); location.hash = '';
+    }
+  });
+
+  /* ---------------- Routing ---------------- */
+  function route(){
+    var h = location.hash.replace(/^#\/?/, '');
+    if(lb.classList.contains('on')) closeLb();
+    if(h) renderHouse(h); else renderHome();
+  }
+  window.addEventListener('hashchange', function(){
+    if(suppressRoute){ suppressRoute = false; return; }  // Haus-Wechsel bei offener Ansicht
+    route();
+  });
+
+  /* ---------------- Laden + Live ---------------- */
+  var toastTimer = null;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 4500);
+  }
+
+  // flache Liste aller Motive samt Haus — fuer "was ist neu?"
+  function flatSets(d){
+    var out = [], hs = (d && d.houses) || [];
+    for(var i=0;i<hs.length;i++){
+      var ss = hs[i].sets || [];
+      for(var j=0;j<ss.length;j++) out.push({house:hs[i], set:ss[j]});
+    }
+    return out;
+  }
+
+  function load(first){
+    fetch('data.json?t=' + Date.now(), {cache:'no-store'})
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var all = flatSets(d), fresh = [], map = {}, i;
+        for(i=0;i<all.length;i++){
+          var sid = all[i].set.id;
+          if(seen && !seen[sid]) fresh.push(all[i]);
+          map[sid] = 1;
+        }
+        seen = map;
+
+        var changed = (VERSION !== null && d.version !== VERSION);
+        DATA = d; VERSION = d.version;
+
+        if(first){ route(); return; }
+        if(!changed) return;
+
+        if(fresh.length && autoShow){
+          // Neues Motiv poppt auf — alle Varianten nebeneinander.
+          // Wichtig: die VOLLE Motivliste des Hauses mitgeben, damit man
+          // von hier aus direkt weiterklicken kann (Leiste unten + Pfeile).
+          pendingRender = true;
+          var nh = fresh[0].house, nsets = nh.sets || [], nidx = 0;
+          for(i=0;i<nsets.length;i++){ if(nsets[i].id === fresh[0].set.id){ nidx = i; break; } }
+          openLb(nh, nsets, nidx, 'compare');   // frisch generiert -> A/B nebeneinander
+          toast(fresh.length === 1 ? 'Neu: ' + fresh[0].set.title
+                                   : fresh.length + ' neue Motive sind da');
+          return;
+        }
+        if(lb.classList.contains('on')){
+          pendingRender = true;
+        } else {
+          var y = window.scrollY; route(); window.scrollTo(0, y);
+        }
+        toast(fresh.length ? 'Neu einsortiert: ' + fresh[0].set.title : 'Aktualisiert');
+      })
+      .catch(function(){ if(first){ DATA = {houses:[]}; route(); } });
+  }
+
+  load(true);
+  setInterval(function(){ load(false); }, POLL_MS);
+})();
+</script>
+</body>
+</html>
