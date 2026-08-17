@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P1-Auswahl (warmes Holz) + P2</title>
+<style>
+  :root { --bg:#05100f; --panel:#0d1f1e; --lime:#b6e84a; --text:#e8f0ee; --muted:#8fa8a3; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; padding:24px; }
+  h1 { font-size:20px; font-weight:650; margin:0 0 4px; }
+  h2 { font-size:15px; color:var(--lime); margin:22px 0 10px; }
+  p.sub { color:var(--muted); margin:0 0 8px; font-size:14px; }
+  .grid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(440px,1fr)); }
+  @media (max-width:520px){ .grid{ grid-template-columns:1fr; } body{ padding:14px; } }
+  figure { margin:0; background:var(--panel); border:1px solid #1c3230; border-radius:14px; overflow:hidden; }
+  figure img { display:block; width:100%; height:auto; }
+  figcaption { padding:10px 14px; font-size:14px; }
+  figcaption b { color:var(--lime); font-weight:650; }
+</style>
+</head>
+<body>
+  <h1>P1 — angepasst (Komposition Bild 1, Holz warm wie Bild 3)</h1>
+  <p class="sub">Wähle deinen P1-Favoriten (A, B oder C). P2 = Bild 3 steht unten zum Abgleich.</p>
+  <div class="grid">
+    <figure><a href="p1-final-a.png"><img src="p1-final-a.png" alt="P1-A"></a>
+      <figcaption><b>P1 · A</b></figcaption></figure>
+    <figure><a href="p1-final-b.png"><img src="p1-final-b.png" alt="P1-B"></a>
+      <figcaption><b>P1 · B</b></figcaption></figure>
+    <figure><a href="p1-final-c.png"><img src="p1-final-c.png" alt="P1-C"></a>
+      <figcaption><b>P1 · C</b></figcaption></figure>
+  </div>
+  <h2>P2 — festgelegt (= Bild 3)</h2>
+  <div class="grid">
+    <figure><a href="variante-3.png"><img src="variante-3.png" alt="P2 = Variante 3"></a>
+      <figcaption><b>P2</b> — warm/gemütlich, Holz-dominant (Bild 3)</figcaption></figure>
+  </div>
+</body>
+</html>
