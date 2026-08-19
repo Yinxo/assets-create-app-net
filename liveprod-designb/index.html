@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Live-Produktion · Design-B Blau — Entwurf</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --primary:#0074AA; --secondary:#B6E8FF; --bg:#0b1116; --card:#141c23; --line:#22303a; --muted:#9db0bd; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#eef4f8;
+         font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; }
+  header { padding:40px 22px 26px; border-bottom:1px solid var(--line); }
+  .wrap { max-width:1500px; margin:0 auto; }
+  h1 { margin:0 0 8px; font-size:27px; font-weight:700; letter-spacing:-.01em; }
+  .sub { color:var(--muted); font-size:16px; line-height:1.6; margin:0; }
+  .sw { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+  .sw div { display:flex; align-items:center; gap:9px; font-size:14px; color:var(--muted);
+            border:1px solid var(--line); border-radius:999px; padding:6px 14px 6px 7px; }
+  .dot { width:20px; height:20px; border-radius:50%; display:block; }
+  h2 { font-size:19px; margin:38px 0 4px; }
+  .lead { color:var(--muted); font-size:15px; margin:0 0 18px; line-height:1.6; max-width:900px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(430px,1fr)); gap:22px; }
+  .card { margin:0; background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .shot { display:block; line-height:0; }
+  .shot img { width:100%; height:auto; display:block; }
+  /* Schachbrett = echte Transparenz der Loecher sichtbar */
+  .checker { background-color:#7d8a93;
+    background-image:linear-gradient(45deg,#5d686f 25%,transparent 25%,transparent 75%,#5d686f 75%),
+                     linear-gradient(45deg,#5d686f 25%,transparent 25%,transparent 75%,#5d686f 75%);
+    background-size:28px 28px; background-position:0 0,14px 14px; }
+  figcaption { padding:13px 16px 15px; display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; }
+  .t { font-weight:600; font-size:16px; }
+  .tag { font-size:12.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+         color:var(--secondary); border:1px solid rgba(182,232,255,.32); border-radius:999px; padding:3px 10px; }
+  .n { color:var(--muted); font-size:14px; flex-basis:100%; }
+  .note { border-left:3px solid var(--primary); background:rgba(0,116,170,.10);
+          padding:14px 18px; border-radius:0 10px 10px 0; color:#cfe3ee; font-size:15px;
+          line-height:1.65; margin:26px 0 0; max-width:1000px; }
+  footer { color:var(--muted); font-size:13.5px; padding:44px 22px 60px; border-top:1px solid var(--line); margin-top:52px; }
+  section { padding:0 22px; }
+  @media (max-width:640px) { .grid { grid-template-columns:1fr; } h1 { font-size:22px; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Live-Produktion · Design-B „Blau" — Entwurf</h1>
+  <p class="sub">Zweites Layout-Set parallel zu Design-A. Slot-Geometrie 1:1 wie Design-A → später reiner Datei-Tausch in der OBS-Collection.<br>
+  Die Löcher sind <strong>echt transparent</strong> — das Schachbrett dahinter zeigt, wo das Live-Bild durchkommt.</p>
+  <div class="sw">
+    <div><span class="dot" style="background:#0074AA"></span> #0074AA · Main Blue</div>
+    <div><span class="dot" style="background:#B6E8FF"></span> #B6E8FF · Light Blue</div>
+    <div><span class="dot" style="background:#03151F;border:1px solid #22303a"></span> #03151F · Tiefe (abgeleitet)</div>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <h2>1 · Layouts mit gezeichnetem Verlauf</h2>
+  <p class="lead">Kein Bild-Asset nötig, rein vektoriell: Blau-Verlauf, Lichtfeld in Main Blue, feine Kerzen-Silhouette unten. Rahmen in Light Blue, Eck-Akzente zweifarbig (oben-links Light Blue, unten-rechts Main Blue).</p>
+  <div class="grid">
+      <figure class="card">
+        <a class="shot checker" href="img/duo.png" target="_blank" rel="noopener"><img src="img/duo.png" alt="L2 Duo" loading="lazy"></a>
+        <figcaption><span class="t">L2 · Duo</span><span class="tag">Verlauf gezeichnet</span><span class="n">2 Speaker + Screen</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/noscreen-2p.png" target="_blank" rel="noopener"><img src="img/noscreen-2p.png" alt="NoScreen 2P" loading="lazy"></a>
+        <figcaption><span class="t">NoScreen-2P</span><span class="tag">Verlauf gezeichnet</span><span class="n">Interview ohne Screen, 2 Personen groß</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/solo.png" target="_blank" rel="noopener"><img src="img/solo.png" alt="L1 Solo" loading="lazy"></a>
+        <figcaption><span class="t">L1 · Solo</span><span class="tag">Verlauf gezeichnet</span><span class="n">Speaker + Screen</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/interview-screen.png" target="_blank" rel="noopener"><img src="img/interview-screen.png" alt="Interview mit Screen" loading="lazy"></a>
+        <figcaption><span class="t">Interview mit Screen</span><span class="tag">Verlauf gezeichnet</span><span class="n">Talk-Fokus, Screen als Panel rechts</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/speaker-only.png" target="_blank" rel="noopener"><img src="img/speaker-only.png" alt="Speaker allein" loading="lazy"></a>
+        <figcaption><span class="t">Speaker allein</span><span class="tag">Verlauf gezeichnet</span><span class="n">Vollbild-Cam</span></figcaption>
+      </figure>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>2 · Layouts mit generiertem Bild-Hintergrund</h2>
+  <p class="lead">Foto + blauer Scrim statt gezeichneter Lichtfelder — dieselbe Mechanik wie Design-A (Hafen-Foto unter <code>Scrim-Petrol</code>).</p>
+  <div class="grid">
+      <figure class="card">
+        <a class="shot checker" href="img/noscreen-2p-bg-hafen.png" target="_blank" rel="noopener"><img src="img/noscreen-2p-bg-hafen.png" alt="NoScreen 2P BG Hafen" loading="lazy"></a>
+        <figcaption><span class="t">NoScreen-2P</span><span class="tag">BG Hafen</span><span class="n">Hamburg zur blauen Stunde — Motiv-Kontinuität zu Design-A</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/noscreen-2p-bg-studio-wand.png" target="_blank" rel="noopener"><img src="img/noscreen-2p-bg-studio-wand.png" alt="NoScreen 2P BG Studio-Wand" loading="lazy"></a>
+        <figcaption><span class="t">NoScreen-2P</span><span class="tag">BG Studio-Wand</span><span class="n">dunkle Wand, ein Lichtschwenk</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/noscreen-2p-bg-chart.png" target="_blank" rel="noopener"><img src="img/noscreen-2p-bg-chart.png" alt="NoScreen 2P BG Chart" loading="lazy"></a>
+        <figcaption><span class="t">NoScreen-2P</span><span class="tag">BG Chart</span><span class="n">unscharfe Candlestick-Bokeh-Fläche</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/duo-bg-hafen.png" target="_blank" rel="noopener"><img src="img/duo-bg-hafen.png" alt="Duo BG Hafen" loading="lazy"></a>
+        <figcaption><span class="t">L2 · Duo</span><span class="tag">BG Hafen</span><span class="n">beim Duo bleibt vom Hintergrund nur der Rand sichtbar</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/duo-bg-studio-wand.png" target="_blank" rel="noopener"><img src="img/duo-bg-studio-wand.png" alt="Duo BG Studio-Wand" loading="lazy"></a>
+        <figcaption><span class="t">L2 · Duo</span><span class="tag">BG Studio-Wand</span><span class="n">beim Duo bleibt vom Hintergrund nur der Rand sichtbar</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot checker" href="img/duo-bg-chart.png" target="_blank" rel="noopener"><img src="img/duo-bg-chart.png" alt="Duo BG Chart" loading="lazy"></a>
+        <figcaption><span class="t">L2 · Duo</span><span class="tag">BG Chart</span><span class="n">beim Duo bleibt vom Hintergrund nur der Rand sichtbar</span></figcaption>
+      </figure>
+  </div>
+  <p class="note"><strong>Wichtig für die Entscheidung:</strong> Beim <em>Duo</em> frisst der große Screen-Slot fast die ganze Fläche — vom Hintergrund bleibt nur ein schmaler Rand, egal welches Bild. Der Hintergrund entscheidet sich real an <em>NoScreen-2P</em>, <em>Interview</em> und dem <em>Willkommens-Screen</em>. Bei Design-A ist das genauso.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>3 · Willkommens-Screen</h2>
+  <p class="lead">Voll deckend, keine Löcher. Gestrichelt unterstrichene Stellen sind <strong>Platzhalter</strong> (Titel, Datum, Referent) — kein Design-Element.</p>
+  <div class="grid">
+      <figure class="card">
+        <a class="shot" href="img/welcome-webinar.png" target="_blank" rel="noopener"><img src="img/welcome-webinar.png" alt="Willkommens-Screen" loading="lazy"></a>
+        <figcaption><span class="t">Willkommen · Webinar Y</span><span class="tag">Verlauf gezeichnet</span><span class="n">Logo unverändert Lime/Weiß — die Marke wurde nicht umgefärbt</span></figcaption>
+      </figure>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>4 · Die Hintergrund-Quellbilder</h2>
+  <p class="lead">Erzeugt mit gemini-image im Standard-Tier (<code>gemini-3.1-flash-image-preview</code>), kein Premium. Nativ 1376×768 — der Gewinner wird für die Produktion in 1920×1080 neu gezogen.</p>
+  <div class="grid">
+      <figure class="card">
+        <a class="shot" href="img/bg-quelle-hafen.png" target="_blank" rel="noopener"><img src="img/bg-quelle-hafen.png" alt="Quelle Hafen" loading="lazy"></a>
+        <figcaption><span class="t">Hafen</span><span class="tag">gemini · Standard</span><span class="n">1376×768</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot" href="img/bg-quelle-studio-wand.png" target="_blank" rel="noopener"><img src="img/bg-quelle-studio-wand.png" alt="Quelle Studio-Wand" loading="lazy"></a>
+        <figcaption><span class="t">Studio-Wand</span><span class="tag">gemini · Standard</span><span class="n">1376×768</span></figcaption>
+      </figure>
+      <figure class="card">
+        <a class="shot" href="img/bg-quelle-chart.png" target="_blank" rel="noopener"><img src="img/bg-quelle-chart.png" alt="Quelle Chart" loading="lazy"></a>
+        <figcaption><span class="t">Chart</span><span class="tag">gemini · Standard</span><span class="n">1376×768</span></figcaption>
+      </figure>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  Entwurfsstand 2026-08-19 · Quellen: <code>Live-Produktion/overlays/design-b-blue/</code> (HTML/SVG, neu renderbar via <code>node render.mjs</code>) ·
+  Figma: Page „Stream Overlays" → Section <code>Entwurf Blau</code> · intern, nicht öffentlich verlinkt.
+</div></footer>
+</body>
+</html>
