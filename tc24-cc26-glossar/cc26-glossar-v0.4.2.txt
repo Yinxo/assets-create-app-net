@@ -1,0 +1,541 @@
+<!--
+  CC-26 Glossar — In-Page Custom Code ("Code einbetten")
+  Prefix: tc24-gl-  ·  Read-only  ·  Vanilla JS/CSS/HTML (kein Build)
+  Backend:  https://tc24-ls-content.vercel.app/api/glossar  (Office-Vercel, oeffentliche Read-API, CORS, never-5xx)
+  Einbetten: LS -> Seite bearbeiten -> Karte "Code einbetten" -> "In Seite anzeigen" -> HTML einfuegen.
+  DEV: ENDPOINT leer lassen -> laeuft gegen eingebaute Fixture.
+  Responsive via Container-Queries (reagiert auf Karten-Breite, nicht Viewport). Kein Inner-Scroll.
+
+  UI (v0.4): 2-SPALTIGES Accordion + SUCHE. Kopf: Titel + Suchfeld (sucht in Begriffsnamen UND
+  Volltext; Treffer klappen auf, Fundstelle wird markiert). Buchstaben-Leiste = 1 Zeile (Chevron +
+  grünes Chip + Anzahl rechts); Klick klappt über beide Spalten auf. Farben/Kontrast/Hover an das
+  TC24-BMS-Design angelehnt (Light + Dark, Luminanz-Detection).
+-->
+<style>
+  #tc24-gl-root {
+    container-type: inline-size;
+    /* Defaults = Dark; applyTheme() ueberschreibt live je nach LS-Seiten-Hintergrund. */
+    --tc24-gl-card-bg: rgb(51,51,51);
+    --tc24-gl-elev-bg: rgba(255,255,255,0.05);
+    --tc24-gl-text: rgb(245,245,245);
+    --tc24-gl-text-2: rgba(255,255,255,0.82);
+    --tc24-gl-text-3: rgba(255,255,255,0.55);
+    --tc24-gl-border: rgba(255,255,255,0.14);
+    --tc24-gl-hover: rgba(255,255,255,0.07);
+    --tc24-gl-chip-off: rgba(255,255,255,0.06);
+    --tc24-gl-accent: #10b981;
+    --tc24-gl-mark-bg: rgba(250,204,21,0.38);
+    --tc24-gl-mark-fg: rgb(255,255,255);
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--tc24-gl-text);
+    display: block; width: 100%; box-sizing: border-box;
+  }
+  #tc24-gl-root * { box-sizing: border-box; }
+
+  .tc24-gl-card {
+    background: var(--tc24-gl-card-bg); border: 1px solid var(--tc24-gl-border);
+    border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  }
+
+  .tc24-gl-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 13px 16px 11px; border-bottom: 1px solid var(--tc24-gl-border);
+  }
+  .tc24-gl-title { font-size: 16px; font-weight: 700; letter-spacing: 0.2px; color: var(--tc24-gl-text); }
+  .tc24-gl-count { font-size: 12px; color: var(--tc24-gl-text-3); white-space: nowrap; }
+
+  /* Suchfeld */
+  .tc24-gl-search-row { padding: 11px 16px; border-bottom: 1px solid var(--tc24-gl-border); }
+  .tc24-gl-search {
+    display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px;
+    border: 1px solid var(--tc24-gl-border); background: var(--tc24-gl-elev-bg);
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  }
+  .tc24-gl-search:focus-within { border-color: var(--tc24-gl-accent); background: var(--tc24-gl-card-bg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--tc24-gl-accent) 18%, transparent); }
+  .tc24-gl-search svg { width: 15px; height: 15px; flex: 0 0 auto; color: var(--tc24-gl-text-3); }
+  .tc24-gl-search input {
+    flex: 1 1 auto; min-width: 0; border: none; outline: none; background: transparent;
+    color: var(--tc24-gl-text); font-size: 13.5px; font-family: inherit;
+  }
+  .tc24-gl-search input::placeholder { color: var(--tc24-gl-text-3); }
+  .tc24-gl-search-clear {
+    flex: 0 0 auto; cursor: pointer; border: none; background: transparent; color: var(--tc24-gl-text-3);
+    font-size: 16px; line-height: 1; padding: 0 2px; border-radius: 4px;
+  }
+  .tc24-gl-search-clear:hover { color: var(--tc24-gl-text); }
+
+  .tc24-gl-body { padding: 10px 12px 12px; }
+
+  /* 2-Spalten-Raster kompakter Buchstaben-Leisten; offener Buchstabe spannt über beide Spalten. */
+  .tc24-gl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
+
+  /* Buchstaben-Leiste (geschlossen) — EINE Zeile, kompakte Kachel */
+  .tc24-gl-letter {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; user-select: none;
+    background: var(--tc24-gl-elev-bg); border: 1px solid var(--tc24-gl-border); border-radius: 8px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .tc24-gl-letter:hover { background: var(--tc24-gl-hover); }
+  .tc24-gl-letter:focus-visible, .tc24-gl-term:focus-visible,
+  .tc24-gl-section-head:focus-visible { outline: 2px solid var(--tc24-gl-accent); outline-offset: -2px; }
+  .tc24-gl-chev {
+    flex: 0 0 auto; width: 10px; text-align: center; font-size: 10px; color: var(--tc24-gl-text-3);
+    transition: transform 0.15s;
+  }
+  .tc24-gl-chev.tc24-gl-open { transform: rotate(90deg); }
+  .tc24-gl-badge {
+    flex: 0 0 auto; width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-size: 13px; font-weight: 700; background: var(--tc24-gl-accent); color: #fff;
+  }
+  .tc24-gl-count-inline { margin-left: auto; font-size: 12px; color: var(--tc24-gl-text-3); white-space: nowrap; }
+
+  /* Offene Sektion — über beide Spalten */
+  .tc24-gl-section { grid-column: 1 / -1; border: 1px solid var(--tc24-gl-border); border-radius: 8px; overflow: hidden; }
+  .tc24-gl-section-head {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; user-select: none;
+    background: var(--tc24-gl-elev-bg); transition: background 0.15s;
+  }
+  .tc24-gl-section-head:hover { background: var(--tc24-gl-hover); }
+  .tc24-gl-section-head.tc24-gl-static { cursor: default; }
+  .tc24-gl-section-head.tc24-gl-static:hover { background: var(--tc24-gl-elev-bg); }
+
+  /* Begriffe (eingerückt unter der Buchstaben-Leiste) */
+  .tc24-gl-term {
+    display: flex; align-items: center; gap: 9px; padding: 9px 12px 9px 34px; cursor: pointer;
+    user-select: none; transition: background 0.15s; border-top: 1px solid var(--tc24-gl-border);
+  }
+  .tc24-gl-term:hover { background: var(--tc24-gl-hover); }
+  .tc24-gl-term-dot { flex: 0 0 auto; width: 5px; height: 5px; border-radius: 50%; background: var(--tc24-gl-accent); opacity: 0.7; }
+  .tc24-gl-term-name {
+    flex: 1 1 auto; min-width: 0; font-weight: 600; font-size: 14.5px; color: var(--tc24-gl-text);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .tc24-gl-term-chev { flex: 0 0 auto; width: 10px; text-align: center; font-size: 9px; color: var(--tc24-gl-text-3); transition: transform 0.15s; }
+  .tc24-gl-term-chev.tc24-gl-open { transform: rotate(90deg); }
+
+  /* Inhalt eines offenen Begriffs (weiter eingerückt) */
+  .tc24-gl-content { padding: 2px 12px 13px 34px; font-size: 14px; line-height: 1.6; color: var(--tc24-gl-text-2); }
+  .tc24-gl-content p { margin: 0 0 8px 0; }
+  .tc24-gl-content p:last-child { margin-bottom: 0; }
+  .tc24-gl-content h3 { margin: 6px 0; font-size: 14.5px; font-weight: 700; color: var(--tc24-gl-text); }
+  .tc24-gl-content ul, .tc24-gl-content ol { margin: 6px 0; padding-left: 20px; }
+  .tc24-gl-content li { margin: 2px 0; }
+  .tc24-gl-content strong, .tc24-gl-content b { color: var(--tc24-gl-text); font-weight: 700; }
+  .tc24-gl-content a { color: var(--tc24-gl-accent); text-decoration: underline; }
+  .tc24-gl-mark { background: var(--tc24-gl-mark-bg); color: var(--tc24-gl-mark-fg); border-radius: 2px; padding: 0 1px; }
+
+  .tc24-gl-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+  /* Link-Buttons bewusst mit #tc24-gl-root praefixiert (Spezifitaet 1,1,0 statt 0,1,0):
+     CC-26 ist ein In-Page-Embed OHNE iframe und laeuft damit in der LS-Kaskade. Eine
+     LS-eigene Anchor-Regel (>= 0,2,0) schlug das schlichte `.tc24-gl-link` und faerbte die
+     Labels unsichtbar (leere gruene Bloecke bei kind=hub/course). Die manual-Variante war
+     nur zufaellig immun, weil ihr Selektor (0,2,0) eine Klasse mehr traegt. Die span-Regel
+     deckt zusaetzlich LS-Regeln ab, die direkt `a span` treffen (Vererbung dort gekappt). */
+  #tc24-gl-root .tc24-gl-link {
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 7px;
+    font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer;
+    background: var(--tc24-gl-accent); color: #fff; border: 1px solid var(--tc24-gl-accent);
+    transition: opacity 0.15s;
+  }
+  #tc24-gl-root .tc24-gl-link span { color: inherit; }
+  #tc24-gl-root .tc24-gl-link:hover { opacity: 0.88; }
+  #tc24-gl-root .tc24-gl-link.tc24-gl-link-manual {
+    background: var(--tc24-gl-chip-off); border-color: var(--tc24-gl-border);
+  }
+  #tc24-gl-root .tc24-gl-link.tc24-gl-link-manual,
+  #tc24-gl-root .tc24-gl-link.tc24-gl-link-manual span { color: var(--tc24-gl-text); }
+  .tc24-gl-link-ico { font-size: 11px; line-height: 1; }
+
+  .tc24-gl-state { padding: 26px 16px; text-align: center; color: var(--tc24-gl-text-3); font-size: 13px; }
+  .tc24-gl-spinner {
+    width: 22px; height: 22px; border: 2px solid var(--tc24-gl-border); border-top-color: var(--tc24-gl-accent);
+    border-radius: 50%; margin: 0 auto 10px; animation: tc24-gl-spin 0.8s linear infinite;
+  }
+  @keyframes tc24-gl-spin { to { transform: rotate(360deg); } }
+
+  /* Schmale Karte: 1 Spalte + reduzierte Paddings */
+  @container (max-width: 480px) {
+    .tc24-gl-grid { grid-template-columns: 1fr; }
+    .tc24-gl-head, .tc24-gl-search-row, .tc24-gl-body { padding-left: 12px; padding-right: 12px; }
+    .tc24-gl-term { padding-left: 30px; }
+    .tc24-gl-content { padding-left: 30px; }
+  }
+</style>
+
+<div id="tc24-gl-root"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ===================== CONFIG =====================
+  var DEBUG = false;
+  var log = function () { if (DEBUG) console.log.apply(console, ['[TC24-GL]'].concat([].slice.call(arguments))); };
+
+  // Offline-Vorschau (Custom-Code-Katalog in tc24-ls-content): die Sandbox dort laeuft bewusst mit
+  // CSP `connect-src 'none'`, ein fetch schlaegt also zwangslaeufig fehl und die Karte zeigte nur
+  // ihren Fehler-State. Der Katalog setzt vor dem Embed `window.__TC24_CC_PREVIEW = true`; dann
+  // faellt ENDPOINT auf leer und die eingebaute DEV-Fixture rendert. In LS ist das Flag nie gesetzt.
+  var ENDPOINT = window.__TC24_CC_PREVIEW ? '' : 'https://tc24-ls-content.vercel.app/api/glossar'; // leer => DEV-Fixture
+
+  var ROOT_ID = 'tc24-gl-root';
+  var KIND_ICON = { hub: '⌂', course: '▶', manual: '↗' }; // Haus / Play / externer Pfeil
+  var SEARCH_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.34-4.34"></path></svg>';
+
+  // ===================== STATE =====================
+  var state = { letters: [], total: 0, error: null, loading: true, openLetters: {}, openTerms: {}, query: '' };
+  var healTimer = null;
+  var bodyEl = null; // persistenter Body-Container (renderBody malt nur ihn -> Suchfeld behaelt Fokus)
+
+  if (window.__tc24gl && window.__tc24gl.teardown) { try { window.__tc24gl.teardown(); } catch (e) {} }
+  window.__tc24gl = { teardown: teardown };
+
+  // ===================== FIXTURE (DEV) =====================
+  function buildFixture() {
+    return { letters: [
+      { letter: 'A', terms: [
+        { id: 'fx-aktie', term: 'Aktie', contentHtml: '<p>Ein <strong>Anteil</strong> am Grundkapital einer Aktiengesellschaft.</p>',
+          links: [{ label: 'Zum Grundlagenkurs', url: '/student/hub/nDtrpCJL', kind: 'hub' }] },
+        { id: 'fx-ausbruch', term: 'Ausbruchsspanne', contentHtml: '<p>Die Kursspanne, aus der ein <em>Ausbruch</em> nach oben oder unten erfolgt.</p>', links: [] }
+      ] },
+      { letter: 'D', terms: [
+        { id: 'fx-dividende', term: 'Dividende', contentHtml: '<p>Ein Teil des Unternehmensgewinns, der an die Aktionäre ausgeschüttet wird.</p>', links: [] }
+      ] },
+      { letter: 'T', terms: [
+        { id: 'fx-trend', term: 'Trendfolge', contentHtml: '<p>Eine <em>Handelsstrategie</em>, die bestehenden Kurstrends folgt.</p><ul><li>Trend erkennen</li><li>In Trendrichtung handeln</li></ul>',
+          links: [{ label: 'Mehr erfahren', url: 'https://www.tradersclub24.de', kind: 'manual' }] }
+      ] },
+      { letter: 'V', terms: [
+        { id: 'fx-vola', term: 'Volatilität', contentHtml: '<p>Das Maß für die <strong>Schwankungsbreite</strong> eines Kurses.</p>', links: [] }
+      ] }
+    ] };
+  }
+
+  // ===================== API =====================
+  function fetchData() {
+    if (!ENDPOINT) { apply(buildFixture()); return Promise.resolve(); }
+    return fetch(ENDPOINT, { credentials: 'omit', cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (j) { apply(j); })
+      .catch(function (e) { log('fetch error', e); state.error = 'unavailable'; state.loading = false; render(); });
+  }
+  function apply(j) {
+    state.error = (j && j.error) ? j.error : null;
+    state.letters = normalize((j && j.letters) || []);
+    state.total = state.letters.reduce(function (n, L) { return n + L.terms.length; }, 0);
+    state.loading = false;
+    render();
+  }
+  function normalize(list) {
+    var out = [];
+    for (var i = 0; i < list.length; i++) {
+      var L = list[i]; if (!L || !L.letter || !Array.isArray(L.terms)) continue;
+      var terms = [];
+      for (var k = 0; k < L.terms.length; k++) {
+        var tm = L.terms[k]; if (!tm || !tm.term) continue;
+        var html = tm.contentHtml == null ? '' : String(tm.contentHtml);
+        terms.push({
+          id: String(tm.id || (L.letter + '-' + k)),
+          term: String(tm.term),
+          contentHtml: html,
+          plain: htmlToText(html), // Klartext fuer die Suche (einmal beim Laden)
+          links: sanitizeLinks(tm.links)
+        });
+      }
+      if (terms.length) out.push({ letter: String(L.letter).charAt(0).toUpperCase(), terms: terms });
+    }
+    return out;
+  }
+  function sanitizeLinks(links) {
+    if (!Array.isArray(links)) return [];
+    var out = [];
+    for (var i = 0; i < links.length; i++) {
+      var l = links[i]; if (!l || !l.url || !l.label) continue;
+      var url = String(l.url);
+      // Defense-in-depth: nur echte interne (/… aber NICHT //) oder http(s)-Links — kein
+      // javascript:/data: und kein protocol-relative //evil.com (das wuerde sonst als "intern"
+      // durchgehen und same-window ohne noopener off-platform navigieren).
+      var internal = url.charAt(0) === '/' && url.charAt(1) !== '/';
+      if (!(internal || /^https?:\/\//i.test(url))) { log('link skipped (scheme)', url); continue; }
+      out.push({ label: String(l.label), url: url, kind: (l.kind === 'hub' || l.kind === 'course') ? l.kind : 'manual' });
+    }
+    return out;
+  }
+
+  // ===================== RENDER HELPERS =====================
+  function el(tag, cls, txt) { var n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; }
+  function clickable(node, handler) {
+    node.setAttribute('role', 'button'); node.setAttribute('tabindex', '0');
+    node.addEventListener('click', handler);
+    node.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); handler(ev); } });
+    return node;
+  }
+  // Sanitize-Allowlist fuer contentHtml (server-seitig bereits DOMPurify; hier defensiv nochmal).
+  var ALLOWED = { P:1, BR:1, B:1, I:1, EM:1, STRONG:1, U:1, UL:1, OL:1, LI:1, A:1, H3:1, SPAN:1 };
+  // contentHtml -> gescrubbtes DocumentFragment (inert geparst: keine Loads/on*-Handler beim Parsen).
+  function parseClean(html) {
+    var tpl = document.createElement('template');
+    tpl.innerHTML = html;
+    scrub(tpl.content);
+    return tpl.content;
+  }
+  function htmlToText(html) { var f = parseClean(html); return (f.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function renderContent(html, q) {
+    var box = el('div', 'tc24-gl-content');
+    var frag = parseClean(html);
+    while (frag.firstChild) box.appendChild(frag.firstChild);
+    if (q) highlightNode(box, q); // Fundstellen im (bereits gescrubbten) Text markieren
+    return box;
+  }
+  function scrub(node) {
+    var kids = [].slice.call(node.children);
+    for (var i = 0; i < kids.length; i++) {
+      var c = kids[i];
+      if (!ALLOWED[c.tagName]) { node.removeChild(c); continue; }
+      var attrs = [].slice.call(c.attributes);
+      for (var a = 0; a < attrs.length; a++) {
+        var name = attrs[a].name.toLowerCase(), val = attrs[a].value;
+        if (name.indexOf('on') === 0) { c.removeAttribute(attrs[a].name); continue; }
+        if (name === 'href') {
+          var internalHref = val.charAt(0) === '/' && val.charAt(1) !== '/'; // // => extern, nicht "intern"
+          if (!(internalHref || /^https?:\/\//i.test(val) || val.charAt(0) === '#')) { c.removeAttribute('href'); }
+          else if (/^https?:\/\//i.test(val)) { c.setAttribute('target', '_blank'); c.setAttribute('rel', 'noopener noreferrer'); }
+        } else if (name !== 'class') {
+          c.removeAttribute(attrs[a].name);
+        }
+      }
+      scrub(c);
+    }
+  }
+  function renderLinks(links) {
+    var wrap = el('div', 'tc24-gl-links');
+    links.forEach(function (l) {
+      var isInternal = l.url.charAt(0) === '/' && l.url.charAt(1) !== '/';
+      var a = el('a', 'tc24-gl-link' + (l.kind === 'manual' ? ' tc24-gl-link-manual' : ''));
+      a.href = l.url;
+      if (!isInternal) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+      a.appendChild(el('span', 'tc24-gl-link-ico', KIND_ICON[l.kind] || KIND_ICON.manual));
+      a.appendChild(el('span', null, l.label));
+      wrap.appendChild(a);
+    });
+    return wrap;
+  }
+  // Text mit hervorgehobenen Treffern in ein Ziel-Element schreiben (nur selbst erzeugte Spans/Textnodes).
+  function highlightInto(parent, text, q) {
+    if (!q) { parent.appendChild(document.createTextNode(text)); return; } // Guard gegen Endlosschleife
+    var lower = text.toLowerCase(), from = 0, idx;
+    while ((idx = lower.indexOf(q, from)) >= 0) {
+      if (idx > from) parent.appendChild(document.createTextNode(text.slice(from, idx)));
+      parent.appendChild(el('span', 'tc24-gl-mark', text.slice(idx, idx + q.length)));
+      from = idx + q.length;
+    }
+    if (from < text.length) parent.appendChild(document.createTextNode(text.slice(from)));
+  }
+  // Textnodes eines Elements rekursiv nach q durchsuchen und Treffer markieren.
+  function highlightNode(node, q) {
+    var kids = [].slice.call(node.childNodes);
+    for (var i = 0; i < kids.length; i++) {
+      var n = kids[i];
+      if (n.nodeType === 3) {
+        var text = n.nodeValue || '';
+        if (text.toLowerCase().indexOf(q) >= 0) {
+          var frag = document.createDocumentFragment();
+          highlightInto(frag, text, q);
+          node.replaceChild(frag, n);
+        }
+      } else if (n.nodeType === 1 && n.className !== 'tc24-gl-mark') {
+        highlightNode(n, q);
+      }
+    }
+  }
+
+  // ===================== RENDER (Split: Shell einmal, Body bei jeder Interaktion) =====================
+  function render() {
+    var root = document.getElementById(ROOT_ID); if (!root) return;
+    root.innerHTML = '';
+    var card = el('div', 'tc24-gl-card');
+
+    var head = el('div', 'tc24-gl-head');
+    head.appendChild(el('div', 'tc24-gl-title', 'Glossar'));
+    if (!state.loading && !state.error) {
+      head.appendChild(el('div', 'tc24-gl-count', state.total + (state.total === 1 ? ' Begriff' : ' Begriffe')));
+    }
+    card.appendChild(head);
+
+    // Suchfeld nur wenn Daten da sind
+    if (!state.loading && !state.error && state.letters.length) {
+      card.appendChild(buildSearchRow());
+    }
+
+    bodyEl = el('div', 'tc24-gl-body');
+    card.appendChild(bodyEl);
+    root.appendChild(card);
+    renderBody();
+  }
+
+  function buildSearchRow() {
+    var row = el('div', 'tc24-gl-search-row');
+    var box = el('div', 'tc24-gl-search');
+    var ico = el('span'); ico.innerHTML = SEARCH_SVG; // statisches, eigenes SVG (kein User-Input)
+    box.appendChild(ico);
+    var input = el('input');
+    input.type = 'text'; input.placeholder = 'Begriff oder Text suchen…';
+    input.setAttribute('aria-label', 'Glossar durchsuchen'); input.value = state.query;
+    input.addEventListener('input', function () { state.query = this.value; renderBody(); });
+    box.appendChild(input);
+    var clear = el('button', 'tc24-gl-search-clear', '×'); clear.type = 'button'; clear.setAttribute('aria-label', 'Suche löschen');
+    clear.style.visibility = state.query ? 'visible' : 'hidden';
+    clear.addEventListener('click', function () { state.query = ''; input.value = ''; input.focus(); renderBody(); this.style.visibility = 'hidden'; });
+    box.appendChild(clear);
+    row.appendChild(box);
+    return row;
+  }
+
+  function renderBody() {
+    if (!bodyEl) return;
+    // Clear-Button-Sichtbarkeit nachziehen
+    var clr = document.querySelector('#' + ROOT_ID + ' .tc24-gl-search-clear');
+    if (clr) clr.style.visibility = state.query ? 'visible' : 'hidden';
+
+    bodyEl.innerHTML = '';
+    if (state.loading) {
+      var ld = el('div', 'tc24-gl-state'); ld.appendChild(el('div', 'tc24-gl-spinner')); ld.appendChild(el('div', null, 'Lade Glossar…')); bodyEl.appendChild(ld);
+    } else if (state.error) {
+      bodyEl.appendChild(el('div', 'tc24-gl-state', 'Glossar momentan nicht erreichbar. Bitte später erneut versuchen.'));
+    } else if (!state.letters.length) {
+      bodyEl.appendChild(el('div', 'tc24-gl-state', 'Noch keine Begriffe vorhanden.'));
+    } else if (state.query.trim()) {
+      renderSearch(bodyEl, state.query.trim().toLowerCase());
+    } else {
+      renderBrowse(bodyEl);
+    }
+  }
+
+  // -------- Browse-Modus: 2-Spalten-Accordion --------
+  function renderBrowse(container) {
+    var grid = el('div', 'tc24-gl-grid');
+    state.letters.forEach(function (L) {
+      grid.appendChild(state.openLetters[L.letter] ? renderOpenSection(L) : renderLetterTile(L));
+    });
+    container.appendChild(grid);
+  }
+  function renderLetterTile(L) {
+    var tile = el('div', 'tc24-gl-letter');
+    tile.appendChild(el('span', 'tc24-gl-chev', '▶'));
+    tile.appendChild(el('span', 'tc24-gl-badge', L.letter));
+    tile.appendChild(el('span', 'tc24-gl-count-inline', L.terms.length + (L.terms.length === 1 ? ' Begriff' : ' Begriffe')));
+    clickable(tile, function () { state.openLetters[L.letter] = true; renderBody(); });
+    tile.setAttribute('aria-expanded', 'false');
+    return tile;
+  }
+  function renderOpenSection(L) {
+    var sec = el('div', 'tc24-gl-section');
+    var sh = el('div', 'tc24-gl-section-head');
+    sh.appendChild(el('span', 'tc24-gl-chev tc24-gl-open', '▶'));
+    sh.appendChild(el('span', 'tc24-gl-badge', L.letter));
+    sh.appendChild(el('span', 'tc24-gl-count-inline', L.terms.length + (L.terms.length === 1 ? ' Begriff' : ' Begriffe')));
+    clickable(sh, function () { state.openLetters[L.letter] = false; renderBody(); });
+    sh.setAttribute('aria-expanded', 'true');
+    sec.appendChild(sh);
+    L.terms.forEach(function (tm) { sec.appendChild(renderTermRow(L, tm, null)); });
+    return sec;
+  }
+  // Eine Begriff-Reihe (+ Inhalt wenn offen). q != null => Suchmodus: immer offen + Highlight.
+  function renderTermRow(L, tm, q) {
+    var wrap = document.createDocumentFragment();
+    var tkey = L.letter + '|' + tm.id;
+    var topen = q ? true : !!state.openTerms[tkey];
+    var row = el('div', 'tc24-gl-term');
+    row.appendChild(el('span', 'tc24-gl-term-dot'));
+    var name = el('span', 'tc24-gl-term-name');
+    if (q) highlightInto(name, tm.term, q); else name.textContent = tm.term;
+    row.appendChild(name);
+    row.appendChild(el('span', 'tc24-gl-term-chev' + (topen ? ' tc24-gl-open' : ''), '▶'));
+    if (!q) { clickable(row, function () { state.openTerms[tkey] = !topen; renderBody(); }); row.setAttribute('aria-expanded', topen ? 'true' : 'false'); }
+    wrap.appendChild(row);
+    if (topen) {
+      var content = renderContent(tm.contentHtml, q);
+      if (tm.links.length) content.appendChild(renderLinks(tm.links));
+      wrap.appendChild(content);
+    }
+    return wrap;
+  }
+
+  // -------- Suchmodus: nur Treffer, aufgeklappt, markiert --------
+  function renderSearch(container, q) {
+    var any = false, hits = 0;
+    state.letters.forEach(function (L) {
+      var matched = L.terms.filter(function (tm) {
+        return tm.term.toLowerCase().indexOf(q) >= 0 || tm.plain.toLowerCase().indexOf(q) >= 0;
+      });
+      if (!matched.length) return;
+      any = true; hits += matched.length;
+      var sec = el('div', 'tc24-gl-section');
+      var sh = el('div', 'tc24-gl-section-head tc24-gl-static');
+      sh.appendChild(el('span', 'tc24-gl-badge', L.letter));
+      sh.appendChild(el('span', 'tc24-gl-count-inline', matched.length + ' Treffer'));
+      sec.appendChild(sh);
+      matched.forEach(function (tm) { sec.appendChild(renderTermRow(L, tm, q)); });
+      container.appendChild(sec);
+    });
+    if (!any) {
+      container.appendChild(el('div', 'tc24-gl-state', 'Keine Treffer für „' + state.query.trim() + '".'));
+    }
+  }
+
+  // ===================== THEME (an TC24-BMS angelehnt) =====================
+  var LIGHT = {
+    '--tc24-gl-card-bg': 'rgb(255,255,255)', '--tc24-gl-elev-bg': 'rgb(246,247,248)',
+    '--tc24-gl-text': 'rgb(28,57,65)', '--tc24-gl-text-2': 'rgb(55,74,82)', '--tc24-gl-text-3': 'rgb(107,114,120)',
+    '--tc24-gl-border': 'rgb(228,230,232)', '--tc24-gl-hover': 'rgba(28,57,65,0.055)', '--tc24-gl-chip-off': 'rgb(237,239,241)',
+    '--tc24-gl-mark-bg': 'rgb(254,240,138)', '--tc24-gl-mark-fg': 'rgb(28,57,65)'
+  };
+  var DARK = {
+    '--tc24-gl-card-bg': 'rgb(51,51,51)', '--tc24-gl-elev-bg': 'rgba(255,255,255,0.05)',
+    '--tc24-gl-text': 'rgb(245,245,245)', '--tc24-gl-text-2': 'rgba(255,255,255,0.82)', '--tc24-gl-text-3': 'rgba(255,255,255,0.55)',
+    '--tc24-gl-border': 'rgba(255,255,255,0.14)', '--tc24-gl-hover': 'rgba(255,255,255,0.07)', '--tc24-gl-chip-off': 'rgba(255,255,255,0.06)',
+    '--tc24-gl-mark-bg': 'rgba(250,204,21,0.38)', '--tc24-gl-mark-fg': 'rgb(255,255,255)'
+  };
+  var lastDark = null;
+  // Ganze Ancestor-Kette hochlaufen (LS verschachtelt tief) bis zum ersten ausreichend opaken
+  // Hintergrund. Faint Overlays (rgba …,0.04) sind kein Background -> ueberspringen. Komplett
+  // transparente Kette rendert auf weissem Canvas -> hell (Fallback false). (CC-25 v0.7.1 Muster)
+  function isDark(node) {
+    while (node) {
+      var bg = getComputedStyle(node).backgroundColor, m = bg && bg.match(/[\d.]+/g);
+      if (m && m.length >= 3) {
+        var alpha = m.length >= 4 ? Number(m[3]) : 1;
+        if (alpha >= 0.5) return (0.299 * m[0] + 0.587 * m[1] + 0.114 * m[2]) / 255 < 0.5;
+      }
+      node = node.parentElement;
+    }
+    return false;
+  }
+  function applyTheme() {
+    var root = document.getElementById(ROOT_ID); if (!root) return;
+    if (!root.isConnected) { teardown(); return; }
+    var dark = isDark(root.parentElement || document.body);
+    if (dark === lastDark) return;
+    lastDark = dark;
+    var pal = dark ? DARK : LIGHT;
+    for (var k in pal) if (pal.hasOwnProperty(k)) root.style.setProperty(k, pal[k]);
+  }
+
+  // ===================== INIT / TEARDOWN =====================
+  function teardown() { if (healTimer) clearInterval(healTimer); healTimer = null; }
+  function init() {
+    try {
+      applyTheme(); render(); fetchData();
+      healTimer = setInterval(applyTheme, 1000); // Theme-Wechsel nahezu sofort (LS feuert kein Event)
+    } catch (e) { console.error('[TC24-GL] Init error:', e); }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { try { init(); } catch (e) { console.error('[TC24-GL] Boot error:', e); } });
+  } else {
+    try { init(); } catch (e) { console.error('[TC24-GL] Boot error:', e); }
+  }
+})();
+</script>
