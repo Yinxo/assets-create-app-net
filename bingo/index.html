@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Bingo Maschine 1–100</title>
+<title>Bingo Maschine 1–75</title>
 <style>
   :root {
     --bg: #0f172a;
@@ -12,11 +12,11 @@
     --panel-2: #334155;
     --text: #f1f5f9;
     --muted: #94a3b8;
-    --accent: #f59e0b;
-    --accent-2: #10b981;
     --drawn: #f59e0b;
     --drawn-text: #0f172a;
+    --accent-2: #10b981;
     --danger: #ef4444;
+    --B: #2563eb; --I: #dc2626; --N: #16a34a; --G: #f59e0b; --O: #7c3aed;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; padding: 0; }
@@ -24,212 +24,108 @@
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 100vh; min-height: 100dvh;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex; flex-direction: column; align-items: center;
   }
-  header {
-    width: 100%;
-    text-align: center;
-    padding: 16px 12px 4px;
-  }
-  h1 {
-    margin: 0;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: var(--muted);
-  }
+  header { width: 100%; text-align: center; padding: 14px 12px 2px; }
+  h1 { margin: 0; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; color: var(--muted); }
 
-  /* Current number */
-  .current-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    margin: 8px 0 4px;
-  }
+  .current-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 6px 0 2px; }
   .current {
-    width: min(46vw, 200px);
-    height: min(46vw, 200px);
-    border-radius: 50%;
+    width: min(48vw, 210px); height: min(48vw, 210px); border-radius: 50%;
     background: radial-gradient(circle at 35% 30%, #fbbf24, #f59e0b 60%, #d97706);
-    color: var(--drawn-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: min(22vw, 96px);
-    font-weight: 800;
+    color: var(--drawn-text); display: flex; flex-direction: column; align-items: center; justify-content: center;
     box-shadow: 0 12px 40px rgba(245,158,11,0.35), inset 0 -6px 16px rgba(0,0,0,0.15);
-    transition: transform 0.15s ease;
     user-select: none;
   }
+  .current .letter { font-size: min(9vw, 40px); font-weight: 800; line-height: 1; opacity: 0.85; }
+  .current .num { font-size: min(22vw, 100px); font-weight: 800; line-height: 1; }
   .current.empty {
-    background: var(--panel);
-    color: var(--muted);
-    font-size: min(9vw, 40px);
-    box-shadow: none;
-    border: 2px dashed var(--panel-2);
+    background: var(--panel); color: var(--muted);
+    box-shadow: none; border: 2px dashed var(--panel-2);
   }
+  .current.empty .num { font-size: min(8vw, 34px); }
   .current.pop { animation: pop 0.45s cubic-bezier(.2,1.4,.5,1); }
   @keyframes pop {
     0% { transform: scale(0.3) rotate(-12deg); opacity: 0; }
     60% { transform: scale(1.12) rotate(4deg); }
     100% { transform: scale(1) rotate(0); opacity: 1; }
   }
-  .stats {
-    display: flex;
-    gap: 18px;
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin-top: 2px;
-  }
+  .stats { display: flex; gap: 18px; color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
   .stats b { color: var(--text); }
 
-  /* Controls */
-  .controls {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    max-width: 520px;
-    padding: 10px 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  button {
-    font-family: inherit;
-    font-weight: 700;
-    border: none;
-    border-radius: 14px;
-    padding: 16px 20px;
-    font-size: 1.05rem;
-    cursor: pointer;
-    transition: transform 0.08s ease, filter 0.15s ease;
-    color: #fff;
-  }
+  .controls { display: flex; gap: 10px; width: 100%; max-width: 520px; padding: 10px 12px; flex-wrap: wrap; justify-content: center; }
+  button { font-family: inherit; font-weight: 700; border: none; border-radius: 14px; padding: 15px 18px; font-size: 1.02rem; cursor: pointer; transition: transform 0.08s ease, filter 0.15s ease; color: #fff; }
   button:active { transform: scale(0.96); }
   button:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-draw {
-    flex: 1 1 100%;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: var(--drawn-text);
-    font-size: 1.3rem;
-    padding: 20px;
-  }
-  .btn-secondary {
-    background: var(--panel-2);
-    flex: 1 1 auto;
-  }
+  .btn-draw { flex: 1 1 100%; background: linear-gradient(135deg, #f59e0b, #d97706); color: var(--drawn-text); font-size: 1.3rem; padding: 20px; }
+  .btn-secondary { background: var(--panel-2); flex: 1 1 auto; }
   .btn-danger { background: var(--danger); flex: 1 1 auto; }
-  .toggle {
-    background: var(--panel);
-    border: 1px solid var(--panel-2);
-    color: var(--muted);
-    flex: 1 1 auto;
-    font-size: 0.95rem;
-    padding: 12px 16px;
-  }
+  .toggle { background: var(--panel); border: 1px solid var(--panel-2); color: var(--muted); flex: 1 1 auto; font-size: 0.92rem; padding: 12px 14px; }
   .toggle.on { color: var(--accent-2); border-color: var(--accent-2); }
 
-  /* Last drawn strip */
-  .recent {
-    display: flex;
-    gap: 8px;
-    padding: 6px 12px 2px;
-    max-width: 520px;
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    min-height: 34px;
-  }
-  .recent .chip {
-    background: var(--panel-2);
-    color: var(--text);
-    border-radius: 8px;
-    padding: 4px 10px;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-  .recent .chip.first { background: var(--accent); color: var(--drawn-text); }
+  .recent { display: flex; gap: 8px; padding: 4px 12px 2px; max-width: 520px; width: 100%; justify-content: center; flex-wrap: wrap; min-height: 32px; }
+  .recent .chip { background: var(--panel-2); color: var(--text); border-radius: 8px; padding: 4px 10px; font-weight: 700; font-size: 0.9rem; }
+  .recent .chip.first { background: var(--drawn); color: var(--drawn-text); }
   .recent-label { color: var(--muted); font-size: 0.8rem; align-self: center; }
 
-  /* Board */
-  .board {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 4px;
-    width: 100%;
-    max-width: 560px;
-    padding: 12px;
-    margin-bottom: 20px;
-  }
+  .board-wrap { width: 100%; max-width: 560px; padding: 10px 12px 8px; }
+  .board-head, .board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .board-head { margin-bottom: 4px; }
+  .board-head div { text-align: center; font-weight: 800; font-size: 1.15rem; color: #fff; border-radius: 6px; padding: 6px 0; }
+  .board-head .hB { background: var(--B); } .board-head .hI { background: var(--I); }
+  .board-head .hN { background: var(--N); } .board-head .hG { background: var(--G); }
+  .board-head .hO { background: var(--O); }
+  .board { grid-template-rows: repeat(15, 1fr); grid-auto-flow: column; }
   .cell {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--panel);
-    border-radius: 6px;
-    font-size: clamp(0.6rem, 2.6vw, 1rem);
-    font-weight: 600;
-    color: var(--muted);
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    background: var(--panel); border-radius: 5px;
+    font-size: clamp(0.65rem, 3vw, 1rem); font-weight: 600; color: var(--muted);
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
   }
-  .cell.drawn {
-    background: var(--drawn);
-    color: var(--drawn-text);
-    font-weight: 800;
-    transform: scale(1.04);
-  }
-  .cell.last {
-    box-shadow: 0 0 0 3px var(--accent-2);
-  }
+  .cell.drawn { background: var(--drawn); color: var(--drawn-text); font-weight: 800; transform: scale(1.05); }
+  .cell.last { box-shadow: 0 0 0 3px var(--accent-2); }
 
-  footer {
-    color: var(--muted);
-    font-size: 0.75rem;
-    padding: 4px 0 16px;
-    text-align: center;
-  }
-  @media (max-width: 380px) {
-    .board { gap: 3px; }
-  }
+  .pdf-link { display: inline-flex; align-items: center; gap: 8px; margin: 6px 12px 4px; padding: 12px 18px; background: var(--panel); border: 1px solid var(--panel-2); border-radius: 12px; color: var(--text); text-decoration: none; font-weight: 700; font-size: 0.95rem; }
+  .pdf-link:active { transform: scale(0.97); }
+
+  footer { color: var(--muted); font-size: 0.75rem; padding: 6px 14px 18px; text-align: center; max-width: 520px; }
 </style>
 </head>
 <body>
-  <header>
-    <h1>🎱 BINGO · Zahlen 1–100</h1>
-  </header>
+  <header><h1>🎱 BINGO · Zahlen 1–75 · Stimme Aoede</h1></header>
 
   <div class="current-wrap">
-    <div id="current" class="current empty">Bereit</div>
+    <div id="current" class="current empty"><span class="num">Bereit</span></div>
     <div class="stats">
       <span>Gezogen: <b id="countDrawn">0</b></span>
-      <span>Übrig: <b id="countLeft">100</b></span>
+      <span>Übrig: <b id="countLeft">75</b></span>
     </div>
   </div>
 
-  <div class="recent" id="recent">
-    <span class="recent-label">Noch keine Zahl gezogen</span>
-  </div>
+  <div class="recent" id="recent"><span class="recent-label">Noch keine Zahl gezogen</span></div>
 
   <div class="controls">
     <button class="btn-draw" id="drawBtn">Zahl ziehen</button>
-    <button class="toggle on" id="soundBtn">🔊 Ton an</button>
+    <button class="toggle on" id="soundBtn">🔊 Stimme an</button>
     <button class="btn-secondary" id="undoBtn">↩︎ Rückgängig</button>
     <button class="btn-danger" id="resetBtn">Neues Spiel</button>
   </div>
 
-  <div class="board" id="board"></div>
+  <div class="board-wrap">
+    <div class="board-head"><div class="hB">B</div><div class="hI">I</div><div class="hN">N</div><div class="hG">G</div><div class="hO">O</div></div>
+    <div class="board" id="board"></div>
+  </div>
 
-  <footer>Karten 4×4 selbst malen · gezogene Zahlen leuchten · alles bleibt lokal auf diesem Gerät</footer>
+  <a class="pdf-link" href="bingo-karten-30.pdf" target="_blank" rel="noopener">🖨️ 30 Spielkarten (5×5) als PDF herunterladen</a>
+
+  <footer>Klassisches Bingo · B 1–15 · I 16–30 · N 31–45 (FREE) · G 46–60 · O 61–75 · Spielstand bleibt lokal auf diesem Gerät</footer>
 
 <script>
 (function () {
-  var MAX = 100;
+  var MAX = 75;
+  var LETTERS = ['B','I','N','G','O'];
   var board = document.getElementById('board');
   var currentEl = document.getElementById('current');
   var recentEl = document.getElementById('recent');
@@ -240,12 +136,14 @@
   var resetBtn = document.getElementById('resetBtn');
   var soundBtn = document.getElementById('soundBtn');
 
-  var STORE_KEY = 'bingo1-100-state';
+  var STORE_KEY = 'bingo-1-75-v1';
   var cells = {};
-  var drawn = [];        // reihenfolge der gezogenen zahlen
+  var drawn = [];
   var soundOn = true;
 
-  // Board 1..100 aufbauen
+  function letterOf(n) { return LETTERS[Math.floor((n - 1) / 15)]; }
+
+  // Board column-major: B 1..15, I 16..30, N 31..45, G 46..60, O 61..75
   for (var n = 1; n <= MAX; n++) {
     var c = document.createElement('div');
     c.className = 'cell';
@@ -256,9 +154,7 @@
   }
 
   function save() {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify({ drawn: drawn, soundOn: soundOn }));
-    } catch (e) {}
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ drawn: drawn, soundOn: soundOn })); } catch (e) {}
   }
   function load() {
     try {
@@ -270,57 +166,44 @@
     } catch (e) {}
   }
 
-  function speak(num) {
-    if (!soundOn) return;
-    // kleiner Beep via WebAudio
-    try {
-      var Ctx = window.AudioContext || window.webkitAudioContext;
-      if (Ctx) {
-        var ctx = speak._ctx || (speak._ctx = new Ctx());
-        var o = ctx.createOscillator();
-        var g = ctx.createGain();
-        o.type = 'sine';
-        o.frequency.value = 660;
-        g.gain.setValueAtTime(0.0001, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
-        o.connect(g); g.connect(ctx.destination);
-        o.start(); o.stop(ctx.currentTime + 0.26);
-      }
-    } catch (e) {}
-    // Zahl ansagen (falls Sprachausgabe vorhanden)
+  function speakFallback(n) {
     try {
       if (window.speechSynthesis) {
-        var u = new SpeechSynthesisUtterance(String(num));
-        u.lang = 'de-DE';
-        u.rate = 0.95;
+        var u = new SpeechSynthesisUtterance(letterOf(n) + ' ' + n);
+        u.lang = 'de-DE'; u.rate = 0.95;
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(u);
       }
     } catch (e) {}
   }
 
+  function announce(n) {
+    if (!soundOn) return;
+    var done = false;
+    var fb = function () { if (done) return; done = true; speakFallback(n); };
+    try {
+      var a = new Audio('audio/' + n + '.wav');
+      a.addEventListener('playing', function () { done = true; });
+      a.addEventListener('error', fb);
+      var p = a.play();
+      if (p && p.catch) p.catch(fb);
+    } catch (e) { fb(); }
+  }
+
   function render(popNew) {
-    // Zellen
-    for (var n = 1; n <= MAX; n++) {
-      cells[n].className = 'cell';
-    }
+    for (var n = 1; n <= MAX; n++) cells[n].className = 'cell';
     var last = drawn.length ? drawn[drawn.length - 1] : null;
-    drawn.forEach(function (n) {
-      cells[n].classList.add('drawn');
-    });
+    drawn.forEach(function (n) { cells[n].classList.add('drawn'); });
     if (last) cells[last].classList.add('last');
 
-    // Aktuelle Zahl
     if (last) {
       currentEl.className = 'current' + (popNew ? ' pop' : '');
-      currentEl.textContent = last;
+      currentEl.innerHTML = '<span class="letter">' + letterOf(last) + '</span><span class="num">' + last + '</span>';
     } else {
       currentEl.className = 'current empty';
-      currentEl.textContent = 'Bereit';
+      currentEl.innerHTML = '<span class="num">Bereit</span>';
     }
 
-    // Recent-Strip (letzte 8)
     recentEl.innerHTML = '';
     if (!drawn.length) {
       var lbl = document.createElement('span');
@@ -328,50 +211,38 @@
       lbl.textContent = 'Noch keine Zahl gezogen';
       recentEl.appendChild(lbl);
     } else {
-      var recent = drawn.slice(-8).reverse();
-      recent.forEach(function (n, i) {
+      drawn.slice(-8).reverse().forEach(function (n, i) {
         var chip = document.createElement('span');
         chip.className = 'chip' + (i === 0 ? ' first' : '');
-        chip.textContent = n;
+        chip.textContent = letterOf(n) + '-' + n;
         recentEl.appendChild(chip);
       });
     }
 
-    // Stats + Buttons
     countDrawnEl.textContent = drawn.length;
     countLeftEl.textContent = MAX - drawn.length;
-    var done = drawn.length >= MAX;
-    drawBtn.disabled = done;
-    drawBtn.textContent = done ? '✓ Alle Zahlen gezogen' : 'Zahl ziehen';
+    var full = drawn.length >= MAX;
+    drawBtn.disabled = full;
+    drawBtn.textContent = full ? '✓ Alle Zahlen gezogen' : 'Zahl ziehen';
     undoBtn.disabled = drawn.length === 0;
   }
 
   function drawNumber() {
     if (drawn.length >= MAX) return;
+    var seen = {}; drawn.forEach(function (n) { seen[n] = true; });
     var remaining = [];
-    var seen = {};
-    drawn.forEach(function (n) { seen[n] = true; });
     for (var n = 1; n <= MAX; n++) if (!seen[n]) remaining.push(n);
-    var idx = Math.floor(Math.random() * remaining.length);
-    var pick = remaining[idx];
+    var pick = remaining[Math.floor(Math.random() * remaining.length)];
     drawn.push(pick);
     render(true);
-    speak(pick);
+    announce(pick);
     save();
   }
 
-  function undo() {
-    if (!drawn.length) return;
-    drawn.pop();
-    render(false);
-    save();
-  }
-
+  function undo() { if (!drawn.length) return; drawn.pop(); render(false); save(); }
   function reset() {
     if (drawn.length && !confirm('Neues Spiel starten? Alle gezogenen Zahlen werden gelöscht.')) return;
-    drawn = [];
-    render(false);
-    save();
+    drawn = []; render(false); save();
   }
 
   drawBtn.addEventListener('click', drawNumber);
@@ -380,21 +251,16 @@
   soundBtn.addEventListener('click', function () {
     soundOn = !soundOn;
     soundBtn.className = 'toggle' + (soundOn ? ' on' : '');
-    soundBtn.textContent = soundOn ? '🔊 Ton an' : '🔇 Ton aus';
+    soundBtn.textContent = soundOn ? '🔊 Stimme an' : '🔇 Stimme aus';
     save();
   });
-
-  // Leertaste / Enter = ziehen
   document.addEventListener('keydown', function (e) {
-    if (e.code === 'Space' || e.code === 'Enter') {
-      e.preventDefault();
-      if (!drawBtn.disabled) drawNumber();
-    }
+    if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); if (!drawBtn.disabled) drawNumber(); }
   });
 
   load();
   soundBtn.className = 'toggle' + (soundOn ? ' on' : '');
-  soundBtn.textContent = soundOn ? '🔊 Ton an' : '🔇 Ton aus';
+  soundBtn.textContent = soundOn ? '🔊 Stimme an' : '🔇 Stimme aus';
   render(false);
 })();
 </script>

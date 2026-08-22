@@ -1,0 +1,14 @@
+# Binärdateien nie durch Text-/EOL-Normalisierung schleusen
+*.wav binary
+*.mp3 binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.mp4 binary
+*.mov binary
