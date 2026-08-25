@@ -3,44 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>InvestorsClub24 — OBS-Overlay-Entwürfe</title>
+<title>InvestorsClub24 — Rahmen-Harmonie (Duo)</title>
 <style>
   :root { color-scheme: dark; }
   body { margin:0; background:#0f1417; color:#cdd8dd;
          font-family: system-ui, -apple-system, sans-serif; padding:24px; }
   h1 { font-size:20px; font-weight:700; margin:0 0 4px; color:#fff; }
-  p.sub { margin:0 0 24px; color:#8aa0ab; font-size:14px; }
+  p.sub { margin:0 0 20px; color:#8aa0ab; font-size:14px; }
   .note { background:#152026; border:1px solid #23343d; border-radius:10px;
-          padding:12px 16px; font-size:13px; line-height:1.5; margin-bottom:28px; }
+          padding:12px 16px; font-size:13px; line-height:1.5; margin-bottom:26px; }
   .note b { color:#B6E8FF; }
-  figure { margin:0 0 34px; }
+  figure { margin:0 0 30px; }
   figcaption { font-size:15px; font-weight:600; color:#fff; margin-bottom:8px; }
-  figcaption span { color:#8aa0ab; font-weight:400; }
-  /* dunkler Slot-Grund, damit die transparenten Live-Löcher als Slots lesbar sind */
+  figcaption span { color:#8aa0ab; font-weight:400; font-size:13px; }
+  figcaption .rec { color:#7FC4DE; font-weight:600; }
   .frame { background:#2b3338; border-radius:8px; overflow:hidden;
            box-shadow:0 8px 30px rgba(0,0,0,.5); }
   .frame img { display:block; width:100%; height:auto; }
 </style>
 </head>
 <body>
-  <h1>InvestorsClub24 — OBS-Overlay-Entwürfe</h1>
-  <p class="sub">Phase-1-Entwurf · 2026-08-25 · Duo (L2) + Solo (L1)</p>
+  <h1>InvestorsClub24 — Rahmen-Harmonie</h1>
+  <p class="sub">Duo (L2) · 3 Varianten · 2026-08-25 — weicheres Zusammenspiel mit dem BG</p>
 
   <div class="note">
-    <b>Hintergrund 1:1</b> — der adhouse-IC24-Hintergrund (Navy + Candlesticks) liegt unverändert
-    drunter, <b>keine Farb-Überlagerung</b>. Die <b>dunkelgrauen Flächen sind die transparenten
-    Live-Slots</b> (da läuft in OBS Kamera/Screen). Rahmen: Light-Blue <b>#B6E8FF</b> + blauer
-    Eck-Akzent <b>#0074AA</b> unten-rechts.
+    <b>Hintergrund unverändert 1:1</b> — nur der <b>Rahmen</b> wurde ruhiger/tonaler gemacht, damit er
+    nicht mehr gegen das Navy „beißt". Dunkelgraue Flächen = transparente Live-Slots.
   </div>
 
   <figure>
-    <figcaption>Duo (L2) <span>— 2 Speaker + großer Screen</span></figcaption>
-    <div class="frame"><img src="duo.png" alt="IC24 Duo Overlay"></div>
+    <figcaption>A — „Whisper" <span>· nur weicher Lichtsaum, keine harte Linie (am weichsten)</span></figcaption>
+    <div class="frame"><img src="duo-whisper.png" alt="Variante A Whisper"></div>
   </figure>
 
   <figure>
-    <figcaption>Solo (L1) <span>— 1 Speaker + großer Screen</span></figcaption>
-    <div class="frame"><img src="solo.png" alt="IC24 Solo Overlay"></div>
+    <figcaption>B — „Hairline" <span class="rec">· Empfehlung</span> <span>· feine Linie + Saum + dezente Eck-Ticks, nah an den Slide-Cards</span></figcaption>
+    <div class="frame"><img src="duo-hairline.png" alt="Variante B Hairline"></div>
+  </figure>
+
+  <figure>
+    <figcaption>C — „Brand-Blau" <span>· definierter, IC24-Blau #0074AA</span></figcaption>
+    <div class="frame"><img src="duo-brand.png" alt="Variante C Brand"></div>
   </figure>
 </body>
 </html>
