@@ -10,11 +10,13 @@
   body { margin:0; background:var(--bg); color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; padding:24px; }
   h1 { font-size:20px; font-weight:650; margin:0 0 4px; }
-  p.sub { color:var(--muted); margin:0 0 24px; font-size:14px; }
+  h2 { font-size:15px; font-weight:600; margin:26px 0 10px; color:var(--accent); }
+  p.sub { color:var(--muted); margin:0 0 8px; font-size:14px; }
   .grid { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(440px,1fr)); }
   @media (max-width:520px){ .grid{ grid-template-columns:1fr; } body{ padding:14px; } }
   figure { margin:0; background:var(--panel); border:1px solid #1f3a44; border-radius:14px; overflow:hidden; }
   figure img { display:block; width:100%; height:auto; }
+  .checker img { background-image:linear-gradient(45deg,#c0392b 25%,transparent 25%),linear-gradient(-45deg,#c0392b 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c0392b 75%),linear-gradient(-45deg,transparent 75%,#c0392b 75%); background-size:40px 40px; background-position:0 0,0 20px,20px -20px,-20px 0; }
   figcaption { padding:10px 14px; font-size:14px; }
   figcaption b { color:var(--accent); font-weight:650; }
   .note { color:var(--muted); font-size:12px; margin-top:22px; line-height:1.5; }
@@ -22,13 +24,24 @@
 </head>
 <body>
   <h1>Studio-Backdrops (Companion Page 26) — Auswahl</h1>
-  <p class="sub">Full-frame Design-Wand · Screen-Rahmen rechts · offene Presenter-Zone links (Split). Scharf (Blur r=2 + Alpha-Loch kommen nach deiner Freigabe).</p>
+  <p class="sub">Full-frame Design-Wand · Screen-Rahmen rechts · Presenter-Zone links.</p>
+
+  <h2>Look (scharf, ohne Loch)</h2>
   <div class="grid">
-    <figure><a href="studio-backdrop-designA.png"><img src="studio-backdrop-designA.png" alt="Studio Backdrop Design-A Petrol"></a>
-      <figcaption><b>Design-A (Petrol)</b> — dunkle Teal-Wand, Walnuss-Panel, Screen-Rahmen rechts</figcaption></figure>
-    <figure><a href="studio-backdrop-ic24.png"><img src="studio-backdrop-ic24.png" alt="Studio Backdrop IC24 Navy"></a>
-      <figcaption><b>IC24 (Navy)</b> — dunkle Navy-Wand, Walnuss + dezenter Blau-Rahmen am Screen</figcaption></figure>
+    <figure><a href="studio-backdrop-designA.png"><img src="studio-backdrop-designA-sharp.png" alt="Design-A Look"></a>
+      <figcaption><b>Design-A (Petrol)</b> — Teal-Wand, Walnuss, Screen-Rahmen rechts</figcaption></figure>
+    <figure><a href="studio-backdrop-ic24-hole.png"><img src="studio-backdrop-ic24-sharp.png" alt="IC24 Look"></a>
+      <figcaption><b>IC24 (Navy)</b> — Navy-Wand, Walnuss + Blau-Rahmen</figcaption></figure>
   </div>
-  <p class="note">Presenter kommt via ATEM CAM 1 in die offene Zone links (kein Greenscreen — dort schneide ich das Alpha-Loch). Screen (Charts) liegt als eigene OBS-Quelle im Rahmen rechts. Geometrie = Backup „Studio Solo" (Screen pos 510,145).</p>
+
+  <h2>Produktion (Blur r=2 + Alpha-Presenter-Loch links) — rot = transparent</h2>
+  <div class="grid">
+    <figure class="checker"><a href="studio-backdrop-designA-hole.png"><img src="studio-backdrop-designA-hole.png" alt="Design-A mit Loch"></a>
+      <figcaption><b>Design-A</b> — Presenter-Loch links (x 0–510), ATEM CAM 1 keyt hier durch</figcaption></figure>
+    <figure class="checker"><a href="studio-backdrop-ic24-hole.png"><img src="studio-backdrop-ic24-hole.png" alt="IC24 mit Loch"></a>
+      <figcaption><b>IC24</b> — Presenter-Loch links (x 0–510)</figcaption></figure>
+  </div>
+
+  <p class="note">Rot/kariert = transparentes Alpha-Loch (dort erscheint via ATEM CAM 1 der Presenter, kein Greenscreen). Screen (Charts) liegt als eigene OBS-Quelle im Rahmen rechts. Loch-Position = Backup „Studio Solo" (Screen ab x=510). Falls die ATEM CAM 1 anders sitzt → Loch-Grenze ist eine Python-Zeile, schnell angepasst.</p>
 </body>
 </html>
