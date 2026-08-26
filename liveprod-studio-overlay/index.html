@@ -1,18 +1,24 @@
 <!doctype html><html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Studio-Overlay (L0a gespiegelt) — Auswahl</title>
+<title>Studio-Overlay (L0a gespiegelt) — Design-A + IC24</title>
 <style>
 :root{--bg:#0a161c;--muted:#8ba6b2;--accent:#B6E8FF}
 body{margin:0;background:var(--bg);color:#e9f2f6;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:24px}
 h1{font-size:20px;margin:0 0 4px}p.sub{color:var(--muted);font-size:14px;margin:0 0 20px}
-figure{margin:0;border:1px solid #1f3a44;border-radius:14px;overflow:hidden;max-width:1000px}
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(440px,1fr))}
+@media(max-width:520px){.grid{grid-template-columns:1fr}body{padding:14px}}
+figure{margin:0;border:1px solid #1f3a44;border-radius:14px;overflow:hidden}
 figure img{display:block;width:100%;height:auto;background-image:linear-gradient(45deg,#c0392b 25%,transparent 25%),linear-gradient(-45deg,#c0392b 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c0392b 75%),linear-gradient(-45deg,transparent 75%,#c0392b 75%);background-size:40px 40px;background-position:0 0,0 20px,20px -20px,-20px 0}
 figcaption{padding:10px 14px;font-size:14px}figcaption b{color:var(--accent)}
 .note{color:var(--muted);font-size:12px;margin-top:18px;line-height:1.5;max-width:1000px}
 </style></head><body>
 <h1>Studio-Overlay — L0a-Studio, gespiegelt (Speaker links / Screen rechts)</h1>
-<p class="sub">Rot/kariert = transparent (Löcher für OBS). Lime-Rahmen + runde Ecken bleiben. Basis = node 174:70 aus „Stream - Screens".</p>
-<figure><a href="studio-overlay-designA.png"><img src="studio-overlay-designA.png" alt="Studio Overlay Design-A"></a>
-<figcaption><b>Design-A</b> — Cam/Speaker links (512×640), Screen rechts (1331×749), Hafen-Scrim gespiegelt</figcaption></figure>
-<p class="note">Löcher sind echt transparent (Cam links + Screen rechts) → in OBS erscheinen dort ATEM-Cam bzw. Screen-Quelle. IC24-Version folgt nach deiner Freigabe (gleiches Layout, IC24-Design).</p>
+<p class="sub">Rot/kariert = transparent (Löcher für OBS). Basis = node 174:70 (Design-A) / 251:70 (IC24) aus „Stream - Screens", Originale unangetastet.</p>
+<div class="grid">
+  <figure><a href="studio-overlay-designA.png"><img src="studio-overlay-designA.png" alt="Design-A"></a>
+    <figcaption><b>Design-A</b> — Hafen-Scrim, Lime-Rahmen</figcaption></figure>
+  <figure><a href="studio-overlay-ic24.png"><img src="studio-overlay-ic24.png" alt="IC24"></a>
+    <figcaption><b>IC24</b> — Navy-Scrim, Blau-Glow-Rahmen</figcaption></figure>
+</div>
+<p class="note">Cam/Speaker links (512×640) + Screen rechts (1331×749), Löcher echt transparent → in OBS ATEM-Cam bzw. Screen-Quelle. Runde Ecken + Rahmen intakt.</p>
 </body></html>
