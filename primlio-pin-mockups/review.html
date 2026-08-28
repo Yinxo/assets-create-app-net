@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>primlio · Pin-Design Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Inter:wght@400..700&display=swap">
+<style>
+  :root{--aub:#3a2143;--aubd:#2a1730;--terra:#d1652f;--cream:#faf7f2;--ink:#211a24;--muted:#8b8393}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Inter",system-ui,sans-serif;background:#efeae3;color:var(--ink);
+    padding:0 0 190px;-webkit-text-size-adjust:100%}
+  header{background:var(--aub);color:var(--cream);padding:28px 20px 24px;position:sticky;top:0;z-index:5;
+    box-shadow:0 6px 20px rgba(0,0,0,.18)}
+  header .wm{font-family:"Fraunces",serif;font-weight:600;font-size:26px}
+  header h1{font-size:15px;font-weight:500;color:#e6d8ec;margin-top:4px}
+  header p{font-size:13px;color:#c3b4cb;margin-top:8px;line-height:1.5;max-width:640px}
+  .dir{max-width:960px;margin:20px auto 0;padding:0 16px}
+  .dir .box{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .dir h2{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px}
+  .dir label{display:inline-flex;align-items:center;gap:8px;margin:6px 14px 6px 0;font-size:16px;cursor:pointer}
+  .dir input[type=radio]{width:20px;height:20px;accent-color:var(--terra)}
+  .grid{max-width:960px;margin:20px auto 0;padding:0 16px;display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+  .card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);
+    display:flex;flex-direction:column;border:3px solid transparent;transition:border-color .15s}
+  .card.fav{border-color:var(--terra)}
+  .card a.img{display:block;position:relative;line-height:0;background:var(--aubd)}
+  .card a.img img{width:100%;height:auto;display:block}
+  .card .meta{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px}
+  .card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .card .ttl{font-family:"Fraunces",serif;font-weight:600;font-size:19px;line-height:1.15}
+  .card .tag{display:inline-block;margin-top:4px;font-size:12px;letter-spacing:.5px;text-transform:uppercase;
+    color:#fff;background:var(--aub);padding:3px 9px;border-radius:999px}
+  .star{flex:none;border:none;background:#f0ebf3;width:46px;height:46px;border-radius:12px;font-size:24px;
+    cursor:pointer;line-height:1;color:#c9bcce;transition:.12s}
+  .star.on{background:var(--terra);color:#fff}
+  .card textarea{width:100%;border:1.5px solid #e3dce8;border-radius:12px;padding:11px 13px;font:inherit;
+    font-size:15px;resize:vertical;min-height:70px;color:var(--ink)}
+  .card textarea:focus{outline:none;border-color:var(--terra)}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e0d8e4;
+    padding:14px 16px calc(14px + env(safe-area-inset-bottom));box-shadow:0 -6px 22px rgba(0,0,0,.12);z-index:6}
+  .bar .inner{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+  .bar textarea{width:100%;border:1.5px solid #e3dce8;border-radius:12px;padding:11px 13px;font:inherit;
+    font-size:15px;resize:vertical;min-height:52px}
+  .bar textarea:focus{outline:none;border-color:var(--terra)}
+  .bar .row{display:flex;gap:10px;align-items:center}
+  .bar button{flex:1;background:var(--terra);color:#fff;border:none;border-radius:12px;padding:15px;
+    font:inherit;font-size:17px;font-weight:700;cursor:pointer}
+  .bar button:active{transform:translateY(1px)}
+  .bar .hint{font-size:12px;color:var(--muted);text-align:center}
+  .toast{position:fixed;left:50%;bottom:130px;transform:translateX(-50%);background:var(--aub);color:#fff;
+    padding:12px 20px;border-radius:999px;font-size:15px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <div class="wm">primlio</div>
+  <h1>Pin-Design Review</h1>
+  <p>Markiere deine Favoriten (⭐) und schreib pro Pin, was zünden würde bzw. was du ändern willst. Unten „Feedback kopieren" tippen → im Chat einfügen. Fotos sind Platzhalter — bewerte Look, Typo & Wording.</p>
+</header>
+
+<div class="dir">
+  <div class="box">
+    <h2>Look-Richtung (Gesamt)</h2>
+    <label><input type="radio" name="dir" value="Magazin-Cover"> Magazin-Cover (Foto groß + Schlagzeile)</label>
+    <label><input type="radio" name="dir" value="Grafisch/Text"> Grafisch / Text-fokussiert</label>
+    <label><input type="radio" name="dir" value="Mix je Archetyp"> Mix je Archetyp</label>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="bar">
+  <div class="inner">
+    <textarea id="global" placeholder="Allgemeines Feedback: Farbe, Typo-Größe, Ton, weitere Ideen…"></textarea>
+    <div class="row">
+      <button id="copyBtn">📋 Feedback kopieren</button>
+    </div>
+    <div class="hint">Danach einfach in den primlio-Chat einfügen — dann sehe ich es.</div>
+  </div>
+</div>
+<div class="toast" id="toast">Feedback kopiert ✓</div>
+
+<script>
+  // Add new pins here as we render them — the gallery grows automatically.
+  const PINS = [
+    { id: "1", key:"rasen",       ttl:"① Rasen — Pain-Point",        tag:"Cover",    file:"rasen-painpoint.png" },
+    { id: "2", key:"ideenliste",  ttl:"② Garten — Ideen-Liste",      tag:"Grafisch", file:"garten-ideenliste.png" },
+    { id: "3", key:"einschulung", ttl:"③ Einschulung — Saisonal",    tag:"Cover",    file:"einschulung-checkliste.png" }
+  ];
+  const LS = "primlio-pin-review-v1";
+  const state = JSON.parse(localStorage.getItem(LS) || "{}");
+  const save = () => localStorage.setItem(LS, JSON.stringify(state));
+
+  const grid = document.getElementById("grid");
+  for (const p of PINS) {
+    const st = state[p.key] || (state[p.key] = { fav:false, note:"" });
+    const card = document.createElement("div");
+    card.className = "card" + (st.fav ? " fav" : "");
+    card.innerHTML = `
+      <a class="img" href="${p.file}" target="_blank" rel="noopener"><img loading="lazy" src="${p.file}" alt="${p.ttl}"></a>
+      <div class="meta">
+        <div class="top">
+          <div><div class="ttl">${p.ttl}</div><span class="tag">${p.tag}</span></div>
+          <button class="star ${st.fav?'on':''}" title="Favorit">★</button>
+        </div>
+        <textarea placeholder="Zu diesem Pin: was gefällt / was ändern?">${st.note.replace(/</g,'&lt;')}</textarea>
+      </div>`;
+    const star = card.querySelector(".star");
+    const ta = card.querySelector("textarea");
+    star.onclick = () => { st.fav = !st.fav; star.classList.toggle("on", st.fav); card.classList.toggle("fav", st.fav); save(); };
+    ta.oninput = () => { st.note = ta.value; save(); };
+    grid.appendChild(card);
+  }
+
+  // restore direction
+  const savedDir = state.__dir;
+  document.querySelectorAll('input[name=dir]').forEach(r => {
+    if (r.value === savedDir) r.checked = true;
+    r.onchange = () => { state.__dir = r.value; save(); };
+  });
+  const globalTa = document.getElementById("global");
+  globalTa.value = state.__global || "";
+  globalTa.oninput = () => { state.__global = globalTa.value; save(); };
+
+  document.getElementById("copyBtn").onclick = async () => {
+    let out = "=== primlio Pin-Review Feedback ===\n";
+    out += "Look-Richtung: " + (state.__dir || "(keine gewählt)") + "\n";
+    const favs = PINS.filter(p => state[p.key]?.fav).map(p => p.ttl);
+    out += "Favoriten: " + (favs.length ? favs.join(", ") : "(keine)") + "\n\n";
+    for (const p of PINS) {
+      const s = state[p.key] || {};
+      out += `${p.ttl} [${p.tag}]${s.fav ? " ⭐" : ""}: ${s.note?.trim() || "(keine Notiz)"}\n`;
+    }
+    out += "\nAllgemein: " + ((state.__global || "").trim() || "(keine)") + "\n";
+    try { await navigator.clipboard.writeText(out); }
+    catch { const t=document.createElement("textarea"); t.value=out; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+    const toast = document.getElementById("toast");
+    toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"), 1800);
+  };
+</script>
+</body>
+</html>
