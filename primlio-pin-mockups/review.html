@@ -59,7 +59,7 @@
 <header>
   <div class="wm">primlio</div>
   <h1>Pin-Design Review</h1>
-  <p>Markiere deine Favoriten (⭐) und schreib pro Pin, was zünden würde bzw. was du ändern willst. Unten „Feedback kopieren" tippen → im Chat einfügen. Fotos sind Platzhalter — bewerte Look, Typo & Wording.</p>
+  <p><b>Runde 2 — echte KI-Bilder, alle im Magazin-Cover-Look.</b> ② ist jetzt ein Cover-Ideen-Pin (statt Liste), ③ hat neues, weniger „Kauf"-lastiges Wording. Markiere Favoriten (⭐), notier pro Pin was noch fehlt → unten „Feedback kopieren" → im Chat einfügen.</p>
 </header>
 
 <div class="dir">
@@ -87,11 +87,11 @@
 <script>
   // Add new pins here as we render them — the gallery grows automatically.
   const PINS = [
-    { id: "1", key:"rasen",       ttl:"① Rasen — Pain-Point",        tag:"Cover",    file:"rasen-painpoint.png" },
-    { id: "2", key:"ideenliste",  ttl:"② Garten — Ideen-Liste",      tag:"Grafisch", file:"garten-ideenliste.png" },
-    { id: "3", key:"einschulung", ttl:"③ Einschulung — Saisonal",    tag:"Cover",    file:"einschulung-checkliste.png" }
+    { id: "1", key:"rasen2",       ttl:"① Rasen — Pain-Point",     tag:"Cover · echtes Bild", file:"rasen-painpoint.jpg" },
+    { id: "2", key:"ideenpin2",    ttl:"② Garten — Ideen-Pin",     tag:"Cover · echtes Bild", file:"garten-ideenpin.jpg" },
+    { id: "3", key:"einschulung2", ttl:"③ Einschulung — Neugier",  tag:"Cover · echtes Bild", file:"einschulung-fehler.jpg" }
   ];
-  const LS = "primlio-pin-review-v1";
+  const LS = "primlio-pin-review-v2";
   const state = JSON.parse(localStorage.getItem(LS) || "{}");
   const save = () => localStorage.setItem(LS, JSON.stringify(state));
 
